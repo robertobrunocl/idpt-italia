@@ -979,7 +979,7 @@ Le 13 anomalie nominali strutturali del confronto INPS vs AGID, materializzate c
 <h3 id="42-una-sola-classe-propria-idptsedeinps">4.2 Una sola classe propria: <code>idpt:SedeINPS</code></h3>
 <p>Su un grafo di ~117.000 triple, abbiamo definito <em>una sola</em> classe propria — <code>idpt:SedeINPS</code> — più due ObjectProperty associate. Tutto il resto è istanza di classi standard (<code>clv:Province</code>, <code>clv:Region</code>, <code>skos:Concept</code>, <code>qb:Observation</code>, <code>qb:DataSet</code>, <code>qb:DataStructureDefinition</code>, <code>dcatapit:Dataset</code>, ecc.). Questa parsimonia non è uno stilismo: è la metrica diretta su cui si misura "LOD ben fatto vs LOD inventato".</p>
 <p>La motivazione della classe propria è semantica, non comoda. Come dichiarato nella sez. 2.1, l'asimmetria fra "provincia di residenza" (asse del cubo 1, 107 entità) e "provincia della sede INPS" (asse dei cubi 2 e 3, 106 sedi) è una realtà del dominio INPS che il grafo deve rappresentare onestamente. Le due opzioni alternative sarebbero state semanticamente disoneste: (a) "appiattire" le sedi sulla residenza richiederebbe duplicare alcune osservazioni e introdurrebbe doppi conteggi nelle query di aggregazione; (b) modellare le sedi come <code>clv:Province</code> confonderebbe due assi che il dato sorgente tiene distinti. Una classe propria preserva la distinzione senza intaccare la centralità dell'ancora AGID.</p>
-<pre><code class="language-turtle">@prefix idpt: &lt;https://example.org/idpt/&gt; .
+<pre><code class="language-turtle">@prefix idpt: &lt;https://robertobrunocl.github.io/idpt-italia/&gt; .
 @prefix clv:  &lt;https://w3id.org/italia/onto/CLV/&gt; .
 @prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .
 @prefix owl:  &lt;http://www.w3.org/2002/07/owl#&gt; .
@@ -1155,7 +1155,7 @@ idpt:regime-retributivo a skos:Concept ;
 <p>Il <strong>mix di stili A + B</strong> è una decisione metodologica esplicita. Lo stile A (multi-measure cubes: più misure per <code>qb:Observation</code>) è usato per 7 cubi dove tutte le misure hanno pari status semantico (cubi 1, 4, 5, 6, 7, 8, 9). Lo stile B (<code>qb:measureType</code> come dimensione: una osservazione per misura) è usato per i 2 cubi dove convivono misure primarie e misure stimate (cubi 2 e 3, dove l'<code>importoAnnuoComplessivo</code> è ricostruito come <code>n × media × 13</code> con <code>obsStatus=E</code> mentre le altre due misure sono primarie con <code>obsStatus=A</code>). Lo stile B permette di marcare diversamente lo status delle singole misure all'interno della stessa "cella" del cubo concettuale. Adottare lo stile A ovunque avrebbe perso questa distinzione; adottare lo stile B ovunque avrebbe triplicato il numero di osservazioni nei cubi che non ne hanno bisogno (es. il cubo 6 passerebbe da 856 a 856 × 1 = 856 — perché ha già una misura unica — ma il cubo 5 che ha una sola misura sarebbe inutilmente complicato).</p>
 <p>Le URI delle osservazioni seguono un <strong>pattern leggibile</strong> <code>idpt:obs-{cubo-short}-{provincia-istat o sede-short}-{anno}-{dimensioni-residue}</code>. Esempi: <code>idpt:obs-vigenti-001-2026-privati</code> (Torino, gestione privati nel cubo 1), <code>idpt:obs-regime-sas-2026-priv-retr-num</code> (sede Sassari, privati, retributivo, misura <code>numeroPensioni</code> nel cubo 2), <code>idpt:obs-idpt-001-2026-press-dem</code> (Torino, pressione demografica nel cubo 8). Il pattern dà URI leggibili nelle query SPARQL e nei debug — anti-pattern hash UUID che sarebbero cortissimi ma illeggibili per chi scrive SPARQL a mano.</p>
 <p>Frammento Turtle dello schema del cubo 1 — l'esempio più leggibile, da cui derivano tutti gli altri con piccole variazioni:</p>
-<pre><code class="language-turtle">@prefix idpt: &lt;https://example.org/idpt/&gt; .
+<pre><code class="language-turtle">@prefix idpt: &lt;https://robertobrunocl.github.io/idpt-italia/&gt; .
 @prefix qb:   &lt;http://purl.org/linked-data/cube#&gt; .
 @prefix sdmx-concept:   &lt;http://purl.org/linked-data/sdmx/2009/concept#&gt; .
 @prefix sdmx-attribute: &lt;http://purl.org/linked-data/sdmx/2009/attribute#&gt; .
@@ -1463,7 +1463,7 @@ idpt:sede-inps-torino a idpt:SedeINPS ;
 <pre><code class="language-sparql">PREFIX qb:   &lt;http://purl.org/linked-data/cube#&gt;
 PREFIX skos: &lt;http://www.w3.org/2004/02/skos/core#&gt;
 PREFIX clv:  &lt;https://w3id.org/italia/onto/CLV/&gt;
-PREFIX idpt: &lt;https://example.org/idpt/&gt;
+PREFIX idpt: &lt;https://robertobrunocl.github.io/idpt-italia/&gt;
 
 SELECT ?codice_istat ?sigla ?provincia ?idpt
 WHERE {
@@ -1488,7 +1488,7 @@ LIMIT 10
 <p>La query interroga il cubo 3 (serie storica per sede INPS) per restituire l'andamento del numero di pensioni dal 1998 al 2026 sulle 5 sedi INPS più grandi (Milano, Roma, Torino, Napoli, Brescia), dichiarate inline tramite <code>VALUES</code>. Il cubo 3 è modellato in stile B qb con <code>qb:measureType</code> come dimensione, quindi il filtro <code>qb:measureType idpt:numeroPensioni ; idpt:numeroPensioni ?n_pensioni</code> seleziona le sole osservazioni della misura numerica.</p>
 <pre><code class="language-sparql">PREFIX qb:   &lt;http://purl.org/linked-data/cube#&gt;
 PREFIX skos: &lt;http://www.w3.org/2004/02/skos/core#&gt;
-PREFIX idpt: &lt;https://example.org/idpt/&gt;
+PREFIX idpt: &lt;https://robertobrunocl.github.io/idpt-italia/&gt;
 
 SELECT ?sede ?anno ?n_pensioni
 WHERE {
@@ -1565,7 +1565,7 @@ ORDER BY DESC(?quota_retr)
 <p>La query usa l'operatore SPARQL <code>prov:wasDerivedFrom+</code> (property path con quantificatore "uno o più passi") per ricostruire, a partire da una singola osservazione del cubo 9 (Torino, regime retributivo, Plan B GDP 2026), tutte le entità del grafo da cui è stata derivata, navigando ricorsivamente la catena di provenance senza saperne in anticipo la profondità.</p>
 <pre><code class="language-sparql">PREFIX qb:   &lt;http://purl.org/linked-data/cube#&gt;
 PREFIX prov: &lt;http://www.w3.org/ns/prov#&gt;
-PREFIX idpt: &lt;https://example.org/idpt/&gt;
+PREFIX idpt: &lt;https://robertobrunocl.github.io/idpt-italia/&gt;
 
 SELECT DISTINCT ?origine
 WHERE {

@@ -364,7 +364,7 @@ Su un grafo di ~117.000 triple, abbiamo definito *una sola* classe propria — `
 La motivazione della classe propria è semantica, non comoda. Come dichiarato nella sez. 2.1, l'asimmetria fra "provincia di residenza" (asse del cubo 1, 107 entità) e "provincia della sede INPS" (asse dei cubi 2 e 3, 106 sedi) è una realtà del dominio INPS che il grafo deve rappresentare onestamente. Le due opzioni alternative sarebbero state semanticamente disoneste: (a) "appiattire" le sedi sulla residenza richiederebbe duplicare alcune osservazioni e introdurrebbe doppi conteggi nelle query di aggregazione; (b) modellare le sedi come `clv:Province` confonderebbe due assi che il dato sorgente tiene distinti. Una classe propria preserva la distinzione senza intaccare la centralità dell'ancora AGID.
 
 ```turtle
-@prefix idpt: <https://example.org/idpt/> .
+@prefix idpt: <https://robertobrunocl.github.io/idpt-italia/> .
 @prefix clv:  <https://w3id.org/italia/onto/CLV/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix owl:  <http://www.w3.org/2002/07/owl#> .
@@ -449,7 +449,7 @@ Le URI delle osservazioni seguono un **pattern leggibile** `idpt:obs-{cubo-short
 Frammento Turtle dello schema del cubo 1 — l'esempio più leggibile, da cui derivano tutti gli altri con piccole variazioni:
 
 ```turtle
-@prefix idpt: <https://example.org/idpt/> .
+@prefix idpt: <https://robertobrunocl.github.io/idpt-italia/> .
 @prefix qb:   <http://purl.org/linked-data/cube#> .
 @prefix sdmx-concept:   <http://purl.org/linked-data/sdmx/2009/concept#> .
 @prefix sdmx-attribute: <http://purl.org/linked-data/sdmx/2009/attribute#> .
@@ -662,7 +662,7 @@ La query interroga il cubo 8 (IDPT computed) per restituire le 10 province con v
 PREFIX qb:   <http://purl.org/linked-data/cube#>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX clv:  <https://w3id.org/italia/onto/CLV/>
-PREFIX idpt: <https://example.org/idpt/>
+PREFIX idpt: <https://robertobrunocl.github.io/idpt-italia/>
 
 SELECT ?codice_istat ?sigla ?provincia ?idpt
 WHERE {
@@ -688,7 +688,7 @@ La query interroga il cubo 3 (serie storica per sede INPS) per restituire l'anda
 ```sparql
 PREFIX qb:   <http://purl.org/linked-data/cube#>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-PREFIX idpt: <https://example.org/idpt/>
+PREFIX idpt: <https://robertobrunocl.github.io/idpt-italia/>
 
 SELECT ?sede ?anno ?n_pensioni
 WHERE {
@@ -768,7 +768,7 @@ La query usa l'operatore SPARQL `prov:wasDerivedFrom+` (property path con quanti
 ```sparql
 PREFIX qb:   <http://purl.org/linked-data/cube#>
 PREFIX prov: <http://www.w3.org/ns/prov#>
-PREFIX idpt: <https://example.org/idpt/>
+PREFIX idpt: <https://robertobrunocl.github.io/idpt-italia/>
 
 SELECT DISTINCT ?origine
 WHERE {
