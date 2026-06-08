@@ -56,18 +56,21 @@ idpt:aggregatesProvince a owl:ObjectProperty ;
 # -----------------------------------------------------------------------------
 
 idpt:provincia a rdf:Property , qb:DimensionProperty ;
+    rdfs:domain qb:Observation ;
     rdfs:label "provincia"@it ;
     rdfs:comment "Dimensione territoriale: provincia amministrativa italiana, identificata via URI canonica AGID."@it ;
     rdfs:range clv:Province ;
     qb:concept sdmx-concept:refArea .
 
 idpt:sedeINPS a rdf:Property , qb:DimensionProperty ;
+    rdfs:domain qb:Observation ;
     rdfs:label "sede INPS"@it ;
     rdfs:comment "Dimensione territoriale: sede INPS (asse distinto dalla provincia AGID, usato dai cubi 2 e 3)."@it ;
     rdfs:range idpt:SedeINPS ;
     qb:concept sdmx-concept:refArea .
 
 idpt:areaGeografica a rdf:Property , qb:DimensionProperty ;
+    rdfs:domain qb:Observation ;
     rdfs:label "area geografica"@it ;
     rdfs:comment "Dimensione territoriale per cubi nazionali o aggregati continentali (cubo 4 = Italia nazionale)."@it ;
     rdfs:range skos:Concept ;
@@ -79,12 +82,14 @@ idpt:areaGeografica a rdf:Property , qb:DimensionProperty ;
 # -----------------------------------------------------------------------------
 
 idpt:annoRiferimento a rdf:Property , qb:DimensionProperty ;
+    rdfs:domain qb:Observation ;
     rdfs:label "anno di riferimento"@it ;
     rdfs:comment "Dimensione temporale: anno di snapshot dei dati (stato al 1.1.AAAA)."@it ;
     rdfs:range xsd:gYear ;
     qb:concept sdmx-concept:refPeriod .
 
 idpt:annoDecorrenza a rdf:Property , qb:DimensionProperty ;
+    rdfs:domain qb:Observation ;
     rdfs:label "anno di decorrenza"@it ;
     rdfs:comment "Dimensione temporale: anno in cui la pensione è entrata in pagamento (coorte di decorrenza). Distinta da annoRiferimento (snapshot vs cohort), pattern coerente con SDMX REF_PERIOD vs COHORT_PERIOD."@it ;
     rdfs:range xsd:gYear ;
@@ -95,30 +100,35 @@ idpt:annoDecorrenza a rdf:Property , qb:DimensionProperty ;
 # -----------------------------------------------------------------------------
 
 idpt:tipoGestione a rdf:Property , qb:DimensionProperty ;
+    rdfs:domain qb:Observation ;
     rdfs:label "tipo di gestione INPS"@it ;
     rdfs:comment "Dimensione: comparto di gestione previdenziale INPS."@it ;
     rdfs:range skos:Concept ;
     qb:codeList idpt:tipi-gestione-inps .
 
 idpt:regimeLiquidazione a rdf:Property , qb:DimensionProperty ;
+    rdfs:domain qb:Observation ;
     rdfs:label "regime di liquidazione"@it ;
     rdfs:comment "Dimensione: sistema di calcolo della pensione (retributivo/misto-dini/misto-fornero/contributivo-puro)."@it ;
     rdfs:range skos:Concept ;
     qb:codeList idpt:regimi-liquidazione .
 
 idpt:indicatoreDemografico a rdf:Property , qb:DimensionProperty ;
+    rdfs:domain qb:Observation ;
     rdfs:label "indicatore demografico"@it ;
     rdfs:comment "Dimensione: indicatore demografico ISTAT (POP014, AGEINDEX, BIRTHRATE, ...)."@it ;
     rdfs:range skos:Concept ;
     qb:codeList idpt:indicatori-demografici .
 
 idpt:voceReddito a rdf:Property , qb:DimensionProperty ;
+    rdfs:domain qb:Observation ;
     rdfs:label "voce di reddito MEF"@it ;
     rdfs:comment "Dimensione: componente del monte redditi da lavoro (v2/v4/v5/v6/v7) dalle dichiarazioni IRPEF MEF."@it ;
     rdfs:range skos:Concept ;
     qb:codeList idpt:voci-reddito-mef .
 
 idpt:componenteIDPT a rdf:Property , qb:DimensionProperty ;
+    rdfs:domain qb:Observation ;
     rdfs:label "componente IDPT"@it ;
     rdfs:comment "Dimensione: componente dell'Indice di Dipendenza Previdenziale Territoriale (3 elementari + 1 aggregato)."@it ;
     rdfs:range skos:Concept ;
@@ -129,54 +139,63 @@ idpt:componenteIDPT a rdf:Property , qb:DimensionProperty ;
 # -----------------------------------------------------------------------------
 
 idpt:numeroPensioni a rdf:Property , qb:MeasureProperty ;
+    rdfs:domain qb:Observation ;
     rdfs:label "numero di pensioni"@it ;
     rdfs:comment "Conteggio pensioni vigenti nell'unità territoriale e temporale."@it ;
     rdfs:range xsd:nonNegativeInteger ;
     qb:concept sdmx-concept:obsValue .
 
 idpt:importoMedioMensile a rdf:Property , qb:MeasureProperty ;
+    rdfs:domain qb:Observation ;
     rdfs:label "importo medio mensile"@it ;
     rdfs:comment "Importo medio mensile della pensione, in euro."@it ;
     rdfs:range xsd:decimal ;
     qb:concept sdmx-concept:obsValue .
 
 idpt:importoAnnuoComplessivo a rdf:Property , qb:MeasureProperty ;
+    rdfs:domain qb:Observation ;
     rdfs:label "importo complessivo annuo"@it ;
     rdfs:comment "Importo annuo complessivo, in milioni di euro. Quando ricostruito come numero × media × 13 va dichiarato come obsStatus=E + prov:wasDerivedFrom."@it ;
     rdfs:range xsd:decimal ;
     qb:concept sdmx-concept:obsValue .
 
 idpt:etaMediaDecorrenza a rdf:Property , qb:MeasureProperty ;
+    rdfs:domain qb:Observation ;
     rdfs:label "età media alla decorrenza"@it ;
     rdfs:comment "Età media (anni) dei pensionati all'atto della decorrenza della pensione."@it ;
     rdfs:range xsd:decimal ;
     qb:concept sdmx-concept:obsValue .
 
 idpt:numeroOccupati a rdf:Property , qb:MeasureProperty ;
+    rdfs:domain qb:Observation ;
     rdfs:label "numero di occupati"@it ;
     rdfs:comment "Occupati medi annui (15-89 anni), espressi in migliaia di persone (fonte ISTAT RFL)."@it ;
     rdfs:range xsd:decimal ;
     qb:concept sdmx-concept:obsValue .
 
 idpt:valoreIndicatore a rdf:Property , qb:MeasureProperty ;
+    rdfs:domain qb:Observation ;
     rdfs:label "valore indicatore"@it ;
     rdfs:comment "Valore dell'indicatore demografico ISTAT. L'unità di misura (%, per mille, anni) varia per indicatore ed è dichiarata via sdmx-attribute:unitMeasure a livello di osservazione."@it ;
     rdfs:range xsd:decimal ;
     qb:concept sdmx-concept:obsValue .
 
 idpt:frequenzaDichiaranti a rdf:Property , qb:MeasureProperty ;
+    rdfs:domain qb:Observation ;
     rdfs:label "frequenza dichiaranti"@it ;
     rdfs:comment "Numero di dichiaranti IRPEF per voce di reddito."@it ;
     rdfs:range xsd:nonNegativeInteger ;
     qb:concept sdmx-concept:obsValue .
 
 idpt:ammontareTotale a rdf:Property , qb:MeasureProperty ;
+    rdfs:domain qb:Observation ;
     rdfs:label "ammontare totale"@it ;
     rdfs:comment "Ammontare totale in euro per la voce di reddito, aggregato a livello provinciale."@it ;
     rdfs:range xsd:decimal ;
     qb:concept sdmx-concept:obsValue .
 
 idpt:valoreIDPT a rdf:Property , qb:MeasureProperty ;
+    rdfs:domain qb:Observation ;
     rdfs:label "valore IDPT"@it ;
     rdfs:comment "Valore normalizzato in [0,1] della componente IDPT (o dell'aggregato finale)."@it ;
     rdfs:range xsd:decimal ;
