@@ -50,6 +50,36 @@
     .map-frame { width: 100%; height: 500px; border: 1px solid #ddd;
                  border-radius: 6px; }
 
+    /* CTA fluttuante "Vai al report" sempre visibile in alto */
+    .report-cta {
+      position: fixed;
+      top: 18px;
+      right: 24px;
+      z-index: 9999;
+      display: inline-block;
+      padding: 10px 18px;
+      background: white;
+      color: #4a5d8a;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      border-radius: 24px;
+      border: 1.5px solid #4a5d8a;
+      box-shadow: 0 3px 12px rgba(0,0,0,.15);
+      transition: background .12s, color .12s;
+    }
+    .report-cta:hover {
+      background: #4a5d8a;
+      color: white;
+    }
+    @media (max-width: 700px) {
+      .report-cta {
+        top: 12px; right: 12px;
+        padding: 8px 14px;
+        font-size: 13px;
+      }
+    }
+
     /* ===== Query tabs ===== */
     .query-tabs {
       display: flex; flex-wrap: wrap; gap: 6px;
@@ -137,6 +167,10 @@
 </head>
 <body>
 
+<a href="report.html" class="report-cta" title="Leggi il report completo del progetto">
+  Vai al report →
+</a>
+
 <header>
   <h1>Atlante della dipendenza previdenziale italiana</h1>
   <p class="lead">Indice di Dipendenza Previdenziale Territoriale (IDPT) per le
@@ -144,6 +178,37 @@
 </header>
 
 <main>
+
+  <section>
+    <h2>Che cos'è l'IDPT</h2>
+    <p>L'<b>Indice di Dipendenza Previdenziale Territoriale (IDPT)</b> è un
+    indice composito che misura, per ciascuna delle 107 province italiane,
+    quanto il territorio è "dipendente" dal sistema pensionistico. È
+    calcolato come <b>media aritmetica di tre componenti normalizzate</b>
+    in [0,1]:</p>
+    <ul>
+      <li><b>D1 — Pressione demografica previdenziale</b>: rapporto fra numero
+        di pensioni vigenti e numero di occupati della provincia. Misura
+        quanto la base produttiva di un territorio "sostiene" la sua base
+        assistita.</li>
+      <li><b>D2 — Peso economico delle pensioni</b>: rapporto fra monte
+        annuo delle pensioni e monte annuo dei redditi da lavoro dichiarati.
+        Misura quanto pesa la spesa pensionistica sul reddito complessivo
+        del territorio.</li>
+      <li><b>D3 — Eredità storica delle riforme</b>: quota di pensioni
+        ancora liquidate in regime retributivo pre-Riforma Dini 1995 sul
+        totale delle vigenti. Misura il "peso del passato" delle
+        stratificazioni normative.</li>
+    </ul>
+    <p>Il risultato sostantivo è un <b>divario Nord/Sud netto di circa
+    20× fra gli estremi</b> della classifica: Reggio di Calabria 0,675 in
+    cima, Bolzano 0,034 in fondo. Il fine del progetto, oltre alla domanda
+    di ricerca, è la <b>pratica del Linked Open Data 5★</b>: portare nove
+    dataset pubblici italiani (CSV INPS, ISTAT, MEF + vocabolari controllati
+    AGID) a un grafo RDF interoperabile con riuso massimo di vocabolari
+    standard. Per il dettaglio metodologico completo, consulta il
+    <a href="report.html"><b>report interattivo</b></a>.</p>
+  </section>
 
   <section>
     <h2>Il grafo in numeri</h2>
