@@ -1,20 +1,33 @@
-# MacroRefine
+# macrorefine
 
-> A simple, modular and extensible data cleaning pipeline library for Python.
+Libreria Python di data cleaning a pipeline, sviluppata come parte del
+progetto **Atlante della dipendenza previdenziale italiana — IDPT** (vedi
+`../README.md` per il contesto). Il nome richiama l'idea di "fare refining
+in modo macroscopico", cioè per blocchi componibili e ripetibili invece
+che con script monolitici per ogni dataset.
 
-MacroRefine ti aiuta a costruire **pipeline di pulizia e trasformazione dati** in modo dichiarativo, riusabile e tracciabile. Identifica automaticamente le criticità più comuni nei dataset (nomi colonne sporchi, valori mancanti, duplicati, ecc.) e ti permette di applicare step di pulizia componibili — inclusi step **custom** scritti da te per i tuoi casi specifici.
+## Contesto e scopo
 
----
+La libreria è stata scritta per supportare la pipeline di elaborazione del
+progetto IDPT, dove nove dataset CSV eterogenei (INPS, ISTAT, MEF) andavano
+puliti, normalizzati, aggregati e arricchiti con riferimenti a vocabolari
+controllati AGID prima di essere materializzati come grafo RDF. Il dominio
+di applicazione naturale è quindi quello del **data cleaning verso Linked
+Open Data**, con un'estensione (`macrorefine.steps.lod`) che contiene
+13 step custom specifici per il progetto IDPT (parsing numeri italiani,
+linking province → URI AGID via SPARQL, aggregazioni territoriali, ecc.).
 
-## ✨ Caratteristiche principali
+La libreria *non* è un prodotto a sé stante: è uno strumento di lavoro che
+risolve i pattern di pulizia ricorrenti incontrati nel progetto, con
+particolare attenzione a tre requisiti che il dominio LOD richiede:
 
-- 🧱 **Dataset immutabile**: ogni trasformazione produce un nuovo `Dataset`, mai effetti collaterali
-- 📜 **History automatica**: ogni step applicato viene registrato con parametri e metriche
-- 🔍 **Profiling integrato**: rileva problemi comuni con un comando
-- 🔗 **Pipeline fluente**: API chainable, leggibile e componibile
-- 🛠️ **Estensibilità**: crea facilmente `PipelineStep` custom per i tuoi casi
-- 📦 **Recipe**: incapsula pipeline ricorrenti in classi riusabili
-- ⚠️ **Gestione errori interattiva**: in caso di errore puoi continuare, saltare o abortire
+- **Immutabilità del `Dataset`** e audit trail strutturato (`StepRecord`
+  con parametri e metriche), perché ogni trasformazione deve essere
+  ricostruibile a partire dal CSV grezzo.
+- **History serializzabile** in sidecar JSON, perché il lineage tabellare
+  diventa poi `prov:wasDerivedFrom` nel grafo RDF emesso.
+- **Recipe** come fabbriche di pipeline parametrizzate per un singolo CSV
+  sorgente, perché ogni cubo del grafo IDPT ha la sua Recipe dedicata.
 
 ---
 
@@ -293,17 +306,21 @@ macrorefine/
 
 ---
 
-## 🗺️ Roadmap
+## Stato e limiti
 
-- [ ] `ColumnStep` helper per step su singole colonne
-- [ ] Step aggiuntivi: `CastTypes`, `ParseDates`, `RenameColumns`, `RemoveOutliers`
-- [ ] `report.suggest_pipeline()` — pipeline auto-generata dal profiling
-- [ ] Backend astratto + supporto **DuckDB**
-- [ ] Logging strutturato configurabile
-- [ ] Documentazione con MkDocs
+La libreria copre i pattern di pulizia incontrati nel progetto IDPT ma non
+è un toolkit di data cleaning completo. In particolare:
 
----
+- Backend basato solo su `pandas`. Non c'è astrazione di backend né
+  supporto a DuckDB / Polars / Spark.
+- Il profiling è euristico (rileva i pattern più comuni) ma non sostituisce
+  strumenti dedicati come `ydata-profiling` o `pandera`.
+- L'estensione LOD-aware (`macrorefine.steps.lod`) è tagliata su misura per
+  i vocabolari controllati AGID e per i CSV INPS/ISTAT/MEF, e non è pensata
+  per essere generica.
+- La gestione errori interattiva ha senso in fase di sviluppo della Recipe;
+  per esecuzioni batch in produzione si usa `on_error="raise"`.
 
-## 📄 License
+## License
 
 MIT

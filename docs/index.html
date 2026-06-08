@@ -291,10 +291,24 @@
   </section>
 
   <section>
-    <h2>Scarica il grafo RDF</h2>
-    <p>I file Turtle del grafo sono direttamente nella cartella <code>output/</code>
-    del repository. La cartella <code>output/dist/</code> conterrà i bundle
-    aggregati TTL/JSON-LD/ZIP al deploy finale del progetto.</p>
+    <h2>Architettura del grafo</h2>
+    <p>Il grafo RDF (~117.000 triple) è organizzato in <b>6 grafi nominati Fuseki</b>
+    che separano semanticamente schema, dati primari, indicatori derivati, equivalenze
+    e metadati. Lo schema sotto mostra i 6 grafi e le principali relazioni
+    (<code>dcterms:hasPart</code>, <code>prov:wasDerivedFrom</code>, <code>qb:structure</code>).</p>
+    <div style="margin: 18px 0; padding: 16px; background: #fafbfd; border: 1px solid #e0e0e0;
+                border-radius: 6px; overflow: auto;">
+      <img src="graph_architecture.svg" alt="Architettura del grafo RDF — 6 grafi nominati Fuseki"
+           style="width: 100%; max-width: 1100px; height: auto; display: block; margin: 0 auto;"/>
+    </div>
+  </section>
+
+  <section>
+    <h2>Scarica il grafo RDF + esplora l'ontologia</h2>
+    <p>I file Turtle sono direttamente nella cartella <code>output/</code> del repository.
+    L'ontologia formale del progetto è apribile in <b>Protégé</b> (file aggregato
+    <code>ontology.ttl</code>) oppure visualizzabile interattivamente come grafo navigabile
+    con il visualizzatore standard <b>WebVOWL</b>.</p>
     <div class="links">
       <a class="btn" href="../output/computed/cubo8_idpt_computed.ttl" download>
         Scarica IDPT computed (TTL)</a>
@@ -302,6 +316,10 @@
         Scarica DCAT-AP_IT (TTL)</a>
       <a class="btn secondary" href="../output/vocabularies/ontology.ttl" download>
         Ontologia per Protégé (TTL)</a>
+      <a class="btn secondary"
+         href="https://service.tib.eu/webvowl/#iri=https://robertobrunocl.github.io/idpt-italia/output/vocabularies/ontology.ttl"
+         target="_blank" rel="noopener">
+        Visualizza l'ontologia su WebVOWL ↗</a>
     </div>
   </section>
 

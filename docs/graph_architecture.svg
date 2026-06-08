@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 720" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">
+  <defs>
+    <!-- Marker per le frecce -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#666"/>
+    </marker>
+    <marker id="arrow-strong" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4a5d8a"/>
+    </marker>
+    <marker id="arrow-prov" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#b03060"/>
+    </marker>
+
+    <!-- Stili coerenti col sito -->
+    <style>
+      .box-title { font-size: 14px; font-weight: 700; fill: #4a5d8a; }
+      .box-subtitle { font-size: 11px; fill: #666; font-style: italic; }
+      .box-content { font-size: 12px; fill: #222; }
+      .box-meta { font-size: 11px; fill: #444; }
+      .arrow-label { font-size: 11px; fill: #555; font-family: 'SF Mono', Monaco, monospace; }
+      .arrow-label-strong { font-size: 11px; fill: #4a5d8a; font-weight: 600; font-family: 'SF Mono', Monaco, monospace; }
+      .arrow-label-prov { font-size: 11px; fill: #b03060; font-weight: 600; font-family: 'SF Mono', Monaco, monospace; }
+      .legend-label { font-size: 11px; fill: #555; }
+      .header-title { font-size: 18px; font-weight: 700; fill: #4a5d8a; }
+      .header-subtitle { font-size: 12px; fill: #666; }
+    </style>
+  </defs>
+
+  <!-- Titolo -->
+  <text x="550" y="32" text-anchor="middle" class="header-title">Architettura del grafo RDF — 6 grafi nominati Fuseki</text>
+  <text x="550" y="50" text-anchor="middle" class="header-subtitle">~117.000 triple totali distribuite in 13 file TTL + 2 vocabolari AGID</text>
+
+  <!-- graph:metadata (DCAT) - in alto al centro -->
+  <g>
+    <rect x="420" y="80" width="260" height="76" rx="8" fill="#fff5e6" stroke="#d68a30" stroke-width="2"/>
+    <text x="550" y="102" text-anchor="middle" class="box-title">graph:metadata</text>
+    <text x="550" y="118" text-anchor="middle" class="box-subtitle">dcatapit:Dataset (DCAT-AP_IT)</text>
+    <text x="550" y="138" text-anchor="middle" class="box-content">atlante_idpt_dataset.ttl</text>
+    <text x="550" y="152" text-anchor="middle" class="box-meta">~120 triple — 3 distribuzioni — 11 keyword</text>
+  </g>
+
+  <!-- graph:idpt-computed (sotto-sinistra del centro) -->
+  <g>
+    <rect x="120" y="240" width="280" height="120" rx="8" fill="#fde8e8" stroke="#c0392b" stroke-width="2"/>
+    <text x="260" y="262" text-anchor="middle" class="box-title">graph:idpt-computed</text>
+    <text x="260" y="278" text-anchor="middle" class="box-subtitle">L'IDPT materializzato (cubo 8)</text>
+    <text x="260" y="300" text-anchor="middle" class="box-content">cubo8_idpt_computed.ttl</text>
+    <text x="260" y="316" text-anchor="middle" class="box-meta">428 qb:Observation</text>
+    <text x="260" y="332" text-anchor="middle" class="box-meta">107 province × 4 concetti</text>
+    <text x="260" y="348" text-anchor="middle" class="box-meta">tutte obsStatus=E</text>
+  </g>
+
+  <!-- graph:observations (sotto-destra del centro) -->
+  <g>
+    <rect x="700" y="240" width="280" height="120" rx="8" fill="#e8f4f8" stroke="#3498db" stroke-width="2"/>
+    <text x="840" y="262" text-anchor="middle" class="box-title">graph:observations</text>
+    <text x="840" y="278" text-anchor="middle" class="box-subtitle">Cubi statistici primari + Plan B</text>
+    <text x="840" y="300" text-anchor="middle" class="box-content">cubo[1-7,9]_*.ttl (8 file)</text>
+    <text x="840" y="316" text-anchor="middle" class="box-meta">12.884 qb:Observation totali</text>
+    <text x="840" y="332" text-anchor="middle" class="box-meta">~100.000 triple</text>
+    <text x="840" y="348" text-anchor="middle" class="box-meta">stile A (multi-measure) + stile B</text>
+  </g>
+
+  <!-- graph:vocabularies (in basso-sinistra) -->
+  <g>
+    <rect x="120" y="450" width="280" height="120" rx="8" fill="#e8f3e8" stroke="#27ae60" stroke-width="2"/>
+    <text x="260" y="472" text-anchor="middle" class="box-title">graph:vocabularies</text>
+    <text x="260" y="488" text-anchor="middle" class="box-subtitle">Lo schema dell'ontologia</text>
+    <text x="260" y="510" text-anchor="middle" class="box-content">classes_and_properties.ttl + code_lists.ttl</text>
+    <text x="260" y="526" text-anchor="middle" class="box-meta">1 owl:Class (idpt:SedeINPS)</text>
+    <text x="260" y="542" text-anchor="middle" class="box-meta">9 qb:DSD + 6 skos:ConceptScheme</text>
+    <text x="260" y="558" text-anchor="middle" class="box-meta">534 triple</text>
+  </g>
+
+  <!-- graph:linking (in basso-centro-destra) -->
+  <g>
+    <rect x="420" y="450" width="280" height="120" rx="8" fill="#f0e8f8" stroke="#8e44ad" stroke-width="2"/>
+    <text x="560" y="472" text-anchor="middle" class="box-title">graph:linking</text>
+    <text x="560" y="488" text-anchor="middle" class="box-subtitle">Le equivalenze semantiche</text>
+    <text x="560" y="510" text-anchor="middle" class="box-content">nuts_aliases + inps_to_agid + agid_to_dbpedia</text>
+    <text x="560" y="526" text-anchor="middle" class="box-meta">107 owl:sameAs verso DBpedia</text>
+    <text x="560" y="542" text-anchor="middle" class="box-meta">106 idpt:SedeINPS istanze</text>
+    <text x="560" y="558" text-anchor="middle" class="box-meta">~553 triple</text>
+  </g>
+
+  <!-- graph:agid (in basso-destra) -->
+  <g>
+    <rect x="720" y="450" width="260" height="120" rx="8" fill="#f5f5f5" stroke="#7f8c8d" stroke-width="2" stroke-dasharray="6,3"/>
+    <text x="850" y="472" text-anchor="middle" class="box-title">graph:agid</text>
+    <text x="850" y="488" text-anchor="middle" class="box-subtitle">Read-only (vocabolari esterni)</text>
+    <text x="850" y="510" text-anchor="middle" class="box-content">data/provinces.ttl + regions.ttl</text>
+    <text x="850" y="526" text-anchor="middle" class="box-meta">107 clv:Province + 20 clv:Region</text>
+    <text x="850" y="542" text-anchor="middle" class="box-meta">116 owl:sameAs nativi verso NUTS</text>
+    <text x="850" y="558" text-anchor="middle" class="box-meta">~3.190 triple AGID OntoPiA</text>
+  </g>
+
+  <!-- ========== FRECCE ========== -->
+
+  <!-- metadata → idpt-computed (dcterms:hasPart) -->
+  <path d="M 480 156 Q 380 200 320 240" fill="none" stroke="#4a5d8a" stroke-width="2" marker-end="url(#arrow-strong)"/>
+  <text x="340" y="200" class="arrow-label-strong">dcterms:hasPart</text>
+
+  <!-- metadata → observations (dcterms:hasPart) -->
+  <path d="M 620 156 Q 720 200 780 240" fill="none" stroke="#4a5d8a" stroke-width="2" marker-end="url(#arrow-strong)"/>
+  <text x="700" y="200" class="arrow-label-strong">dcterms:hasPart</text>
+
+  <!-- idpt-computed → observations (prov:wasDerivedFrom) -->
+  <path d="M 400 300 L 700 300" fill="none" stroke="#b03060" stroke-width="2" stroke-dasharray="5,4" marker-end="url(#arrow-prov)"/>
+  <text x="550" y="294" text-anchor="middle" class="arrow-label-prov">prov:wasDerivedFrom+</text>
+
+  <!-- observations → vocabularies (qb:structure) -->
+  <path d="M 780 360 Q 600 410 380 450" fill="none" stroke="#666" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="540" y="408" text-anchor="middle" class="arrow-label">qb:structure / qb:codeList</text>
+
+  <!-- idpt-computed → vocabularies (qb:structure) -->
+  <path d="M 260 360 L 260 450" fill="none" stroke="#666" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="265" y="410" class="arrow-label">qb:structure</text>
+
+  <!-- observations → linking (idpt:sedeINPS via correspondsToProvinceAGID) -->
+  <path d="M 770 360 Q 680 410 620 450" fill="none" stroke="#666" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="640" y="420" class="arrow-label">idpt:sedeINPS</text>
+
+  <!-- linking → agid (skos:altLabel + owl:sameAs su URI AGID) -->
+  <path d="M 700 510 L 720 510" fill="none" stroke="#666" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="710" y="500" text-anchor="middle" class="arrow-label">arricchisce</text>
+
+  <!-- observations → agid (idpt:provincia → clv:Province via URI AGID) -->
+  <path d="M 920 360 Q 940 405 920 450" fill="none" stroke="#666" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="970" y="410" text-anchor="middle" class="arrow-label">idpt:provincia</text>
+
+  <!-- vocabularies → agid (riusa clv:Feature come subClassOf di idpt:SedeINPS) -->
+  <path d="M 400 510 L 420 510" fill="none" stroke="#666" stroke-width="1.5" stroke-dasharray="3,3"/>
+  <path d="M 400 540 Q 600 605 720 545" fill="none" stroke="#666" stroke-width="1.5" stroke-dasharray="3,3" marker-end="url(#arrow)"/>
+  <text x="560" y="610" text-anchor="middle" class="arrow-label">rdfs:subClassOf clv:Feature</text>
+
+  <!-- ========== LEGENDA ========== -->
+  <g transform="translate(60, 640)">
+    <text x="0" y="0" font-size="12" font-weight="700" fill="#333">Tipi di relazione:</text>
+
+    <line x1="120" y1="-4" x2="155" y2="-4" stroke="#4a5d8a" stroke-width="2"/>
+    <text x="160" y="0" class="legend-label">contenuto DCAT (dcterms:hasPart)</text>
+
+    <line x1="370" y1="-4" x2="405" y2="-4" stroke="#b03060" stroke-width="2" stroke-dasharray="5,4"/>
+    <text x="410" y="0" class="legend-label">lineage (prov:wasDerivedFrom+)</text>
+
+    <line x1="620" y1="-4" x2="655" y2="-4" stroke="#666" stroke-width="1.5"/>
+    <text x="660" y="0" class="legend-label">riferimento qb / clv / skos</text>
+
+    <line x1="850" y1="-4" x2="885" y2="-4" stroke="#666" stroke-width="1.5" stroke-dasharray="3,3"/>
+    <text x="890" y="0" class="legend-label">subClassOf / riuso</text>
+  </g>
+  <g transform="translate(60, 670)">
+    <text x="0" y="0" font-size="11" fill="#888">
+      Lo script <tspan font-family="'SF Mono', Monaco, monospace" font-weight="600">scripts/load_fuseki.sh</tspan> carica i file con HTTP PUT idempotenti sui 6 grafi nominati.
+      Le query SPARQL interrogano l'unione (<tspan font-family="'SF Mono', Monaco, monospace">tdb:unionDefaultGraph=true</tspan>) oppure un grafo specifico via <tspan font-family="'SF Mono', Monaco, monospace">FROM &lt;graph:nome&gt;</tspan>.
+    </text>
+  </g>
+</svg>
