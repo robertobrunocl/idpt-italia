@@ -1,0 +1,22 @@
+# Q01 — Top 10 province per IDPT aggregato (la query "headline" della demo).
+#
+# Cosa mostra: Le 10 province italiane più dipendenti dal sistema pensionistico secondo l'IDPT aggregato del 2026.
+
+PREFIX qb:    <http://purl.org/linked-data/cube#>
+PREFIX skos:  <http://www.w3.org/2004/02/skos/core#>
+PREFIX clv:   <https://w3id.org/italia/onto/CLV/>
+PREFIX idpt:  <https://robertobrunocl.github.io/idpt-italia/>
+
+SELECT ?codice_istat ?sigla ?provincia ?idpt
+WHERE {
+  ?obs qb:dataSet idpt:cubo-idpt-computed ;
+       idpt:componenteIDPT idpt:idpt-aggregato ;
+       idpt:provincia ?p ;
+       idpt:valoreIDPT ?idpt .
+  ?p skos:notation   ?codice_istat ;
+     clv:acronym     ?sigla ;
+     skos:prefLabel  ?provincia .
+  FILTER(LANG(?provincia) = "it")
+}
+ORDER BY DESC(?idpt)
+LIMIT 10

@@ -1,0 +1,34 @@
+# Q05 — Crescita del numero di pensioni nelle 5 sedi INPS più popolose,
+# dal 1998 al 2026 (28 anni).
+#
+# Cosa mostra: Variazione percentuale del numero di pensioni fra il 1998 e il 2026 nelle cinque sedi INPS più popolose d'Italia.
+
+PREFIX qb:    <http://purl.org/linked-data/cube#>
+PREFIX skos:  <http://www.w3.org/2004/02/skos/core#>
+PREFIX idpt:  <https://robertobrunocl.github.io/idpt-italia/>
+PREFIX xsd:   <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?sede ?n_1998 ?n_2026
+       (xsd:decimal(?n_2026 - ?n_1998) / ?n_1998 * 100 AS ?crescita_pct)
+WHERE {
+  VALUES ?sede_uri {
+    idpt:sede-inps-torino
+    idpt:sede-inps-milano
+    idpt:sede-inps-roma
+    idpt:sede-inps-napoli
+    idpt:sede-inps-brescia
+  }
+  ?obs98 qb:dataSet idpt:cubo-pensioni-serie-storica-sede ;
+         idpt:sedeINPS ?sede_uri ;
+         idpt:annoRiferimento "1998"^^xsd:gYear ;
+         qb:measureType idpt:numeroPensioni ;
+         idpt:numeroPensioni ?n_1998 .
+  ?obs26 qb:dataSet idpt:cubo-pensioni-serie-storica-sede ;
+         idpt:sedeINPS ?sede_uri ;
+         idpt:annoRiferimento "2026"^^xsd:gYear ;
+         qb:measureType idpt:numeroPensioni ;
+         idpt:numeroPensioni ?n_2026 .
+  ?sede_uri skos:prefLabel ?sede .
+  FILTER(LANG(?sede) = "it")
+}
+ORDER BY DESC(?crescita_pct)

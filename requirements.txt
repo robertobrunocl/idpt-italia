@@ -1,0 +1,17 @@
+# Dipendenze del progetto idpt-italia.
+# macrorefine è installato in editable mode da ./macrorefine (vedi scripts/setup.sh).
+#
+# Versioni minime, non pinnate strettamente: il progetto è didattico, non production.
+
+rdflib>=7.0          # Parsing TTL + SPARQL locale + serializzazione Turtle/JSON-LD
+pandas>=2.0          # Già richiesto da macrorefine, ribadito qui per chiarezza
+rapidfuzz>=3.0       # Fuzzy matching nomi province INPS (no compilazione C, puro Rust+Python)
+requests>=2.31       # HTTP client per query SPARQL remoto DBpedia
+SPARQLWrapper>=2.0   # Wrapper più comodo per endpoint SPARQL esterni
+
+# Visualizzazioni Fase 9 (mappe coropletiche IDPT)
+folium>=0.16          # Mappe interattive HTML standalone (Leaflet under the hood)
+branca>=0.7           # Helper colore/legenda per Folium
+
+# Dev / utility (opzionali ma utili durante l'implementazione)
+pytest>=8.0          # Unit test sugli step custom LOD-aware

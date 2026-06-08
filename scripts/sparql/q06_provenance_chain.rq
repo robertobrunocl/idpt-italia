@@ -1,0 +1,6 @@
+# DEPRECATED
+# Q06 — Catena di derivazione transitiva (prov:wasDerivedFrom+).
+# Query rimossa dal set di demo per scelta editoriale: il risultato è poco
+# espressivo (solo l'elenco delle origini). Il pattern di derivazione è
+# comunque documentato nella sez. 4.5 del REPORT.md e in q07 (aggregato
+# di tutte le obs estimate del grafo).

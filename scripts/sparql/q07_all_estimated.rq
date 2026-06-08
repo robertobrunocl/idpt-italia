@@ -1,0 +1,16 @@
+# Q07 — Totali delle obs stimate per cubo (obsStatus=E, pattern uniforme).
+#
+# Cosa mostra: Quante osservazioni stimate (con stato 'Estimated') ci sono in ogni cubo del grafo.
+
+PREFIX qb:             <http://purl.org/linked-data/cube#>
+PREFIX sdmx-attribute: <http://purl.org/linked-data/sdmx/2009/attribute#>
+PREFIX sdmx-code:      <http://purl.org/linked-data/sdmx/2009/code#>
+
+SELECT ?cubo (COUNT(?obs) AS ?obs_estimate)
+WHERE {
+  ?obs a qb:Observation ;
+       qb:dataSet ?cubo ;
+       sdmx-attribute:obsStatus sdmx-code:obsStatus-E .
+}
+GROUP BY ?cubo
+ORDER BY DESC(?obs_estimate)

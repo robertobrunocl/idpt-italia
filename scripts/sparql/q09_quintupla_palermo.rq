@@ -1,0 +1,41 @@
+# Q09 — Quintupla identità Palermo: AGID + NUTS + DBpedia + altLabel-INPS + Sede.
+#
+# Cosa mostra: I sette punti di identità semantica della provincia di Palermo nel Linked Open Data Cloud.
+
+PREFIX skos:  <http://www.w3.org/2004/02/skos/core#>
+PREFIX clv:   <https://w3id.org/italia/onto/CLV/>
+PREFIX owl:   <http://www.w3.org/2002/07/owl#>
+PREFIX idpt:  <https://robertobrunocl.github.io/idpt-italia/>
+PREFIX agidp: <https://w3id.org/italia/controlled-vocabulary/territorial-classifications/provinces/>
+
+SELECT ?relation ?value
+WHERE {
+  {
+    BIND("AGID URI canonica" AS ?relation)
+    BIND(STR(agidp:082) AS ?value)
+  } UNION {
+    BIND("AGID prefLabel @it" AS ?relation)
+    agidp:082 skos:prefLabel ?value . FILTER(LANG(?value) = "it")
+  } UNION {
+    BIND("Sigla AGID" AS ?relation)
+    agidp:082 clv:acronym ?value
+  } UNION {
+    BIND("NUTS via owl:sameAs" AS ?relation)
+    agidp:082 owl:sameAs ?nuts .
+    FILTER(STRSTARTS(STR(?nuts), "http://nuts.geovocab.org/"))
+    BIND(STR(?nuts) AS ?value)
+  } UNION {
+    BIND("DBpedia via owl:sameAs" AS ?relation)
+    agidp:082 owl:sameAs ?dbp .
+    FILTER(STRSTARTS(STR(?dbp), "http://dbpedia.org/"))
+    BIND(STR(?dbp) AS ?value)
+  } UNION {
+    BIND("skos:altLabel @it-x-inps (forma INPS originale)" AS ?relation)
+    agidp:082 skos:altLabel ?al . FILTER(LANG(?al) = "it-x-inps")
+    BIND(STR(?al) AS ?value)
+  } UNION {
+    BIND("Sede INPS (idpt:SedeINPS)" AS ?relation)
+    ?sede idpt:correspondsToProvinceAGID agidp:082 .
+    BIND(STR(?sede) AS ?value)
+  }
+}

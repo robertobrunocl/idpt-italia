@@ -1,0 +1,23 @@
+# Q11 — Evoluzione storica dell'età media alla decorrenza GDP, aggregata
+# per decennio, media pesata sul numero di pensioni.
+#
+# Cosa mostra: Età media alla decorrenza pensionistica della Gestione Dipendenti Pubblici, aggregata per decennio dal 1980 a oggi.
+
+PREFIX qb:    <http://purl.org/linked-data/cube#>
+PREFIX idpt:  <https://robertobrunocl.github.io/idpt-italia/>
+PREFIX xsd:   <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?decennio
+       (xsd:decimal(SUM(?eta * ?n)) / SUM(?n) AS ?eta_media_pesata)
+       (SUM(?n) AS ?n_pensioni_decennio)
+WHERE {
+  ?obs qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+       idpt:annoDecorrenza ?anno ;
+       idpt:etaMediaDecorrenza ?eta ;
+       idpt:numeroPensioni ?n .
+  BIND(xsd:integer(STR(?anno)) AS ?anno_int)
+  BIND((FLOOR(?anno_int / 10) * 10) AS ?decennio)
+  FILTER(?anno_int >= 1980)
+}
+GROUP BY ?decennio
+ORDER BY ?decennio

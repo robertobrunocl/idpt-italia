@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <title>IDPT 2026 — Confronto componenti</title>
+  <style>
+    body { margin: 0; font-family: sans-serif; background: #f5f5f5; }
+    h1 { text-align: center; padding: 15px; margin: 0; background: white;
+         border-bottom: 1px solid #ccc; font-size: 18px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; }
+    .panel { background: white; border: 1px solid #ccc; border-radius: 4px;
+              padding: 8px; display: flex; flex-direction: column; }
+    .panel h3 { margin: 4px 0 8px 4px; font-size: 14px; color: #333; }
+    .panel iframe { width: 100%; height: 480px; border: 0; }
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Atlante della dipendenza previdenziale italiana — 4 componenti IDPT 2026</h1>
+  <div class="grid">
+    <div class="panel">
+      <h3>D1 — Pressione demografica</h3>
+      <iframe src="_partial/idpt_press-dem.html"></iframe>
+    </div>
+    <div class="panel">
+      <h3>D2 — Peso economico delle pensioni</h3>
+      <iframe src="_partial/idpt_peso-eco.html"></iframe>
+    </div>
+    <div class="panel">
+      <h3>D3 — Eredità storica delle riforme</h3>
+      <iframe src="_partial/idpt_ered-st.html"></iframe>
+    </div>
+    <div class="panel">
+      <h3>IDPT aggregato</h3>
+      <iframe src="_partial/idpt_agg.html"></iframe>
+    </div>
+  </div>
+</body>
+</html>

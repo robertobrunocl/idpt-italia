@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Report — Atlante della dipendenza previdenziale italiana</title>
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --primary: #4a5d8a; --primary-light: #6e7fb8; --primary-bg: #f5f7fb;
+      --text: #222; --text-light: #555; --border: #e0e0e0;
+      --code-bg: #1e1e1e; --code-fg: #e0e0e0;
+      --code-keyword: #c586c0; --code-string: #ce9178;
+      --code-comment: #6a9955; --code-prefix: #4ec9b0;
+    }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+           Roboto, "Helvetica Neue", Arial, sans-serif;
+           line-height: 1.65; color: var(--text); background: #fafafa; }
+    .layout { display: grid; grid-template-columns: 280px 1fr;
+              max-width: 1400px; margin: 0 auto; }
+    nav.toc { position: sticky; top: 0; height: 100vh; overflow-y: auto;
+              padding: 24px 16px; background: white;
+              border-right: 1px solid var(--border); font-size: 13.5px; }
+    nav.toc .brand { font-weight: 700; font-size: 14px; color: var(--primary);
+                     margin-bottom: 4px; line-height: 1.3; }
+    nav.toc .subbrand { font-size: 11.5px; color: var(--text-light);
+                        margin-bottom: 20px; padding-bottom: 12px;
+                        border-bottom: 1px solid var(--border); }
+    nav.toc ul { list-style: none; padding-left: 0; margin: 0; }
+    nav.toc ul ul { padding-left: 14px; margin: 4px 0; }
+    nav.toc ul ul ul { padding-left: 12px; font-size: 12.5px; }
+    nav.toc li { margin: 3px 0; }
+    nav.toc a { color: var(--text-light); text-decoration: none; display: block;
+                padding: 3px 8px; border-radius: 4px;
+                border-left: 2px solid transparent;
+                transition: background .12s, color .12s, border-color .12s; }
+    nav.toc a:hover { color: var(--primary); background: var(--primary-bg); }
+    nav.toc a.active { color: var(--primary); border-left-color: var(--primary);
+                       background: var(--primary-bg); font-weight: 600; }
+    main { padding: 40px 50px 80px; max-width: 920px; background: white; }
+    main h1 { font-size: 30px; font-weight: 700; color: var(--primary);
+              margin: 0 0 8px; line-height: 1.25; }
+    main h1 + p { color: var(--text-light); margin-top: 0; font-size: 15px; }
+    main h2 { font-size: 24px; font-weight: 600; color: var(--primary);
+              margin: 50px 0 16px; padding-bottom: 8px;
+              border-bottom: 2px solid var(--primary-light); }
+    main h3 { font-size: 19px; font-weight: 600; color: #333;
+              margin: 36px 0 12px; }
+    main h4 { font-size: 16px; font-weight: 600; color: var(--primary);
+              margin: 28px 0 10px;
+              padding: 6px 10px;
+              background: var(--primary-bg);
+              border-left: 3px solid var(--primary);
+              border-radius: 0 4px 4px 0; }
+    main p { margin: 12px 0; }
+    main a { color: var(--primary); text-decoration: none; }
+    main a:hover { text-decoration: underline; }
+    main h2, main h3, main h4 { scroll-margin-top: 20px; }
+    main table { width: 100%; border-collapse: collapse; margin: 16px 0;
+                 font-size: 14px; display: block; overflow-x: auto;
+                 white-space: nowrap; }
+    main thead { background: var(--primary-bg); }
+    main th, main td { padding: 9px 14px; text-align: left;
+                       border-bottom: 1px solid #eaeaea; white-space: normal; }
+    main th { font-weight: 600; color: var(--primary);
+              border-bottom: 2px solid var(--primary-light); }
+    main tbody tr:hover { background: #fafbfd; }
+    main code { background: #f1f3f7; padding: 1.5px 6px; border-radius: 3px;
+                font-family: "SF Mono", Monaco, "Courier New", monospace;
+                font-size: 13px; color: #b03060; }
+    main pre { background: var(--code-bg); color: var(--code-fg);
+               padding: 16px 18px; border-radius: 6px; overflow-x: auto;
+               font-size: 13px; line-height: 1.55;
+               font-family: "SF Mono", Monaco, "Courier New", monospace;
+               margin: 16px 0; }
+    main pre code { background: none; padding: 0; color: inherit; }
+    main pre .kw { color: var(--code-keyword); font-weight: 600; }
+    main pre .px { color: var(--code-prefix); }
+    main pre .str { color: var(--code-string); }
+    main pre .cmt { color: var(--code-comment); font-style: italic; }
+    main blockquote { border-left: 4px solid var(--primary-light);
+                      background: var(--primary-bg); padding: 12px 18px;
+                      margin: 16px 0; color: var(--text-light); font-style: italic; }
+    main ul, main ol { padding-left: 26px; }
+    main li { margin: 5px 0; }
+    main hr { border: 0; border-top: 1px solid var(--border); margin: 40px 0; }
+    .map-embed { margin: 20px 0; background: var(--primary-bg);
+                 padding: 16px; border-radius: 8px; border: 1px solid var(--border); }
+    .map-embed iframe { width: 100%; height: 580px; border: 0;
+                        border-radius: 4px; background: white; }
+    .map-caption { font-size: 13px; color: var(--text-light); margin-top: 12px;
+                   text-align: center; }
+    .map-caption a { color: var(--primary); font-weight: 500; }
+
+    /* ===== Collapsible blocks ===== */
+    main details.block { margin: 12px 0; border: 1px solid var(--border);
+                         border-radius: 6px; background: white; overflow: hidden;
+                         transition: box-shadow .15s; }
+    main details.block:hover { box-shadow: 0 1px 4px rgba(0,0,0,.04); }
+    main details.block > summary {
+      cursor: pointer; padding: 12px 16px; font-weight: 500;
+      background: var(--primary-bg); color: var(--primary);
+      list-style: none; position: relative; padding-right: 38px; font-size: 14px;
+    }
+    main details.block > summary::-webkit-details-marker { display: none; }
+    main details.block > summary::after {
+      content: '＋'; position: absolute; right: 14px; top: 50%;
+      transform: translateY(-50%); color: var(--primary-light);
+      font-weight: 700;
+    }
+    main details.block[open] > summary::after { content: '−'; font-size: 18px; }
+    main details.block[open] > summary { border-bottom: 1px solid var(--border); }
+    main details.block .block-content { padding: 4px 18px 14px; }
+    main details.block .block-content > p:first-child { margin-top: 12px; }
+    main details.block .block-content > p:last-child { margin-bottom: 0; }
+
+    /* ===== Structured dataset card ===== */
+    .dataset-intro {
+      font-size: 14.5px;
+      color: var(--text);
+      background: #fafbfd;
+      padding: 12px 16px;
+      border-left: 3px solid var(--primary-light);
+      border-radius: 0 4px 4px 0;
+      margin: 14px 0 18px;
+    }
+    .dataset-info {
+      display: grid;
+      grid-template-columns: 170px 1fr;
+      gap: 0;
+      margin: 0;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .dataset-info dt {
+      font-weight: 600;
+      color: var(--primary);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      padding: 10px 14px;
+      background: var(--primary-bg);
+      border-right: 1px solid var(--border);
+    }
+    .dataset-info dd {
+      margin: 0;
+      padding: 10px 16px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .dataset-info dt + dd { border-bottom: 1px solid var(--border); }
+    .dataset-info dt {
+      border-bottom: 1px solid var(--border);
+    }
+    .dataset-info > dt:last-of-type,
+    .dataset-info > dd:last-of-type {
+      border-bottom: none;
+    }
+    @media (max-width: 700px) {
+      .dataset-info { grid-template-columns: 1fr; }
+      .dataset-info dt { border-right: 0; }
+    }
+
+    .back-to-top { position: fixed; bottom: 30px; right: 30px;
+                   width: 44px; height: 44px; background: var(--primary);
+                   color: white; border: none; border-radius: 50%; cursor: pointer;
+                   font-size: 22px; box-shadow: 0 3px 12px rgba(0,0,0,.2);
+                   opacity: 0; pointer-events: none; transition: opacity .25s;
+                   z-index: 9999; }
+    .back-to-top.visible { opacity: 1; pointer-events: auto; }
+    .back-to-top:hover { background: #3a4a6e; }
+    .toc-controls { display: flex; gap: 6px; margin: 8px 0 20px; padding: 0; }
+    .toc-controls button { flex: 1; font-size: 11px; padding: 6px 8px;
+      cursor: pointer; background: white; border: 1px solid var(--border);
+      border-radius: 4px; color: var(--text-light); font-family: inherit; }
+    .toc-controls button:hover { background: var(--primary-bg);
+      color: var(--primary); border-color: var(--primary-light); }
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      nav.toc { position: relative; height: auto; border-right: 0;
+                border-bottom: 1px solid var(--border); padding: 16px 20px; }
+      main { padding: 24px 20px 60px; }
+      main h1 { font-size: 24px; }
+      main h2 { font-size: 20px; }
+      main h3 { font-size: 17px; }
+    }
+    @media print {
+      nav.toc, .back-to-top, .map-embed iframe { display: none; }
+      .map-embed { display: none; }
+      .layout { display: block; }
+      main { padding: 0; max-width: none; }
+      main details.block { border: 0; }
+      main details.block > summary { background: transparent; padding: 0; }
+      main details.block > summary::after { display: none; }
+      main details.block[open] > summary { border-bottom: 0; }
+      main details.block .block-content { padding: 0; }
+      main details:not([open]) > .block-content { display: block !important; }
+      main details > summary { list-style: none; }
+      main h2, main h3 { page-break-after: avoid; }
+      main pre, main table { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="layout">
+  <nav class="toc" id="toc">
+    <div class="brand">Atlante IDPT 2026</div>
+    <div class="subbrand">Linked Open Data 5★ — Roberto Bruno</div>
+    <div class="toc-controls">
+      <button onclick="setAllDetails(true)">Espandi tutto</button>
+      <button onclick="setAllDetails(false)">Comprimi tutto</button>
+    </div>
+    <div class="toc">
+<ul>
+<li><a href="#atlante-della-dipendenza-previdenziale-italiana">Atlante della dipendenza previdenziale italiana</a><ul>
+<li><a href="#1-abstract">1. Abstract</a></li>
+<li><a href="#2-dataset-di-partenza">2. Dataset di partenza</a><ul>
+<li><a href="#21-inps">2.1 INPS</a><ul>
+<li><a href="#asimmetria-territoriale-fra-i-quattro-cubi-inps-limite-accettato">Asimmetria territoriale fra i quattro cubi INPS — limite accettato</a></li>
+</ul>
+</li>
+<li><a href="#22-istat">2.2 ISTAT</a></li>
+<li><a href="#23-mef">2.3 MEF</a></li>
+<li><a href="#24-ancore-semantiche-agid-geometrie-ausiliarie-licenze-cc-by-40-e-cc-by">2.4 Ancore semantiche AGID + geometrie ausiliarie (licenze CC-BY 4.0 e CC-BY)</a></li>
+<li><a href="#25-tabella-riepilogativa-delle-licenze">2.5 Tabella riepilogativa delle licenze</a></li>
+</ul>
+</li>
+<li><a href="#3-elaborazione-dei-dataset">3. Elaborazione dei dataset</a><ul>
+<li><a href="#31-macrorefine-motore-e-architettura-della-pipeline">3.1 macrorefine: motore e architettura della pipeline</a></li>
+<li><a href="#32-inventario-dei-13-step-custom-lod-aware">3.2 Inventario dei 13 step custom LOD-aware</a></li>
+<li><a href="#33-le-anomalie-tecniche-risolte">3.3 Le anomalie tecniche risolte</a></li>
+<li><a href="#34-le-quattro-recipe-a-pipeline-lineare-cubi-1-5-6-7">3.4 Le quattro Recipe a pipeline lineare — cubi 1, 5, 6, 7</a></li>
+<li><a href="#35-le-quattro-recipe-con-stile-b-qb-e-pattern-di-derivazione-cubi-2-3-4-9">3.5 Le quattro Recipe con stile B qb e pattern di derivazione — cubi 2, 3, 4, 9</a></li>
+<li><a href="#36-audit-trail-e-validazione-tabellare">3.6 Audit trail e validazione tabellare</a></li>
+</ul>
+</li>
+<li><a href="#4-trasformazione-dei-dataset-modellazione-ontologica-e-rdf">4. Trasformazione dei dataset — modellazione ontologica e RDF</a><ul>
+<li><a href="#41-i-nove-vocabolari-riusati-perche-ognuno-e-li">4.1 I nove vocabolari riusati — perché ognuno è lì</a><ul>
+<li><a href="#tier-1-il-cuore-dellontologia">Tier 1 — Il cuore dell'ontologia</a></li>
+<li><a href="#tier-2-accessori-per-i-cubi-statistici">Tier 2 — Accessori per i cubi statistici</a></li>
+<li><a href="#tier-3-packaging-del-dataset">Tier 3 — Packaging del dataset</a></li>
+<li><a href="#tier-4-tattico-minimale">Tier 4 — Tattico minimale</a></li>
+<li><a href="#vocabolari-valutati-e-scartati">Vocabolari valutati e scartati</a></li>
+</ul>
+</li>
+<li><a href="#42-una-sola-classe-propria-idptsedeinps">4.2 Una sola classe propria: idpt:SedeINPS</a></li>
+<li><a href="#43-le-sei-code-list-skos-proprie">4.3 Le sei code-list SKOS proprie</a></li>
+<li><a href="#44-le-nove-dsd-dei-cubi-qb">4.4 Le nove DSD dei cubi qb</a></li>
+<li><a href="#45-il-pattern-osservazione-derivata-uniforme">4.5 Il pattern "osservazione derivata" uniforme</a></li>
+<li><a href="#46-interlinking-i-tre-sidecar-ttl">4.6 Interlinking — i tre sidecar TTL</a></li>
+<li><a href="#47-il-cubo-8-idpt-computed-il-cuore-narrativo">4.7 Il cubo 8 IDPT computed — il cuore narrativo</a></li>
+<li><a href="#48-dcat-ap_it-del-deliverable-finale">4.8 DCAT-AP_IT del deliverable finale</a></li>
+<li><a href="#49-il-caso-di-studio-negativo-rdf-di-facciata-del-mef">4.9 Il caso di studio negativo: "RDF di facciata" del MEF</a></li>
+</ul>
+</li>
+<li><a href="#5-visualizzazione-e-interrogazione">5. Visualizzazione e interrogazione</a><ul>
+<li><a href="#51-mappe-coropletiche-idpt">5.1 Mappe coropletiche IDPT</a></li>
+<li><a href="#52-interrogazione-via-sparql-12-query-di-demo">5.2 Interrogazione via SPARQL — 12 query di demo</a><ul>
+<li><a href="#q01-top-10-idpt-la-classifica-delle-province-piu-dipendenti">q01 — Top 10 IDPT: la classifica delle province più dipendenti</a></li>
+<li><a href="#q05-serie-storica-del-numero-di-pensioni-nelle-5-sedi-inps-piu-popolose">q05 — Serie storica del numero di pensioni nelle 5 sedi INPS più popolose</a></li>
+<li><a href="#q07-distribuzione-delle-osservazioni-stimate-fra-i-cubi">q07 — Distribuzione delle osservazioni stimate fra i cubi</a></li>
+<li><a href="#q10-percentuale-di-pensioni-in-regime-retributivo-per-regione">q10 — Percentuale di pensioni in regime retributivo per regione</a></li>
+<li><a href="#q06-catena-completa-di-derivazione-prov-di-una-stima-plan-b">q06 — Catena completa di derivazione PROV di una stima Plan B</a></li>
+<li><a href="#q09-quintupla-identita-semantica-di-torino">q09 — Quintupla identità semantica di Torino</a></li>
+<li><a href="#q11-eta-media-alla-decorrenza-gdp-per-decennio">q11 — Età media alla decorrenza GDP per decennio</a></li>
+<li><a href="#q12-durata-attesa-di-una-pensione-di-vecchiaia-per-provincia">q12 — Durata attesa di una pensione di vecchiaia per provincia</a></li>
+</ul>
+</li>
+<li><a href="#53-stack-di-pubblicazione">5.3 Stack di pubblicazione</a></li>
+<li><a href="#54-limiti-e-prospettive">5.4 Limiti e prospettive</a></li>
+</ul>
+</li>
+<li><a href="#6-licenza-del-deliverable-e-compatibilita-con-le-sorgenti">6. Licenza del deliverable e compatibilità con le sorgenti</a></li>
+</ul>
+</li>
+</ul>
+</div>
+
+  </nav>
+  <main id="content">
+    <h1 id="atlante-della-dipendenza-previdenziale-italiana">Atlante della dipendenza previdenziale italiana</h1>
+<p><strong>IDPT come Linked Open Data 5★</strong></p>
+<p>Roberto Bruno — anno accademico 2025/2026</p>
+<hr />
+<h2 id="1-abstract">1. Abstract</h2>
+<p>Il progetto risponde a una domanda di <strong>data journalism a base semantica</strong>: quali territori italiani sono più dipendenti dal sistema pensionistico, e quanto è sostenibile questa dipendenza in termini di rapporto pensionati/occupati, peso economico delle pensioni sul reddito locale ed eredità storica delle riforme previdenziali. La domanda è il <em>vettore</em> del lavoro, non il suo fine: il fine è la <strong>pratica del Linked Open Data</strong> — portare nove dataset pubblici italiani di basso livello (CSV statistici INPS, ISTAT, MEF, oltre ai vocabolari controllati territoriali AGID OntoPiA) a un grafo RDF <strong>5★</strong> sulla scala di Berners-Lee, con riuso massimo di vocabolari standard, ancoraggio semantico al contesto della PA italiana e linking esterno verso il LOD Cloud globale. Il vettore — l'analisi previdenziale — è ciò che dà senso narrativo al lavoro semantico.</p>
+<p>Per rispondere alla domanda di ricerca ho costruito un <strong>Indice di Dipendenza Previdenziale Territoriale (IDPT)</strong> calcolato a livello provinciale come <strong>media aritmetica di tre componenti normalizzate</strong> in [0,1]. La prima componente, <strong>D1 — pressione demografica previdenziale</strong>, è il rapporto fra numero di pensioni vigenti e numero di occupati della provincia (<code>pensionati / occupati</code>): misura quanto la base produttiva di un territorio "sostiene" la sua base assistita. La seconda, <strong>D2 — peso economico delle pensioni</strong>, è il rapporto fra monte annuo delle pensioni erogate e monte annuo dei redditi da lavoro dichiarati (<code>monte_pensioni € / monte_redditi €</code>): misura quanto pesa la spesa pensionistica sul reddito complessivo del territorio. La terza, <strong>D3 — eredità storica delle riforme</strong>, è la quota di pensioni vigenti ancora liquidate in regime retributivo pre-Riforma Dini 1995 sul totale (<code>pensioni_retributivo / pensioni_totali</code>): misura il "peso del passato" delle stratificazioni normative. Le tre componenti grezze sono <strong>normalizzate min-max</strong> sulle 107 province e poi <strong>aggregate via media aritmetica</strong>, ottenendo un valore IDPT in [0,1] dove 0 è la provincia meno dipendente e 1 quella più dipendente. La scelta della media aritmetica (anziché pesata) è metodologica e non arbitraria: dichiara esplicitamente "le tre dimensioni contano uguale" senza introdurre pesi soggettivi da giustificare, e poiché i tre componenti normalizzati sono materializzati separatamente nel grafo qualunque consumer SPARQL può ricalcolare l'aggregato con pesi diversi se li ritiene più appropriati. La normalizzazione min-max è la trasformazione più trasparente; la sua sensibilità agli outlier (Reggio Calabria in alto, Bolzano in basso) è dichiarata fra i limiti dell'analisi.</p>
+<p>Per costruire il grafo ho acquisito <strong>9 dataset di partenza</strong> + 2 vocabolari controllati AGID, li ho elaborati a livello tabellare con <strong>macrorefine</strong> — una libreria Python di data cleaning a pipeline sviluppata appositamente per il progetto, estesa con <strong>13 step custom LOD-aware</strong> organizzati in 9 Recipe — e trasformati semanticamente in un grafo RDF di <strong>circa 117.000 triple</strong> distribuite su <strong>6 grafi nominati</strong> Apache Jena Fuseki. Il grafo finale contiene <strong>13.312 <code>qb:Observation</code></strong> strutturate in <strong>9 <code>qb:DataSet</code></strong> modellati con RDF Data Cube, ancorate alle URI canoniche AGID delle 107 province e linkate esternamente a DBpedia tramite <strong>107 asserzioni <code>owl:sameAs</code></strong>. Una sola classe propria (<code>idpt:SedeINPS</code>) è introdotta per onestà semantica, a fronte di 9 vocabolari standard riusati (qb, SKOS, OntoPiA CLV, SDMX content, OWL-Time minimale, DCAT-AP_IT, dcterms+foaf+vcard, PROV-O minimale, owl:sameAs). Un pattern uniforme di "osservazione derivata" — <code>sdmx-attribute:obsStatus sdmx-code:obsStatus-E</code> + <code>prov:wasDerivedFrom</code> — è applicato a quattro punti del grafo per <strong>4.399 osservazioni stimate</strong> totali (aggregazione retroattiva ex-province sarde 2005–2011, importo annuo ricostruito come <code>n × media × 13</code> sui cubi 2 e 3, proiezione Plan B GDP sulla composizione regime provinciale, materializzazione dell'IDPT computed), tutte navigabili con una singola query SPARQL via property path transitivo. Il deliverable è impacchettato come <code>dcatapit:Dataset</code> conforme al profilo italiano AGID di DCAT, pubblicato come bundle TTL/JSON-LD/ZIP, e interrogato in demo con 12 query SPARQL che coprono dalla classifica IDPT al drill-down per provincia, dall'evoluzione storica del numero di pensioni in 28 anni alla durata attesa di una pensione provincia per provincia.</p>
+<p>Il risultato sostantivo è un <strong>divario Nord/Sud netto, di circa 20× fra estremi</strong>: in cima alla classifica IDPT 2026 si collocano Reggio di Calabria (0.675), Taranto, Catanzaro, Oristano e Nuoro — nove province su dieci al Sud — dove la combinazione di occupazione contenuta, demografia anziana ed eredità retributiva di alta funzione pubblica produce un livello di dipendenza dal sistema pensionistico nettamente più alto. In fondo si collocano Bolzano (0.034), Milano, Trento, Prato e Padova — economie dinamiche, demografia ancora giovane, eredità retributiva contenuta. Sul piano della pratica LOD, il lavoro fa emergere dieci scoperte tecniche raccontabili — dai NUTS storici multipli preservati come <code>owl:sameAs</code> nel TTL AGID, ai "fake-NUTS" proprietari ISTAT <code>IT108</code>–<code>IT111</code> modellati come <code>skos:exactMatch</code>, dalla discrepanza esatta di 11.991 pensioni Pubblici residenti all'estero fra cubo 4 nazionale e cubo 9 provinciale e culmina in un <strong>case study negativo</strong>: il file RDF/XML pubblicato dal MEF accanto al CSV delle dichiarazioni IRPEF comunali è un "RDF di facciata" (namespace <code>fakeurl</code>, variabili <code>v1..v22</code> anonime, modellazione wide senza <code>qb:Observation</code>, data malformata) che, nonostante l'autoetichetta "5-star RDF format", il progetto smonta riga per riga come esempio di compliance formale senza onestà semantica — in netto contrasto col TTL AGID delle province, pubblicato dalla stessa Pubblica Amministrazione italiana con cura LOD-grade.</p>
+<p>Sul piano metodologico, il progetto adotta una sequenza esplicita "<strong>ontologia prima del codice</strong>": tutte le decisioni di modellazione (vocabolari, classi, code-list, DSD, pattern di derivazione, layout file e grafi nominati Fuseki) sono state congelate <strong>prima</strong> della scrittura di una singola riga di pipeline di trasformazione, evitando l'errore tipico delle pipeline open data di adattare a posteriori il modello al codice già scritto. La validazione è strutturata su due livelli ortogonali: <strong>172 unit test pytest</strong> sugli step LOD-aware di macrorefine validano la pipeline tabellare; <strong>33 check SPARQL post-emissione</strong> (10 sui vocabolari + 9 sui cubi + 14 sul DCAT-AP_IT del deliverable) validano la conformità del grafo RDF al modello ontologico atteso. Il deliverable finale — repository GitHub con codice + grafo + landing page GitHub Pages con mappa coropletica embedded + query SPARQL di demo — è riproducibile end-to-end, ed è rilasciato sotto licenza CC-BY 4.0 (vedi sez. 6 per il dettaglio sulla compatibilità con le licenze sorgente).</p>
+<hr />
+<h2 id="2-dataset-di-partenza">2. Dataset di partenza</h2>
+<p>Lo studio dell'Indice di Dipendenza Previdenziale Territoriale ha richiesto di attraversare tre ecosistemi open data italiani — <strong>INPS</strong> per la spesa pensionistica, <strong>ISTAT</strong> per l'occupazione e la demografia, <strong>MEF</strong> per i redditi da lavoro — ancorati al vocabolario controllato territoriale di <strong>AGID OntoPiA</strong>. Sono stati acquisiti in totale <strong>9 dataset di partenza</strong> (4 cubi OLAP INPS, 3 estrazioni dal databrowser ISTAT, 1 archivio CSV MEF a granularità comunale, 1 file GeoJSON ausiliario di geometrie provinciali) e <strong>2 vocabolari controllati AGID</strong> in formato Turtle (province e regioni). Per ciascuna fonte questa sezione dichiara l'URL canonico, i parametri di estrazione necessari alla riproducibilità, la licenza ufficiale verificata sul portale di pubblicazione, la composizione e il ruolo nel calcolo dell'IDPT.</p>
+<p>Tre osservazioni di contesto utili a inquadrare il lavoro di acquisizione. <strong>Primo</strong>, i cubi OLAP dell'Osservatorio statistico INPS sono applicazioni JavaScript client-side: non esiste un URL diretto al CSV finale, ma solo l'URL del cubo, su cui l'utente imposta manualmente filtri, dimensioni di riga, dimensioni di colonna e statistiche prima dell'export. Per garantire riproducibilità del dataset di input — un requisito metodologico forte nella pratica LOD — questi parametri vanno annotati esplicitamente come parte della provenance del dato; nel report sono pertanto dichiarati alla stregua di un URL canonico. <strong>Secondo</strong>, ISTAT ha deprecato il vecchio data warehouse <code>dati.istat.it</code>, ora redirige al nuovo databrowser <code>esploradati.istat.it</code> che esporta in formato SDMX-like (header con codici standard, decimali col punto, separatore virgola, codifica UTF-8 con BOM) ma adotta un <strong>quoting CSV non standard</strong> — apice singolo come <code>quotechar</code> per gestire gli apostrofi nei nomi propri — che rompe il default di <code>pandas.read_csv</code> e richiede una lettura via <code>csv.reader</code> stdlib esplicitamente configurato. <strong>Terzo</strong>, il MEF affianca al CSV affidabile delle dichiarazioni IRPEF comunali un file RDF/XML formalmente compliant ma sostanzialmente vuoto di modellazione semantica (variabili <code>v1..v22</code> senza URI significative, namespace placeholder <code>fakeurl</code>, modellazione wide senza <code>qb:Observation</code>) — il <em>case study negativo</em> discusso in dettaglio nella sez. 4 con il framing "RDF di facciata".</p>
+<h3 id="21-inps">2.1 INPS</h3>
+<p>Le quattro estrazioni INPS derivano tutte dall'<strong>Osservatorio statistico</strong> dell'Istituto, area pensioni vigenti e pensioni per anno di decorrenza. Sono pubblicate sotto la stessa licenza <strong>IODL 2.0</strong> (<a href="https://www.dati.gov.it/iodl/2.0/">Italian Open Data Licence v2.0</a>), come dichiarato dal portale <a href="https://www.inps.it/it/it/dati-e-bilanci/open-data.html">INPS Open Data</a>. </p>
+<details class="block dataset-block">
+  <summary><strong>[1] Pensioni vigenti per provincia di residenza, 2026</strong></summary>
+  <div class="block-content">
+  <p class="dataset-intro">file <code>inps_pensioni_vigenti_provincia_2026_v1.csv</code>. Cubo OLAP all'indirizzo <a href="https://servizi2.inps.it/servizi/osservatoristatistici/6/37/o/377">https://servizi2.inps.it/servizi/osservatoristatistici/6/37/o/377</a>. È il dataset principale dell'intero progetto.</p>
+  <dl class="dataset-info">
+    <dt>Filtri impostati</dt>
+    <dd>anno 2026; tipo gestione = <code>Pensioni ai lavoratori dipendenti privati</code> + <code>Pensioni ai lavoratori dipendenti pubblici</code> + <code>Pensioni ai lavoratori autonomi e parasubordinati</code> + <code>Prestazioni assistenziali</code>.</dd>
+    <dt>Layout</dt>
+    <dd>righe = provincia di residenza, colonne = tipo di gestione, statistiche = <code>Numero pensioni (SUM)</code>, <code>Importo medio mensile</code>, <code>Importo complessivo annuo (in milioni di euro) (SUM)</code>. La voce <code>Cumulo</code>, le <code>Assicurazioni facoltative</code> e le <code>Convenzioni internazionali</code> sono escluse per coerenza con il perimetro IDPT (voci marginali o doppi conteggi). L'export contiene 110 entità territoriali — le 107 province attuali più 2 Province Autonome del Trentino-Alto Adige più 3 ex-province sarde da aggregare a posteriori sulle 5 province AGID attuali — 4 tipologie di gestione, 3 misure, più 7 aggregati continentali per le pensioni erogate all'estero e una riga "Totale". Il totale verificato è di <strong>20.925.413 pensioni</strong> per circa <strong>344 mld € di importo annuo</strong>. Anomalie tecniche principali: numeri in formato italiano (<code>9.999,9</code>), celle <code>-</code> per valori soppressi per privacy o non applicabili, nomi province in MAIUSCOLO con varianti tipografiche (<code>MASSA CARRARA</code> senza trattino, <code>PESARO -URBINO</code> con spazio prima del trattino, <code>FORLI'-CESENA</code> con apostrofo dattilografico). Risoluzione delle anomalie nella sez. 3.</dd>
+    <dt>Ruolo nell'IDPT</dt>
+    <dd>numeratore della dimensione D1 (pensionati per provincia) e numeratore della dimensione D2 (monte pensioni per provincia); alimenta il cubo 1 del grafo RDF e fornisce la quota provinciale GDP che il Plan B (sez. 3) proietta sulla composizione regime nazionale per generare il cubo 9.</dd>
+  </dl>
+  </div>
+</details>
+
+<details class="block dataset-block">
+  <summary><strong>[2] Pensioni vigenti per regime di liquidazione e provincia della sede INPS, 2026</strong></summary>
+  <div class="block-content">
+  <p class="dataset-intro">file <code>inps_pensioni_vigenti_regime_liquidazione_provincia_2026_v1.csv</code>. Cubo OLAP all'indirizzo <a href="https://servizi2.inps.it/servizi/osservatoristatistici/6/37/o/389">https://servizi2.inps.it/servizi/osservatoristatistici/6/37/o/389</a>.</p>
+  <dl class="dataset-info">
+    <dt>Filtri impostati</dt>
+    <dd>anno 2026 (nessun filtro su gestione: il cubo per regime non include i Pubblici per costruzione del cubo OLAP).</dd>
+    <dt>Layout</dt>
+    <dd>righe = provincia sede INPS, colonne = regime di liquidazione, statistiche = <code>Numero pensioni (SUM)</code>, <code>Importo medio mensile</code>. La statistica <code>Importo complessivo annuo (in milioni di euro)</code> è <strong>soppressa dal cubo OLAP alla cross-tab provincia × regime per motivi di privacy</strong> — un esempio rappresentativo del compromesso fra granularità statistica e tutela dei microdati che attraversa la pubblicazione open data di fonte amministrativa. La ricostruzione di questa misura come stima <code>n × importo_medio_mensile × 13</code> (12 mensilità più tredicesima) è documentata nella sez. 3 e materializzata nel grafo come osservazione derivata con <code>obsStatus=E</code> e <code>prov:wasDerivedFrom</code> esplicito. L'export contiene 106 sedi territoriali — un asse diverso da quello della "provincia di residenza" del dataset [1] (<code>CAGLIARI E SUD SARDEGNA</code> aggregata, <code>FORLI</code> senza Cesena, <code>VERBANIA</code> come label di Verbano-Cusio-Ossola) — 4 regimi (<code>Retributivo</code>, <code>Misto riforma Dini</code>, <code>Misto riforma Fornero</code>, <code>Contributivo puro</code>), 2 misure. La copertura è di <strong>12.873.198 pensioni</strong>, il 96% del comparto Privati + Autonomi/Parasub del dataset [1], il 61,5% del totale generale. Restano fuori i Dipendenti Pubblici (circa 3,17 mln, oggetto del Plan B) e le pensioni Assistenziali (4,42 mln, per natura non disaggregabili per regime). Anomalie tecniche: stesse anomalie nominali del dataset [1] ma in maiuscolo, più etichette regime senza spazi (<code>MistoriformaDini</code>, <code>MistoriformaFornero</code>, <code>Contributivopuro</code>).</dd>
+    <dt>Ruolo nell'IDPT</dt>
+    <dd>dimensione D3 (eredità storica delle riforme) per il segmento Privati + Autonomi/Parasub; alimenta il cubo 2 del grafo.</dd>
+  </dl>
+  </div>
+</details>
+
+<details class="block dataset-block">
+  <summary><strong>[3] Pensioni vigenti per sede INPS, serie storica 1998–2026</strong></summary>
+  <div class="block-content">
+  <p class="dataset-intro">file <code>inps_pensioni_vigenti_serie_storica_provincia_1998_2026_v1.csv</code>. Cubo OLAP all'indirizzo <a href="https://servizi2.inps.it/servizi/osservatoristatistici/6/37/o/390">https://servizi2.inps.it/servizi/osservatoristatistici/6/37/o/390</a>.</p>
+  <dl class="dataset-info">
+    <dt>Filtri impostati</dt>
+    <dd>tipo gestione = stesse 4 gestioni del dataset [1], per garantire confrontabilità diacronica.</dd>
+    <dt>Layout</dt>
+    <dd>righe = provincia della sede INPS, colonne = anno (29 valori, 1998–2026), statistiche = <code>Numero pensioni (SUM)</code>, <code>Importo medio mensile</code>. Anche qui l'importo complessivo annuo non è disponibile in alcuna configurazione del cubo per la serie storica: viene ricostruito come stima <code>n × importo_medio × 13</code> per ognuna delle 6.150 osservazioni reali. Asse territoriale: 106 sedi INPS, identico al dataset [2] (non al dataset [1]). Anomalie temporali da gestire nella sez. 3: celle <code>-</code> per BAT, Fermo e Monza-Brianza negli anni 1998–2008 perché istituite nel 2009; salto numerico per le sedi sarde dopo il 2011 a seguito dell'aggregazione retroattiva di Olbia-Tempio, Ogliastra, Carbonia-Iglesias e Medio Campidano sulle sedi attuali. Verifica numerica di coerenza: la somma 2026 della serie storica restituisce 20.925.421 pensioni, coincidente al 99,99996% col dataset [1] (differenza di 8 unità per arrotondamenti).</dd>
+    <dt>Ruolo nell'IDPT</dt>
+    <dd>alimenta il cubo 3 del grafo, che non entra nel calcolo dell'IDPT snapshot 2026 ma fornisce la prospettiva diacronica della spesa pensionistica italiana (la crescita di 15,2 → 20,9 mln pensioni in 28 anni, +37%, è uno dei riferimenti narrativi del lavoro).</dd>
+  </dl>
+  </div>
+</details>
+
+<details class="block dataset-block">
+  <summary><strong>[4] Pensioni della Gestione Dipendenti Pubblici per anno di decorrenza, 2026 — totale categorie</strong></summary>
+  <div class="block-content">
+  <p class="dataset-intro">file <code>inps_pensioni_decorrenza_pubblici_tutte_categorie_2026_v1.csv</code>. Cubo OLAP all'indirizzo <a href="https://servizi2.inps.it/servizi/osservatoristatistici/6/37/o/388">https://servizi2.inps.it/servizi/osservatoristatistici/6/37/o/388</a>.</p>
+  <dl class="dataset-info">
+    <dt>Filtri impostati</dt>
+    <dd>anno 2026; tipo gestione = <code>Pensioni ai lavoratori dipendenti pubblici</code>.</dd>
+    <dt>Layout</dt>
+    <dd>righe = anno di decorrenza, colonne (nessuna), statistiche = <code>Numero pensioni (SUM)</code>, <code>Età media alla decorrenza</code>, <code>Importo medio mensile</code>, <code>Importo medio mensile alla decorrenza</code>.</dd>
+    <dt>Limite strutturale del cubo OLAP</dt>
+    <dd>la dimensione "Provincia" non è disponibile per costruzione su questo cubo. Non esiste alcuna pubblicazione INPS — né cubo OLAP, né dataset su <code>dati.gov.it</code>, né portale Open Data INPS — che esponga la composizione GDP × regime di liquidazione × provincia. Si tratta di un buco strutturale del rilascio open data INPS sul segmento pubblico, che il progetto risolve con il</dd>
+    <dt>Plan B</dt>
+    <dd>stimare la composizione regime GDP a livello nazionale tramite un'euristica anno-di-decorrenza → regime calibrata sulle riforme Dini 1995 e Fornero 2011, e proiettare la composizione stimata sulle 107 quote provinciali GDP del dataset [1]. Il dataset [4] è l'input nazionale di questa proiezione. Dimensioni: dataset nazionale, 46 righe (decorrenze da "anteriore al 31/12/1980" al 2025), 4 misure; totale verificato <strong>3.171.265 pensioni GDP</strong> (coincidente col totale Pubblici aggregato del dataset [1] al netto delle pensioni Pubblici residenti all'estero).</dd>
+    <dt>Ruolo nell'IDPT</dt>
+    <dd>alimenta il cubo 4 del grafo (decorrenza GDP nazionale) e, tramite l'euristica decorrenza→regime, il cubo 9 (Plan B GDP proiettato per provincia × regime).</dd>
+  </dl>
+  </div>
+</details>
+
+<details class="block" id="asimmetria-territoriale-fra-i-quattro-cubi-inps-limite-accettato-block">
+  <summary><strong>Asimmetria territoriale fra i quattro cubi INPS — limite accettato</strong></summary>
+  <div class="block-content">
+<p>Una caratteristica delicata del rilascio open data INPS che attraversa i quattro dataset e va dichiarata esplicitamente è la <strong>disomogeneità dell'asse territoriale</strong>. Il dataset [1] (pensioni vigenti) adotta come dimensione la <strong>provincia di residenza del titolare</strong> della pensione: l'unità territoriale è dunque definita dal luogo in cui il pensionato vive, e l'export contiene 110 entità (107 province attuali + 2 PA + 3 ex-province sarde da aggregare). I dataset [2] (regime di liquidazione) e [3] (serie storica) adottano invece la <strong>provincia della sede INPS</strong> che gestisce amministrativamente la posizione previdenziale: l'unità territoriale è in questo caso definita dal centro di erogazione, e l'export contiene 106 entità con aggregazioni diverse — <code>CAGLIARI E SUD SARDEGNA</code> accorpa due province AGID in una sola sede, la sede di <code>FORLI</code> copre il territorio di Forlì + Cesena ma è etichettata solo come "Forlì", <code>VERBANIA</code> è la label INPS della sede di Verbano-Cusio-Ossola. Il dataset [4] è nazionale e non ha dimensione territoriale, quindi non pone il problema.</p>
+<p>Concettualmente, <strong>provincia di residenza</strong> e <strong>provincia della sede INPS</strong> misurano fenomeni diversi: la prima dice "dove vive chi riceve la pensione", la seconda dice "quale ufficio INPS la eroga". Non sono ricavabili l'una dall'altra: l'INPS non pubblica la tabella di transito dei singoli titolari, né un dataset open che permetta di mappare 1-a-1 i due assi. <strong>Per il progetto IDPT accettiamo questa asimmetria come limite metodologico dichiarato</strong>: non avendo la composizione regime × residenza, usiamo la composizione regime × sede del cubo 2 e la attribuiamo (al netto degli aggregati di sede sopra elencati) alle province AGID corrispondenti. È un'approssimazione ragionevole perché la maggioranza dei pensionati riceve la pensione tramite la sede INPS della propria provincia di residenza, ma l'imperfezione esiste e va segnalata al lettore del grafo. Conseguenza operativa per la modellazione semantica: nella sez. 4 introdurremo una classe propria <code>idpt:SedeINPS</code> distinta dalle 107 <code>clv:Province</code> AGID, con due property di relazione (<code>idpt:correspondsToProvinceAGID</code> per il caso 1-a-1 e <code>idpt:aggregatesProvince</code> per il caso 1-a-N di Cagliari + Sud Sardegna). Questo modo di modellare, invece di "appiattire" la sede sulla residenza e nascondere la disomogeneità, preserva i due assi come entità semantiche distinte e rende l'asimmetria interrogabile via SPARQL — pattern coerente con l'obiettivo di onestà rappresentazionale che attraversa il progetto.</p>
+  </div>
+</details>
+<h3 id="22-istat">2.2 ISTAT</h3>
+<p>Le tre estrazioni ISTAT provengono dal nuovo databrowser <code>esploradati.istat.it</code>, e sono pubblicate sotto la stessa licenza <strong>Creative Commons Attribuzione 3.0 Italia</strong> (<a href="https://creativecommons.org/licenses/by/3.0/it/">CC-BY 3.0 IT</a>), come dichiarato dalle <a href="https://www.istat.it/note-legali/">note legali ISTAT</a>. L'attribuzione richiesta è "Fonte: ISTAT". Tutti gli export adottano il formato SDMX-like descritto nel cappello di sezione, con il quoting CSV non standard <code>quotechar="'"</code> che richiederà gestione esplicita nella pipeline.</p>
+<p>Una curiosità di rilievo per il framing LOD del progetto: <strong>lo stesso ente, in due cubi diversi, adotta due codifiche territoriali differenti per le Province Autonome di Trento e Bolzano</strong>. Il cubo "Rilevazione Forze di Lavoro" (occupati, dataset [5]) usa la codifica NUTS-2 <code>ITD1</code>/<code>ITD2</code>, mentre il cubo "Indicatori demografici provinciali" (dataset [6] e [7]) usa la codifica NUTS-3 corretta <code>ITD10</code>/<code>ITD20</code>, coerente con il vocabolario AGID. La disomogeneità interna ai rilasci ISTAT è un esempio concreto di perché la pratica LOD ha bisogno di un'ancora semantica esterna (AGID OntoPiA, in questo caso) che riconcilii a posteriori identificatori istituzionali concorrenti — pattern documentato nella sez. 4 con il sidecar <code>nuts_aliases.ttl</code>. Una seconda asimmetria, sempre lato ISTAT, riguarda le 4 province moderne senza NUTS-3 Eurostat ufficiale (Monza-Brianza, Fermo, BAT, Sud Sardegna): per esse i CSV ISTAT usano codici proprietari <code>IT108</code>, <code>IT109</code>, <code>IT110</code>, <code>IT111</code> — fake-NUTS non riconosciuti da AGID, che modelleremo con <code>skos:exactMatch</code> (sez. 4) per onestà semantica.</p>
+<details class="block dataset-block">
+  <summary><strong>[5] Occupati per provincia, media annua 2025</strong></summary>
+  <div class="block-content">
+  <p class="dataset-intro">file <code>istat_occupati_provincia_2025_v1.csv</code>. Databrowser: <a href="https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0500LAB,1.0/LAB_OFFER/LAB_OFF_EMPLOY/DCCV_OCCUPATIT1/DCCV_OCCUPATIT1_PROVDATA/IT1,150_938_DF_DCCV_OCCUPATIT1_21,1.0">https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,Z0500LAB,1.0/LAB_OFFER/LAB_OFF_EMPLOY/DCCV_OCCUPATIT1/DCCV_OCCUPATIT1_PROVDATA/IT1,150_938_DF_DCCV_OCCUPATIT1_21,1.0</a>.</p>
+  <dl class="dataset-info">
+    <dt>Filtri impostati</dt>
+    <dd>ultimo anno disponibile (2025, media annua) — i dati ISTAT delle Forze di Lavoro a livello provinciale sono pubblicati solo come media annua, non trimestralmente; solo province (escluse aree geografiche aggregate); aggregato per sesso (valore "totale").</dd>
+    <dt>Composizione</dt>
+    <dd>107 entità (105 province standard in NUTS-3 + 2 PA in NUTS-2); 1 misura, "occupati totali 15–89 anni in migliaia". Il disallineamento temporale rispetto allo snapshot INPS 1.1.2026 è di pochi mesi: il fatto che la media annua 2025 sia disponibile a maggio 2026 è una "buona sorpresa" del rilascio ISTAT, e rende l'IDPT 2026 calcolabile con denominatori sufficientemente recenti.</dd>
+    <dt>Ruolo nell'IDPT</dt>
+    <dd>denominatore della dimensione D1 (occupati per provincia); alimenta il cubo 5 del grafo.</dd>
+  </dl>
+  </div>
+</details>
+
+<details class="block dataset-block">
+  <summary><strong>[6] Indicatori demografici provinciali, 1.1.2026</strong></summary>
+  <div class="block-content">
+  <p class="dataset-intro">file <code>istat_indicatori_demografici_provincia_2026_v1.csv</code>. Databrowser: <a href="https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,POP,1.0/POP_POPULATION/DCIS_INDDEMOG1/IT1,22_293_DF_DCIS_INDDEMOG1_1,1.0">https://esploradati.istat.it/databrowser/#/it/dw/categories/IT1,POP,1.0/POP_POPULATION/DCIS_INDDEMOG1/IT1,22_293_DF_DCIS_INDDEMOG1_1,1.0</a>.</p>
+  <dl class="dataset-info">
+    <dt>Filtri impostati</dt>
+    <dd>anno di riferimento 1.1.2026 (dato stimato preliminare; il definitivo esce mesi dopo). L'allineamento temporale con lo snapshot INPS è perfetto.</dd>
+    <dt>Composizione</dt>
+    <dd>107 entità complete, con PA Trento e Bolzano in NUTS-3 corretto come segnalato sopra; 6 indicatori derivati per i quali la stessa code-list SKOS del progetto riusa le sigle ISTAT native come <code>skos:notation</code>: <code>POP014</code> (popolazione 0–14 anni, %), <code>POP1564</code> (15–64, %), <code>POP65OVER</code> (65+, %), <code>OLDAGEDEPR</code> (indice di dipendenza degli anziani), <code>AGEINDEX</code> (indice di vecchiaia), <code>MEANAGEP</code> (età media).</dd>
+    <dt>Ruolo nell'IDPT</dt>
+    <dd>nessuna componente del numero IDPT, ma variabili di contesto per la narrativa territoriale del grafo. Alimenta il cubo 6 insieme al dataset [7].</dd>
+  </dl>
+  </div>
+</details>
+
+<details class="block dataset-block">
+  <summary><strong>[7] Tasso di natalità e speranza di vita a 65 anni, 2025</strong></summary>
+  <div class="block-content">
+  <p class="dataset-intro">file <code>istat_natalita_speranza_di_vita_2025_v1.csv</code>. Stesso databrowser del dataset [6].</p>
+  <dl class="dataset-info">
+    <dt>Filtri impostati</dt>
+    <dd>2 indicatori del cubo "Indicatori demografici" non disponibili al 1.1.2026 perché misurati su base annua chiusa, quindi rilasciati con riferimento 2025.</dd>
+    <dt>Composizione</dt>
+    <dd>107 entità, 2 indicatori — <code>BIRTHRATE</code> (tasso di natalità per mille abitanti, dato provvisorio) e <code>LIFEEXP65T</code> (speranza di vita a 65 anni, dato stimato). Il disallineamento temporale è ininfluente perché si tratta di variabili di contesto.</dd>
+    <dt>Ruolo narrativo</dt>
+    <dd><code>LIFEEXP65T</code> è particolarmente utile come variabile di "durata della pensione" provincia per provincia, con un noto gradiente Nord/Sud (Bolzano sopra 22 anni, province meridionali sotto 20). Confluisce nel cubo 6 con il dataset [6] — i due dataset ISTAT demografici sono unificati in un unico cubo per coerenza di fonte, granularità e natura degli indicatori.</dd>
+  </dl>
+  </div>
+</details>
+
+<h3 id="23-mef">2.3 MEF</h3>
+<details class="block dataset-block">
+  <summary><strong>[8] Redditi e principali variabili IRPEF su base comunale, anno di imposta 2024</strong></summary>
+  <div class="block-content">
+  <p class="dataset-intro">file <code>mef_redditi_irpef_comune_2024_v1.csv</code>. Dipartimento delle Finanze del Ministero dell'Economia e delle Finanze.</p>
+  <dl class="dataset-info">
+    <dt>URL diretto del CSV (ZIP)</dt>
+    <dd><a href="https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2024.zip?d=1615465800">https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/contenuti/Redditi_e_principali_variabili_IRPEF_su_base_comunale_CSV_2024.zip?d=1615465800</a>.</dd>
+    <dt>Pagina indice degli open data fiscali comunali</dt>
+    <dd><a href="https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php?search_class%5b0%5d=cCOMUNE&amp;opendata=yes">https://www1.finanze.gov.it/finanze/analisi_stat/public/index.php?search_class%5b0%5d=cCOMUNE&amp;opendata=yes</a>.</dd>
+    <dt>Pagina descrittiva ufficiale "Open data comunale IRPEF"</dt>
+    <dd><a href="https://www.finanze.gov.it/it/statistiche-fiscali/open-data-comunale-principali-variabili-irpef/">https://www.finanze.gov.it/it/statistiche-fiscali/open-data-comunale-principali-variabili-irpef/</a>.</dd>
+    <dt>Licenza</dt>
+    <dd><strong>Creative Commons Attribuzione 3.0</strong> (<a href="https://creativecommons.org/licenses/by/3.0/">CC-BY 3.0</a>) — la versione <em>generica</em> (Unported), non la versione "Italia"; la pagina ufficiale del MEF dichiara letteralmente <em>"I dati sono rilasciati con licenza Creative Commons 3.0 e distribuiti utilizzando le tecnologie digitali correnti e gli standard Web più diffusi"</em>.</dd>
+  </dl>
+  </div>
+</details>
+
+<p><strong>Composizione</strong>: 7.897 comuni italiani × 53 colonne — per ogni voce di reddito una doppia colonna "Frequenza" (numero dichiaranti) e "Ammontare in euro" (totale). <strong>Granularità</strong>: comunale, riaggregabile a livello provinciale tramite il campo nativo <code>Sigla Provincia</code> con un semplice group-by. <strong>Granularità temporale</strong>: anno di imposta 2024 (redditi prodotti nel 2023, dichiarati nel 2024), disallineato di circa tre anni dallo snapshot INPS 1.1.2026 — limite metodologico minore, dichiarato come tale nel report. <strong>Variabili effettivamente utilizzate</strong> (5 su 53): <code>v2</code> Reddito da lavoro dipendente e assimilati, <code>v4</code> Reddito da lavoro autonomo, <code>v5</code> Reddito imprenditore in contabilità ordinaria, <code>v6</code> Reddito imprenditore in contabilità semplificata, <code>v7</code> Reddito da partecipazione — componenti del <strong>monte redditi da lavoro</strong> che costituisce il denominatore della dimensione D2 dell'IDPT. Una sesta variabile, <code>v3</code> Reddito da pensione, è impiegata come <strong>validazione cross-fonte</strong> per triangolare il monte pensioni del dataset INPS [1]. Anomalie tecniche da risolvere nella sez. 3: il "NA-bug" di <code>pandas</code> sui 92 comuni della provincia di Napoli con <code>Sigla="NA"</code> interpretata come <code>NaN</code>; una riga sentinella con <code>Codice Istat=0</code>, <code>Sigla=0</code>, <code>Regione=Mancante/errata</code> (placeholder MEF per dichiarazioni con territorio non assegnato) da filtrare prima dell'aggregazione. <strong>Ruolo nell'IDPT</strong>: denominatore di D2 dopo aggregazione <code>Sigla Provincia</code> → 107 province; alimenta il cubo 7.</p>
+<p>Va menzionato che lo stesso URL della pagina indice MEF distribuisce, accanto al CSV, un file RDF/XML con lo stesso contenuto formale. <strong>Quel file non è stato usato come fonte di dati</strong>, ma è conservato nella cartella <code>data/</code> del repository (<code>mef_redditi_irpef_comune_2024_v1.rdf</code>) come <strong>caso di studio negativo</strong> della pratica LOD nelle PA italiane: il namespace dichiarato è <code>http://www1.finanze.gov.it/fakeurl#</code> (letteralmente "fakeurl"), le variabili sono nominate <code>v1..v22</code> senza URI semantiche, il modello è "wide" senza alcuna <code>qb:Observation</code>, la data di aggiornamento è malformata (<code>2026-23-04</code>, mese 23). La discussione completa è nella sez. 4, in chiusura, come contrappunto al lavoro di modellazione ben fatto realizzato altrove nel progetto.</p>
+<h3 id="24-ancore-semantiche-agid-geometrie-ausiliarie-licenze-cc-by-40-e-cc-by">2.4 Ancore semantiche AGID + geometrie ausiliarie (licenze CC-BY 4.0 e CC-BY)</h3>
+<p>Il progetto si appoggia a due artefatti AGID per l'ancoraggio semantico territoriale e a un terzo artefatto open per il rendering cartografico. Le tre risorse non sono "dataset statistici" nel senso degli otto precedenti — non veicolano misure — ma sono comunque fonti pubbliche da dichiarare con licenza e URL canonico.</p>
+<details class="block dataset-block">
+  <summary><strong>[9] Vocabolario Controllato Province d'Italia — AGID OntoPiA</strong></summary>
+  <div class="block-content">
+  <p class="dataset-intro">file <code>data/provinces.ttl</code>. URL canonico del vocabolario: <a href="https://w3id.org/italia/controlled-vocabulary/territorial-classifications/provinces">https://w3id.org/italia/controlled-vocabulary/territorial-classifications/provinces</a>. URL del file Turtle raw: <a href="https://raw.githubusercontent.com/italia/dati-semantic-assets/master/VocabolariControllati/territorial-classifications/provinces/provinces.ttl">https://raw.githubusercontent.com/italia/dati-semantic-assets/master/VocabolariControllati/territorial-classifications/provinces/provinces.ttl</a>.</p>
+  <dl class="dataset-info">
+    <dt>Licenza</dt>
+    <dd><strong>Creative Commons Attribuzione 4.0 Internazionale</strong> (<a href="https://w3id.org/italia/controlled-vocabulary/licences/A21_CCBY40">CC-BY 4.0</a>, codice AGID <code>A21_CCBY40</code>) — licenza verificata leggendo direttamente le triple <code>dct:license &lt;https://w3id.org/italia/controlled-vocabulary/licences/A21_CCBY40&gt;</code> presenti nel file TTL stesso.</dd>
+    <dt>Contenuto per provincia</dt>
+    <dd>URI canonica, <code>skos:prefLabel</code> IT/EN, <code>skos:notation</code> (codice ISTAT a 3 cifre), <code>clv:acronym</code> (sigla auto a 2 lettere), <code>owl:sameAs</code> verso codice NUTS Eurostat (eventualmente multipli per province con NUTS storici), <code>clv:situatedWithin</code> verso la regione di appartenenza, <code>clv:hasRankOrder</code> (3 per provincia ordinaria, 4 per città metropolitana). Dimensioni: 107 province istanziate, 116 link <code>owl:sameAs</code> verso NUTS (9 codici NUTS storici extra preservati come <code>owl:sameAs</code> multipli per le 6 province polinominate: Bergamo, Udine, Sassari, Nuoro, Rimini, Sud Sardegna), circa 2.712 triple totali.</dd>
+    <dt>Ruolo nel grafo IDPT</dt>
+    <dd>ancora semantica primaria. Tutte le 107 province del progetto sono identificate con le URI canoniche AGID; il pattern OntoPiA garantisce multi-typing gratuito (<code>clv:Province</code> + <code>clv:AdminUnitComponent</code> + <code>skos:Concept</code> + <code>clv:Feature</code>), eliminando la necessità di modellare classi territoriali proprie. Il vocabolario è inoltre il pivot del linking esterno: dai suoi <code>owl:sameAs</code> nativi verso NUTS si arriva transitivamente al LOD Cloud europeo, e i 107 <code>owl:sameAs</code> aggiuntivi materializzati dal progetto verso DBpedia (sez. 4) completano la quintupla identità di ogni provincia.</dd>
+  </dl>
+  </div>
+</details>
+
+<details class="block dataset-block">
+  <summary><strong>[10] Vocabolario Controllato Regioni d'Italia — AGID OntoPiA</strong></summary>
+  <div class="block-content">
+  <p class="dataset-intro">file <code>data/regions.ttl</code>. URL canonico: <a href="https://w3id.org/italia/controlled-vocabulary/territorial-classifications/regions">https://w3id.org/italia/controlled-vocabulary/territorial-classifications/regions</a>. URL del file Turtle raw: <a href="https://raw.githubusercontent.com/italia/dati-semantic-assets/master/VocabolariControllati/territorial-classifications/regions/regions.ttl">https://raw.githubusercontent.com/italia/dati-semantic-assets/master/VocabolariControllati/territorial-classifications/regions/regions.ttl</a>. Licenza identica al vocabolario delle province: <strong>CC-BY 4.0</strong> (verificata leggendo le triple <code>dct:license</code> del file). Struttura analoga, 20 regioni, circa 477 triple.</p>
+  <dl class="dataset-info">
+    <dt>Ruolo nel grafo IDPT</dt>
+    <dd>ancora di livello superiore per le query SPARQL di aggregazione regionale (es. la query di demo <code>q10_regime_retributivo_geo.rq</code> che calcola la percentuale di regime retributivo per regione).</dd>
+  </dl>
+  </div>
+</details>
+
+<details class="block dataset-block">
+  <summary><strong>[11] Geometrie provinciali ISTAT, ridistribuite da Openpolis in GeoJSON</strong></summary>
+  <div class="block-content">
+  <p class="dataset-intro">file <code>data/limits_IT_provinces.geojson</code>.</p>
+  <dl class="dataset-info">
+    <dt>URL download diretto</dt>
+    <dd><a href="https://raw.githubusercontent.com/openpolis/geojson-italy/master/geojson/limits_IT_provinces.geojson">https://raw.githubusercontent.com/openpolis/geojson-italy/master/geojson/limits_IT_provinces.geojson</a>.</dd>
+    <dt>Repository</dt>
+    <dd><a href="https://github.com/openpolis/geojson-italy">https://github.com/openpolis/geojson-italy</a>.</dd>
+    <dt>Licenza</dt>
+    <dd><strong>CC-BY</strong> ereditata dalla licenza dei confini amministrativi ISTAT originali, mantenuta esplicitamente da Openpolis sui file ridistribuiti. L'attribuzione richiesta è doppia (ISTAT + Openpolis).</dd>
+    <dt>Origine</dt>
+    <dd>i confini amministrativi ufficiali ISTAT sono ridistribuiti dal team Openpolis in formato GeoJSON nella proiezione geografica WGS84, con tre versioni a diversa granularità (province, regioni, comuni). Il match province IDPT ↔ poligoni avviene sul campo <code>codice_istat</code> integer.</dd>
+    <dt>Ruolo nel progetto</dt>
+    <dd>layer cartografico per le mappe coropletiche Folium discusse nella sez. 5 (<code>output/visualizations/idpt_map.html</code>, <code>output/visualizations/idpt_components.html</code>).</dd>
+    <dt>Ruolo nel grafo RDF</dt>
+    <dd>nessuno — il file di geometrie non entra fra le triple del grafo, è puro materiale di rendering. È documentato qui per completezza di provenance e licenza del deliverable visualizzativo.</dd>
+  </dl>
+  </div>
+</details>
+
+<h3 id="25-tabella-riepilogativa-delle-licenze">2.5 Tabella riepilogativa delle licenze</h3>
+<table>
+<thead>
+<tr>
+<th>Fonte</th>
+<th># dataset</th>
+<th>Licenza</th>
+<th>URL canonico</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>INPS — Osservatorio statistico</td>
+<td>4 cubi OLAP</td>
+<td>IODL 2.0</td>
+<td><a href="https://www.dati.gov.it/iodl/2.0/">https://www.dati.gov.it/iodl/2.0/</a></td>
+</tr>
+<tr>
+<td>ISTAT — <code>esploradati.istat.it</code></td>
+<td>3 estrazioni</td>
+<td>CC-BY 3.0 IT</td>
+<td><a href="https://creativecommons.org/licenses/by/3.0/it/">https://creativecommons.org/licenses/by/3.0/it/</a></td>
+</tr>
+<tr>
+<td>MEF — Dip. Finanze</td>
+<td>1 CSV (+ 1 RDF di facciata)</td>
+<td>CC-BY 3.0</td>
+<td><a href="https://creativecommons.org/licenses/by/3.0/">https://creativecommons.org/licenses/by/3.0/</a></td>
+</tr>
+<tr>
+<td>AGID — OntoPiA</td>
+<td>2 vocabolari TTL</td>
+<td>CC-BY 4.0</td>
+<td><a href="https://w3id.org/italia/controlled-vocabulary/licences/A21_CCBY40">https://w3id.org/italia/controlled-vocabulary/licences/A21_CCBY40</a></td>
+</tr>
+<tr>
+<td>Openpolis (deriv. ISTAT)</td>
+<td>1 file GeoJSON</td>
+<td>CC-BY</td>
+<td><a href="https://github.com/openpolis/geojson-italy">https://github.com/openpolis/geojson-italy</a></td>
+</tr>
+</tbody>
+</table>
+<p>La compatibilità di queste cinque licenze sorgente con la licenza scelta per il deliverable finale del progetto (CC-BY 4.0) è discussa in sez. 6.</p>
+<hr />
+<h2 id="3-elaborazione-dei-dataset">3. Elaborazione dei dataset</h2>
+<p>Prima di poter trasformare i dati in RDF e modellarli ontologicamente — che è materia della sez. 4 — è stato necessario portare le nove fonti tabellari della sez. 2 a una rappresentazione <em>coerente, pulita e armonizzata</em> a livello di tabella. In questa sezione "elaborazione" significa esattamente questo: data cleaning, normalizzazione, aggregazione, unpivot, stima delle misure soppresse o non pubblicate. Le anomalie tecniche che la sez. 2 ha citato in chiusura di ogni scheda dataset — formato italiano dei numeri, quoting non standard, soppressioni per privacy, asimmetrie territoriali, ex-province sarde, fake-NUTS, bug <code>pandas</code>, sentinelle MEF — vengono qui risolte una alla volta, dichiarando per ognuna il pattern algoritmico adottato. La distinzione metodologica fra <strong>elaborazione</strong> (qui) e <strong>trasformazione semantica</strong> (sez. 4) attraversa l'intera architettura del progetto: tutto il lavoro tabellare è chiuso prima che venga emessa la prima tripla RDF.</p>
+<h3 id="31-macrorefine-motore-e-architettura-della-pipeline">3.1 macrorefine: motore e architettura della pipeline</h3>
+<p>L'elaborazione è stata realizzata interamente con <strong>macrorefine</strong>, libreria Python di data cleaning a pipeline sviluppata appositamente per il progetto. macrorefine ha un'architettura concettualmente semplice ma rigorosa: un <code>Dataset</code> <em>immutabile</em> che incapsula un DataFrame <code>pandas</code>, una <code>Pipeline</code> <em>fluente</em> che concatena <code>Step</code> componibili, una <code>Recipe</code> riusabile che è una fabbrica di pipeline parametrizzate per uno specifico CSV sorgente. Ogni <code>Step</code> produce un nuovo <code>Dataset</code> (mai mutazione in-place) e registra un <code>StepRecord(name, params, metrics)</code> in una <code>History</code> che viene serializzata come sidecar <code>*.history.json</code> accanto al CSV pulito. Il sidecar contiene, per ogni esecuzione: nome dello step, parametri passati, timestamp UTC, metriche di output (es. righe lette / righe scritte / righe scartate, conteggio di match riusciti contro vocabolari esterni, totali preservati nelle aggregazioni). Questo audit trail strutturato è precisamente la "materia prima" che la sez. 4 trasformerà in lineage PROV-O minimale del grafo RDF.</p>
+<p>Sono stati pertanto sviluppati <strong>13 step custom LOD-aware</strong> organizzati nel sottomodulo <code>macrorefine/src/macrorefine/steps/lod/</code>.</p>
+<h3 id="32-inventario-dei-13-step-custom-lod-aware">3.2 Inventario dei 13 step custom LOD-aware</h3>
+<p>Gli step sono raggruppati per famiglia funzionale in cinque file Python: <code>parse.py</code>, <code>link.py</code>, <code>aggregate.py</code>, <code>enrich.py</code>, <code>estimate.py</code>, <code>project.py</code>. La tabella seguente fornisce per ognuno la famiglia, il file di residenza e il problema che risolve. Un quattordicesimo step, <code>EmitQbObservations</code> in <code>emit.py</code>, è di pertinenza della trasformazione semantica e viene presentato nella sez. 4.</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Famiglia</th>
+<th>File</th>
+<th>Problema risolto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ParseItalianNumbers</code></td>
+<td>Parsing</td>
+<td><code>parse.py</code></td>
+<td>Numeri formato italiano (<code>9.999,9</code>) + sentinella <code>-</code> per privacy nei CSV INPS</td>
+</tr>
+<tr>
+<td><code>LinkProvinceToAGID_byNUTS</code></td>
+<td>Linking</td>
+<td><code>link.py</code></td>
+<td>Match province ISTAT (NUTS in <code>REF_AREA</code>) → URI AGID via SPARQL su <code>provinces.ttl</code>, gestione NUTS storici multipli + fake-NUTS <code>IT108</code>–<code>IT111</code> + alias <code>ITD1</code>↔<code>ITD10</code> PA</td>
+</tr>
+<tr>
+<td><code>LinkProvinceToAGID_bySigla</code></td>
+<td>Linking</td>
+<td><code>link.py</code></td>
+<td>Match comuni MEF → URI AGID tramite <code>clv:acronym</code> (sigla 2 lettere)</td>
+</tr>
+<tr>
+<td><code>LinkProvinceToAGID_byName</code></td>
+<td>Linking</td>
+<td><code>link.py</code></td>
+<td>Match nomi INPS → URI AGID tramite pipeline normalize → match diretto → dizionario <code>SETTLED_ALIASES</code> → fuzzy <code>rapidfuzz</code> (soglia 90)</td>
+</tr>
+<tr>
+<td><code>LinkSedeINPS</code></td>
+<td>Linking</td>
+<td><code>link.py</code></td>
+<td>Risoluzione delle 106 sedi INPS → URI <code>idpt:sede-inps-*</code> + emissione sidecar <code>inps_to_agid.ttl</code></td>
+</tr>
+<tr>
+<td><code>AggregateSardiniaProvinces</code></td>
+<td>Aggregazione</td>
+<td><code>aggregate.py</code></td>
+<td>Aggregazione 8 ex-province sarde → 5 province AGID attuali (snapshot 2026) con somma su conteggi + media pesata sugli importi</td>
+</tr>
+<tr>
+<td><code>AggregateMEFRedditiByProvincia</code></td>
+<td>Aggregazione</td>
+<td><code>aggregate.py</code></td>
+<td>Group-by 7.897 comuni MEF → 107 province su <code>Sigla Provincia</code>, somma di 5 voci di reddito, unpivot wide→long</td>
+</tr>
+<tr>
+<td><code>UnpivotINPSPensioniVigenti</code></td>
+<td>Unpivot</td>
+<td><code>aggregate.py</code></td>
+<td>Wide→long del cubo 1: 5 gestioni × 3 misure (44 colonne wide → tabella long)</td>
+</tr>
+<tr>
+<td><code>UnpivotINPSRegimeSede</code></td>
+<td>Unpivot</td>
+<td><code>aggregate.py</code></td>
+<td>Wide→long stile B del cubo 2: 4 regimi × 3 measureType (<code>qb:measureType</code> come dimensione)</td>
+</tr>
+<tr>
+<td><code>UnpivotINPSSerieStorica</code></td>
+<td>Unpivot</td>
+<td><code>aggregate.py</code></td>
+<td>Wide→long stile B del cubo 3: 29 anni × 3 measureType, scarto righe <code>-</code> BAT/Fermo/Monza pre-2009</td>
+</tr>
+<tr>
+<td><code>EnrichWithStaticMapping</code></td>
+<td>Enrichment</td>
+<td><code>enrich.py</code></td>
+<td>Lookup statici per arricchire colonne via dizionario (es. URI indicatore demografico + unità di misura per il cubo 6)</td>
+</tr>
+<tr>
+<td><code>EstimateAnnualAmount</code></td>
+<td>Stima</td>
+<td><code>estimate.py</code></td>
+<td>Ricostruzione importo annuo come <code>n × importo_medio × 13</code> per i cubi 2 e 3 con marcatura <code>obsStatus=E</code></td>
+</tr>
+<tr>
+<td><code>ProjectGDPRegimeComposition</code></td>
+<td>Proiezione</td>
+<td><code>project.py</code></td>
+<td>Plan B GDP: euristica decorrenza→regime sul cubo 4 nazionale + proiezione sulle 107 quote provinciali GDP del cubo 1</td>
+</tr>
+</tbody>
+</table>
+<p>A questi 13 step custom si aggiunge <strong>un singolo script standalone</strong>, <code>scripts/generate_agid_to_dbpedia.py</code>, che gestisce il linking esterno verso DBpedia: una query SPARQL remota (<code>https://dbpedia.org/sparql</code>) per estrarre tutte le province italiane, un match esatto su <code>prefLabel</code> normalizzata seguito da reconciliation manuale con 25 override hardcoded (14 città metropolitane "Metropolitan City of …" + 11 anomalie nominali tipo "Reggio nell'Emilia" ↔ "Reggio Emilia"), un'emissione finale di 107 triple <code>owl:sameAs</code> nel sidecar <code>output/mappings/agid_to_dbpedia.ttl</code>. Lo script è tenuto separato dagli step macrorefine perché ha bisogno di rete esterna e quindi va eseguito una volta in locale con un risultato versionato su git, mentre la pipeline macrorefine è offline e riproducibile.</p>
+<h3 id="33-le-anomalie-tecniche-risolte">3.3 Le anomalie tecniche risolte</h3>
+<p>Questa sotto-sezione racconta come ciascuna anomalia citata nella sez. 2 è stata risolta a livello di codice, in ordine di apparizione nei CSV.</p>
+<details class="block">
+  <summary><strong>Numeri in formato italiano (4 CSV INPS)</strong></summary>
+  <div class="block-content"><p>I CSV dell'Osservatorio statistico INPS adottano la convenzione italiana — punto come separatore delle migliaia e virgola come separatore decimale (<code>1.234,56</code>), con celle vuote marcate <code>-</code>. Lo step <code>ParseItalianNumbers</code> è implementato come <code>ColumnStep</code> (applicato cella per cella su una lista di colonne specificate): regex <code>^[\d.,\s\-]+$</code> per identificare i numeri, rimozione dei punti di migliaia, sostituzione della virgola decimale con punto, conversione a <code>float</code>, mappatura della sentinella <code>-</code> a <code>NaN</code>. La scelta di non usare <code>pandas.to_numeric</code> con <code>decimal=","</code> è motivata: il default <code>pandas</code> non gestisce la sentinella <code>-</code> (che diventerebbe parsing error), e soprattutto non distingue il <code>-</code> "valore soppresso per privacy" (semanticamente diverso da <code>NaN</code> di valore mancante) da un eventuale errore di import. Con uno step custom abbiamo il pieno controllo: la sentinella <code>-</code> viene tracciata nelle metriche <code>StepRecord</code> come <code>count_suppressed</code>, riportata nel sidecar <code>*.history.json</code>, e successivamente mappata a <code>obsStatus=M</code> (Missing) o a osservazione omessa nelle Recipe finali.</p></div>
+</details>
+
+<details class="block">
+  <summary><strong>Template OLAP sporco (CSV INPS)</strong></summary>
+  <div class="block-content"><p>I CSV esportati dal cubo OLAP INPS contengono righe non tabellari nell'header e nel footer (titolo del cubo, descrizione dei filtri impostati, fonte, data di estrazione) e righe di totale alla fine. <code>pandas.read_csv</code> su questi file applica un'inferenza automatica delle colonne che fallisce — durante lo sviluppo della Recipe del cubo 1 abbiamo verificato che <code>pandas</code> perde 28 righe su un CSV INPS sporco senza apparente errore. La lettura è stata quindi affidata al modulo standard <code>csv.reader</code> con scansione esplicita: salta le righe iniziali finché non incontra l'header tabellare atteso (rilevato via match su un nome colonna noto), legge le righe successive finché non incontra la riga "Totale" (che viene scartata), filtra esplicitamente le 7 righe di aggregati continentali (<code>Europa</code>, <code>Asia</code>, <code>Africa</code>, <code>America Settentrionale</code>, <code>America Centrale</code>, <code>America Meridionale</code>, <code>Oceania</code>) che sono fuori dal perimetro IDPT (pensioni con residenza italiana).</p></div>
+</details>
+
+<details class="block">
+  <summary><strong>Quoting CSV non standard (CSV ISTAT)</strong></summary>
+  <div class="block-content"><p>I CSV esportati dal databrowser <code>esploradati.istat.it</code> adottano un quoting non standard: l'apice singolo come <code>quotechar</code> invece del doppio apice. La motivazione tecnica è la presenza nei nomi di provincia di apostrofi (<code>Valle d'Aosta</code>, <code>Reggio nell'Emilia</code>) che con doppio quote dovrebbero essere raddoppiati ma che ISTAT preferisce gestire con un quoting alternativo. Il default di <code>pandas.read_csv</code> (<code>quotechar='"'</code>) interpreta i campi come stringhe non quotate e li spezza alla prima virgola interna; passare <code>quotechar="'"</code> a <code>pandas</code> produce un errore di parser perché alcune righe contengono apici singoli non quotati (per gli accenti tipografici). La soluzione adottata è un helper <code>read_istat_csv()</code> basato su <code>csv.reader</code> stdlib con <code>quotechar="'"</code> esplicito, riutilizzato dalle Recipe dei cubi 5 e 6.</p></div>
+</details>
+
+<details class="block">
+  <summary><strong>NA-bug pandas su CSV MEF</strong></summary>
+  <div class="block-content"><p>Quando <code>pandas.read_csv</code> incontra un valore stringa <code>NA</code> su una colonna <code>Sigla Provincia</code>, lo converte di default a <code>numpy.nan</code> perché <code>NA</code> è uno dei valori di default <code>na_values</code>. <strong>Conseguenza</strong>: i 92 comuni della provincia di Napoli (sigla = <code>NA</code>) perdono il loro identificatore territoriale subito dopo la lettura del CSV, e l'aggregazione per provincia produce un cluster spurio "comuni senza provincia". Il fix è una riga di codice — <code>pandas.read_csv(path, keep_default_na=False)</code> — ma è esattamente il tipo di bug silenzioso che si annida nelle pipeline open data se la convenzione di nomenclatura territoriale non è verificata empiricamente. Il MEF distribuisce inoltre <strong>una riga sentinella</strong> con <code>Codice Istat=0</code>, <code>Sigla=0</code>, <code>Regione=Mancante/errata</code> come placeholder per dichiarazioni con territorio non assegnato: viene filtrata esplicitamente dalla Recipe del cubo 7 prima dell'aggregazione <code>Sigla Provincia</code> → URI AGID.</p></div>
+</details>
+
+<details class="block">
+  <summary><strong>Aggregazione retroattiva delle ex-province sarde</strong></summary>
+  <div class="block-content"><p>Il CSV INPS della serie storica [3] mostra una discontinuità territoriale: dal 2005 al 2011 sono presenti righe per le 4 ex-province sarde (Olbia-Tempio, Carbonia-Iglesias, Medio Campidano, Ogliastra), dal 2012 al 2026 quelle righe scompaiono e i loro valori sono assorbiti dalle sedi INPS attuali (Sassari, Cagliari-e-Sud-Sardegna, Nuoro). Per evitare due policy diverse fra snapshot 2026 e serie storica, lo step <code>AggregateSardiniaProvinces</code> lavora in due modalità: in modalità <strong>snapshot</strong> (cubo 1) aggrega le 3 ex-province che compaiono nel CSV 2026 (Carbonia-Iglesias e Medio Campidano → Sud Sardegna 111, Olbia-Tempio → Sassari 090, Ogliastra → Nuoro 091) preservando il totale al singolo intero; in modalità <strong>mark serie storica</strong> (cubo 3) ricostruisce le 84 osservazioni 2005-2011 sulle 3 sedi attuali e le marca con <code>obsStatus=E</code> (Estimated) + <code>prov:wasDerivedFrom</code> esplicito nella tabella di output, per il successivo passaggio RDF. Le somme su conteggi sono dirette, le medie sugli importi sono pesate sul numero di pensioni (<code>weight_pairs</code>) per non distorcere gli aggregati.</p></div>
+</details>
+
+<details class="block">
+  <summary><strong>Aggregazione 7.897 comuni MEF → 107 province</strong></summary>
+  <div class="block-content"><p>Lo step <code>AggregateMEFRedditiByProvincia</code> esegue un <code>groupby('Sigla Provincia').sum()</code> sulle 10 colonne di interesse (5 voci × 2 misure: <code>Frequenza</code> + <code>Ammontare in euro</code>), seguito da un unpivot wide→long che ribalta le 5 voci <code>v2/v4/v5/v6/v7</code> da colonne a righe della code-list <code>idpt:voci-reddito-mef</code>. Il match Sigla → URI AGID avviene poi tramite <code>LinkProvinceToAGID_bySigla</code>, che usa <code>clv:acronym</code> come chiave esatta — zero ambiguità perché ogni sigla a 2 lettere è univoca nel vocabolario AGID. Il risultato sono 535 righe (107 province × 5 voci) pronte per l'emissione <code>qb:Observation</code> del cubo 7.</p></div>
+</details>
+
+<details class="block">
+  <summary><strong>Riconciliazione nominale INPS → AGID</strong></summary>
+  <div class="block-content"><p>Il <code>LinkProvinceToAGID_byName</code> risolve il caso più delicato: i CSV INPS portano i nomi delle province in italiano, talora in maiuscolo, con varianti tipografiche storiche e abbreviazioni che non corrispondono allo <code>skos:prefLabel@it</code> del vocabolario AGID. La pipeline interna è a quattro stadi: (1) normalizzazione (lowercase, NFKD con drop dei combining accent, fix spazi attorno ai trattini, collasso whitespace multipli); (2) match diretto sul nome AGID normalizzato; (3) dizionario manuale <code>SETTLED_ALIASES</code> per le anomalie strutturali documentate. 
+Le 13 anomalie nominali strutturali del confronto INPS vs AGID, materializzate come entry del dizionario, sono:</p></div>
+</details>
+
+<table>
+<thead>
+<tr>
+<th>Nome INPS originale (CSV)</th>
+<th>Nome AGID (<code>skos:prefLabel@it</code>)</th>
+<th>Codice ISTAT</th>
+<th>Origine</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Aosta</code></td>
+<td>Valle d'Aosta/Vallée d'Aoste</td>
+<td>007</td>
+<td>residenza</td>
+</tr>
+<tr>
+<td><code>Barletta -Andria-Trani</code></td>
+<td>Barletta-Andria-Trani</td>
+<td>110</td>
+<td>residenza (fix spazio)</td>
+</tr>
+<tr>
+<td><code>Forli' -Cesena</code></td>
+<td>Forlì-Cesena</td>
+<td>040</td>
+<td>residenza (fix accento + spazio)</td>
+</tr>
+<tr>
+<td><code>Massa -Carrara</code></td>
+<td>Massa-Carrara</td>
+<td>045</td>
+<td>residenza (fix spazio)</td>
+</tr>
+<tr>
+<td><code>Provincia Autonoma di Bolzano/Bozen</code></td>
+<td>Bolzano/Bozen</td>
+<td>021</td>
+<td>residenza</td>
+</tr>
+<tr>
+<td><code>Provincia Autonoma di Trento</code></td>
+<td>Trento</td>
+<td>022</td>
+<td>residenza</td>
+</tr>
+<tr>
+<td><code>Reggio Calabria</code></td>
+<td>Reggio di Calabria</td>
+<td>080</td>
+<td>residenza</td>
+</tr>
+<tr>
+<td><code>Reggio Emilia</code></td>
+<td>Reggio nell'Emilia</td>
+<td>035</td>
+<td>residenza</td>
+</tr>
+<tr>
+<td><code>Verbano -Cusio-Ossola</code></td>
+<td>Verbano-Cusio-Ossola</td>
+<td>103</td>
+<td>residenza (fix spazio)</td>
+</tr>
+<tr>
+<td><code>VERBANIA</code></td>
+<td>Verbano-Cusio-Ossola</td>
+<td>103</td>
+<td>regime sede / serie storica (maiuscolo)</td>
+</tr>
+<tr>
+<td><code>FORLI</code></td>
+<td>Forlì-Cesena</td>
+<td>040</td>
+<td>regime sede / serie storica (maiuscolo, senza accento)</td>
+</tr>
+<tr>
+<td><code>BOLZANO</code></td>
+<td>Bolzano/Bozen</td>
+<td>021</td>
+<td>regime sede / serie storica (maiuscolo)</td>
+</tr>
+<tr>
+<td><code>TRENTO</code></td>
+<td>Trento</td>
+<td>022</td>
+<td>regime sede / serie storica (maiuscolo)</td>
+</tr>
+<tr>
+<td><code>PESARO -URBINO</code></td>
+<td>Pesaro e Urbino</td>
+<td>041</td>
+<td>regime sede (variante <code>-</code> vs <code>e</code>, scoperta in Fase 1 blocco 3)</td>
+</tr>
+</tbody>
+</table>
+<p>L'ultima riga della tabella è una scoperta sopravvenuta durante lo sviluppo che vale la pena raccontare: il vocabolario AGID modella "Pesaro e Urbino" con il connettore congiuntivo (" e "), mentre il cubo INPS regime di liquidazione usa l'abbreviazione con trattino. La pipeline di normalizzazione li rende rispettivamente <code>pesaro e urbino</code> e <code>pesaro-urbino</code>, mismatch a livello di stringa risolto solo aggiungendo l'entry esplicita al dizionario. Le metriche <code>StepRecord</code> distinguono <code>matched_via_direct</code>, <code>matched_via_alias</code>, <code>matched_via_fuzzy</code> per l'audit a posteriori.</p>
+<details class="block">
+  <summary><strong>Stima dell'importo annuo soppresso (cubi 2 e 3)</strong></summary>
+  <div class="block-content"><p>Il cubo OLAP INPS sopprime la statistica <code>Importo complessivo annuo</code> per privacy quando si scende a granularità provincia × regime (cubo 2) o sede × anno (cubo 3); abbiamo già menzionato il problema nella sez. 2. Lo step <code>EstimateAnnualAmount</code> ricostruisce l'importo come <code>numero_pensioni × importo_medio_mensile × 13</code> (12 mensilità più tredicesima), aggiunge una colonna <code>_status="estimated"</code>, e popola una colonna <code>_derived_from</code> con la coppia delle due osservazioni primarie da cui la stima è derivata (necessaria per emettere <code>prov:wasDerivedFrom</code> nella sez. 4). Il moltiplicatore 13 è una convenzione INPS pubblica per le pensioni annue; il pattern di derivazione esplicita preserva la separazione semantica fra dato primario e stima.</p></div>
+</details>
+
+<details class="block">
+  <summary><strong>Plan B GDP — la trasformazione più articolata</strong></summary>
+  <div class="block-content"><p>Lo step <code>ProjectGDPRegimeComposition</code> realizza in due fasi quanto descritto nella sez. 2.1 sul dataset [4]. Fase 1: legge il CSV decorrenza GDP nazionale (46 righe da "anteriore al 31/12/1980" al 2025), applica l'euristica anno-di-decorrenza → regime di liquidazione e produce 4 percentuali nazionali di composizione regime GDP. Le soglie dell'euristica sono calibrate sulle due grandi riforme previdenziali italiane: chi è andato in pensione prima del 1996 è interamente in regime retributivo puro (sistema pre-Riforma Dini 1995); chi è andato in pensione fra il 1996 e il 2011 è in regime misto-Dini (retributivo per l'anzianità maturata fino al 1995, contributivo per il resto); chi è andato in pensione dal 2012 in poi è in regime misto-Fornero (retributivo fino al 2011, contributivo per il resto) o, raramente, contributivo puro (per chi ha iniziato a contribuire dopo il 1996, caso ancora rarissimo nel 2026 perché l'età pensionabile non è stata ancora raggiunta). Sul CSV reale, queste percentuali si attestano a 13,85% Retributivo + 34,23% Misto-Dini + 51,92% Misto-Fornero + 0% Contributivo-puro (la quota Contributivo-puro è praticamente assente perché chi è entrato nel mondo del lavoro dopo l'1/1/1996 non è ancora arrivato all'età pensionabile nel 2026). Fase 2: legge via SPARQL il cubo 1 già emesso, estrae per ogni provincia il numero di pensioni <code>gestione-pubblici</code>, moltiplica per le 4 percentuali nazionali, produce 428 osservazioni stimate (107 province × 4 regimi). Il totale per provincia è preservato al singolo intero; il totale nazionale sommato sulle 107 province (3.159.266) differisce di esattamente <strong>11.991 pensioni</strong> dal totale GDP del cubo 4 (3.171.257) — differenza interamente giustificata dalle pensioni Pubblici residenti all'estero (Europa 7.833 + Asia 381 + Africa 1.941 + America Settentrionale 745 + America Centrale 300 + America Meridionale 607 + Oceania 184 = 11.991), che il cubo 1 esclude per coerenza con la decisione "pensioni estere fuori dall'IDPT". Validazione esatta al singolo intero, ricostruzione riproducibile, e onestà metodologica: la differenza è dichiarata, non nascosta.</p></div>
+</details>
+
+<h3 id="34-le-quattro-recipe-a-pipeline-lineare-cubi-1-5-6-7">3.4 Le quattro Recipe a pipeline lineare — cubi 1, 5, 6, 7</h3>
+<p>Una <code>Recipe</code> macrorefine è la fabbrica che orchestra gli step custom per produrre una specifica tabella pulita pronta per l'emissione <code>qb:Observation</code>. Le quattro Recipe descritte in questa sottosezione hanno pipeline lineari: stile A qb multi-measure, nessuna proiezione, nessuna aggregazione retroattiva, nessuna stima di misura.</p>
+<p><strong>Cubo 5 (occupati ISTAT)</strong> — <code>scripts/recipes/cubo5_occupati_istat.py</code>. Pipeline minimale: <code>RenameColumns({"REF_AREA": "ref_area", "Osservazione": "n_occupati"})</code> → <code>CastTypes({"n_occupati": "float"})</code> → <code>LinkProvinceToAGID_byNUTS(nuts_column="ref_area", provinces_ttl="data/provinces.ttl", nuts_aliases_ttl="output/mappings/nuts_aliases.ttl")</code>. Output: 107/107 province matchate, 107 osservazioni di output, una misura primaria (<code>numeroOccupati</code>). Recipe "Hello World" che è servita a validare il pattern <code>EmitQbObservations</code> per i tre cubi successivi.</p>
+<p><strong>Cubo 7 (redditi MEF)</strong> — <code>scripts/recipes/cubo7_redditi_mef.py</code>. Pipeline: <code>read_csv(keep_default_na=False)</code> → <code>DropRows</code> della sentinella <code>Codice Istat=0</code> → <code>AggregateMEFRedditiByProvincia</code> (group-by sigla + unpivot 5 voci) → <code>LinkProvinceToAGID_bySigla</code>. Output: 535 osservazioni (107 province × 5 voci di reddito), 107/107 sigle matchate.</p>
+<p><strong>Cubo 6 (indicatori demografici ISTAT)</strong> — <code>scripts/recipes/cubo6_indicatori_demografici_istat.py</code>. Pipeline: <code>read_istat_csv</code> con <code>quotechar="'"</code> → unione dei due CSV (indicatori 2026 + natalità/speranza vita 2025, gestiti come due input separati con <code>annoRiferimento</code> distinto) → <code>LinkProvinceToAGID_byNUTS</code> (gestisce le PA in NUTS-3 corretto dal cubo demografico) → <code>EnrichWithStaticMapping</code> per arricchire ogni riga con URI dell'indicatore SKOS (<code>POP014</code> → <code>idpt:ind-pop014</code>, ecc.) e unità di misura SDMX (<code>%</code>, <code>anni</code>, <code>per mille</code>). Output: 856 osservazioni (642 per il 2026 + 214 per il 2025), validation 7/7 verde.</p>
+<p><strong>Cubo 1 (vigenti residenza INPS)</strong> — <code>scripts/recipes/cubo1_vigenti_residenza.py</code>. La più complessa delle "facili" per via dei due step custom INPS-specifici e dell'aggregazione Sardegna. Pipeline: <code>csv.reader</code> stdlib per lettura template OLAP sporco → <code>ParseItalianNumbers</code> su tutte le colonne numeriche INPS → <code>AggregateSardiniaProvinces</code> (modalità snapshot, 8 → 5 nomi sardi) → <code>UnpivotINPSPensioniVigenti</code> (5 gestioni × 3 misure wide→long) → <code>LinkProvinceToAGID_byName</code>. Output: 535 osservazioni (107 province × 5 gestioni — incluso <code>gestione-totale</code> aggregato), 505 direct + 30 alias matched dalla pipeline a 4 stadi.</p>
+<h3 id="35-le-quattro-recipe-con-stile-b-qb-e-pattern-di-derivazione-cubi-2-3-4-9">3.5 Le quattro Recipe con stile B qb e pattern di derivazione — cubi 2, 3, 4, 9</h3>
+<p>Le quattro Recipe rimanenti hanno pipeline più articolate: adottano lo stile B qb (<code>qb:measureType</code> come dimensione, una osservazione per misura), oppure includono la stima dell'importo annuo soppresso, l'aggregazione retroattiva sarda, la proiezione Plan B sulla composizione regime GDP.</p>
+<p><strong>Cubo 4 (decorrenza GDP nazionale)</strong> — <code>scripts/recipes/cubo4_decorrenza_gdp.py</code>. Pipeline lineare ma con una decisione metodologica esplicita: la riga "Decorrenza anteriore al 31/12/1980" viene aggregata sull'anno 1980 con marcatura <code>obsStatus=E</code> (Estimated) — invece di scartarla o di trattarla come "anno 0", il pattern uniforme del progetto è preservato. Output: 46 osservazioni (45 status=A primarie + 1 status=E aggregata).</p>
+<p><strong>Cubo 9 (Plan B GDP projected)</strong> — <code>scripts/recipes/cubo9_plan_b_gdp_projected.py</code>. La prima materializzazione su scala del pattern "osservazione derivata": 428 osservazioni (107 province × 4 regimi) tutte con <code>obsStatus=E</code> e <strong>doppia</strong> <code>prov:wasDerivedFrom</code> — una verso l'osservazione del cubo 1 con <code>gestione=Pubblici</code> per quella provincia, l'altra verso il <code>qb:DataSet</code> del cubo 4 da cui si ricava la composizione regime nazionale. Helper SPARQL <code>_load_pubblici_per_provincia(cubo1_ttl)</code> per leggere le 107 quote provinciali GDP dal cubo 1 appena emesso. Output: 428 osservazioni, 856 link <code>prov:wasDerivedFrom</code> totali (2 per ogni obs). Validazione esatta della discrepanza 11.991 con il cubo 4 nazionale.</p>
+<p><strong>Cubo 2 (regime sede INPS)</strong> — <code>scripts/recipes/cubo2_regime_sede.py</code>. Prima implementazione dello <strong>stile B qb</strong>: la dimensione <code>qb:measureType</code> distingue per ogni osservazione quale misura sta esprimendo (<code>numeroPensioni</code>, <code>importoMedioMensile</code>, <code>importoAnnuoComplessivo</code>); una stessa coppia (sede, regime) genera 3 osservazioni distinte. Lo step <code>UnpivotINPSRegimeSede</code> ribalta wide→long le 106 sedi × 4 regimi × 2 misure primarie esplicite del CSV (<code>numeroPensioni</code>, <code>importoMedioMensile</code>) verso 106 × 4 × 2 = 848 osservazioni primarie con <code>obsStatus=A</code>. Quindi <code>EstimateAnnualAmount</code> ricostruisce per ogni coppia (sede, regime) l'<code>importoAnnuoComplessivo</code> come <code>n × media × 13</code>, emettendo 106 × 4 = 424 osservazioni con <code>obsStatus=E</code> e <code>prov:wasDerivedFrom</code> verso le due osservazioni primarie da cui la stima è derivata. La gestione "Pubblici" è esclusa per costruzione dal cubo OLAP INPS, quindi rimossa anche dal DSD del cubo 2 (decisione coerente con la realtà del dato). Linking sede INPS via <code>LinkSedeINPS</code>, che emette contestualmente il sidecar <code>output/mappings/inps_to_agid.ttl</code> con le 106 istanze <code>idpt:SedeINPS</code>. Output: 1.272 osservazioni totali (848 primarie + 424 stimate), 848 link <code>prov:wasDerivedFrom</code>.</p>
+<p><strong>Cubo 3 (serie storica sedi INPS)</strong> — <code>scripts/recipes/cubo3_serie_storica_sede.py</code>. Stile B qb anch'esso, ma su 29 anni invece che 4 regimi. Pipeline: csv.reader stdlib per template OLAP sporco → <code>ParseItalianNumbers</code> → <code>UnpivotINPSSerieStorica</code> (29 anni × 3 measureType, scarto delle righe <code>-</code> per BAT, Fermo, Monza pre-2009 — <code>obsStatus=M</code> Missing implicito tramite omissione di osservazione) → <code>AggregateSardiniaProvinces</code> in modalità <code>mark_serie_storica</code> (84 osservazioni 2005-2011 sulle 3 sedi sarde compositive marcate <code>obsStatus=E</code>) → <code>EstimateAnnualAmount</code> per l'importo annuo ricostruito → <code>LinkSedeINPS</code>. Output: 9.105 osservazioni totali — 5.986 status=A primarie + 3.035 status=E importo annuo stimato + 84 status=E aggregazione Sardegna retroattiva — coperte da una sola DSD coerente.</p>
+<h3 id="36-audit-trail-e-validazione-tabellare">3.6 Audit trail e validazione tabellare</h3>
+<p>L'intera elaborazione è coperta da <strong>172 unit test pytest</strong> (<code>macrorefine/tests/</code>) che esercitano gli step custom su micro-fixture rappresentative e da test di integrazione end-to-end sui CSV reali del progetto. Le verifiche di integrazione sono particolarmente rilevanti per la riproducibilità: per il cubo 1 viene controllato che la pipeline porti 110 → 107 entità territoriali dopo l'aggregazione sarda e che 107/107 vengano risolte da <code>LinkProvinceToAGID_byName</code>; per il cubo 7 che 7.897 comuni MEF vengano aggregati su 107 province con preservazione esatta delle 5 voci di reddito; per il cubo 9 che la conservazione dei totali GDP per provincia mostri <code>max diff = 0</code> rispetto al cubo 1 in input.</p>
+<p>I sidecar <code>*.history.json</code> prodotti accanto a ogni CSV pulito registrano, oltre al tracciamento step-per-step già descritto, l'identità del CSV di input (path + hash SHA256), il commit hash di macrorefine al momento dell'esecuzione, l'identità dell'agente (<code>Roberto Bruno</code> come <code>prov:Agent</code> configurato nelle Recipe) e i timestamp UTC di inizio e fine pipeline. Sono questi metadati, esistenti già a livello tabellare grazie alla scelta architetturale di macrorefine, che la sez. 4 monterà come triple PROV-O minimali nel grafo RDF (<code>prov:wasDerivedFrom</code> su ogni osservazione stimata + <code>dcterms:source</code> sui <code>qb:DataSet</code>). La distinzione "audit trail tabellare" (qui) vs "lineage semantico" (sez. 4) è meno una distinzione di sostanza che di livello di astrazione: gli stessi metadati di provenance esistono a entrambi i livelli, con il livello RDF che li espone come triple interrogabili via SPARQL.</p>
+<p>Le 172 verifiche tabellari sono solo il primo livello di validazione del progetto. Sopra di loro, nella sez. 4, troveranno posto i 33 check SPARQL post-emissione (10 sui vocabolari + 9 sui cubi + 14 sul DCAT-AP_IT del deliverable), che validano la conformità del grafo RDF rispetto al modello ontologico atteso. Le due famiglie di test sono complementari e ortogonali: i test tabellari verificano che la pipeline produca le tabelle corrette; i test SPARQL verificano che il grafo emesso dalle tabelle sia conforme allo schema ontologico atteso.</p>
+<hr />
+<h2 id="4-trasformazione-dei-dataset-modellazione-ontologica-e-rdf">4. Trasformazione dei dataset — modellazione ontologica e RDF</h2>
+<p>Con la sezione 4 entriamo nel cuore del progetto: la <strong>pratica del Linked Open Data</strong>. Le tabelle pulite prodotte dalla sezione 3 vengono qui modellate ontologicamente e materializzate come grafo RDF — passaggio in cui ogni decisione tecnica si traduce in una decisione semantica e quindi pesa sul giudizio "LOD ben fatto vs LOD di facciata". Tre principi guidano l'intera modellazione: <strong>massimo riuso di vocabolari standard</strong> (9 vocabolari riusati a fronte di una sola classe propria su tutto il grafo); <strong>un cubo per fenomeno omogeneo</strong> (9 <code>qb:DataSet</code> separati invece di un cubo unico "tuttologo" che sarebbe stato un anti-pattern conclamato); <strong>pattern uniforme per le osservazioni derivate</strong> (<code>sdmx-attribute:obsStatus sdmx-code:obsStatus-E</code> + <code>prov:wasDerivedFrom</code> applicato in 4 punti del grafo, su un totale di 4.399 osservazioni stimate).</p>
+<p>Il risultato di questa fase è un grafo RDF di circa <strong>117.000 triple</strong> distribuite su <strong>6 grafi nominati</strong> in Apache Jena Fuseki: <code>graph:agid</code> (vocabolari controllati territoriali, read-only), <code>graph:vocabularies</code> (classi, property, code-list proprie), <code>graph:linking</code> (i tre sidecar di interlinking), <code>graph:observations</code> (le osservazioni primarie degli 8 cubi statistici), <code>graph:idpt-computed</code> (il cubo 8 con le 428 osservazioni dell'IDPT calcolato), <code>graph:metadata</code> (il <code>dcatapit:Dataset</code> del deliverable). Le <strong>13.312 <code>qb:Observation</code></strong> totali del grafo coprono 107 province × 29 anni × 9 cubi × 5 gestioni / 4 regimi / 8 indicatori demografici / 5 voci di reddito a seconda della DSD applicabile. Su tutto questo sono materializzati <strong>107 <code>owl:sameAs</code> verso DBpedia</strong> che chiudono la quintupla identità di ogni provincia italiana nel LOD Cloud. La sezione che segue racconta le decisioni che hanno prodotto questo risultato.</p>
+<h3 id="41-i-nove-vocabolari-riusati-perche-ognuno-e-li">4.1 I nove vocabolari riusati — perché ognuno è lì</h3>
+<p>Il primo lavoro della modellazione è stato selezionare i vocabolari da riusare. Il riuso massiccio di standard esterni è la metrica sostantiva del lavoro LOD: si misura sulla <em>parsimonia delle classi proprie</em> e sulla <em>densità di linking semantico</em> verso vocabolari riconosciuti. I 9 vocabolari selezionati sono organizzati in quattro tier in base al ruolo che svolgono nel grafo.</p>
+<h4 id="tier-1-il-cuore-dellontologia">Tier 1 — Il cuore dell'ontologia</h4>
+<p><strong>RDF Data Cube (<code>qb:</code> = <code>http://purl.org/linked-data/cube#</code>)</strong> — Raccomandazione W3C del 16 gennaio 2014. È l'ontologia "canonica" per pubblicare in RDF dati statistici multidimensionali — cubi del tipo "occupati per provincia × anno × sesso × settore". Risponde alla domanda <em>"come modello in modo interoperabile uno schema statistico generale, indipendentemente dal dominio?"</em>. Ispirata a SDMX (Statistical Data and Metadata eXchange, ISO/IEC 17369), lo standard di scambio sviluppato congiuntamente da BIS, BCE, Eurostat, FMI, OECD, ONU, Banca Mondiale. Concetti chiave: <code>qb:DataSet</code> (il cubo nel suo insieme), <code>qb:DataStructureDefinition</code> o DSD (lo schema del cubo: dimensioni / misure / attributi), <code>qb:Observation</code> (una singola cella del cubo, identificata univocamente dalla combinazione dei valori delle dimensioni). Nel nostro progetto: 9 DSD, 9 <code>qb:DataSet</code>, 13.312 <code>qb:Observation</code>. Interoperabile con altri cubi qb dell'ecosistema europeo — Eurostat pubblica i propri dataset come qb e le nostre DSD ancorano dimensioni e misure ai loro <code>sdmx-concept:</code> standard via <code>qb:concept</code> per riusabilità diretta. Alternative scartate: SDMX-RDF puro (più pesante, orientato a istituti nazionali), modellazione "wide" ad hoc dove ogni record porta tutti i campi come property (anti-pattern documentato dal caso MEF discusso in 4.9).</p>
+<p><strong>SKOS</strong> (Simple Knowledge Organization System, <code>skos:</code> = <code>http://www.w3.org/2004/02/skos/core#</code>) — Raccomandazione W3C del 18 agosto 2009. Ontologia per modellare in RDF tassonomie, thesauri, classificazioni gerarchiche, vocabolari controllati — pensata per cose come ATECO, ISCO, le classificazioni merceologiche Eurostat, i vocabolari bibliotecari. Risponde a <em>"come modello in modo interoperabile una lista di termini ufficiali con etichette, sigle, definizioni e relazioni gerarchiche?"</em>. Concetti chiave: <code>skos:Concept</code> (un singolo termine), <code>skos:ConceptScheme</code> (la tassonomia nel suo insieme), <code>skos:prefLabel</code>/<code>skos:altLabel</code> per le etichette con tag di lingua, <code>skos:notation</code> per le sigle/codici, <code>skos:broader</code>/<code>skos:narrower</code> per le gerarchie, <code>skos:exactMatch</code>/<code>skos:closeMatch</code> per le equivalenze fra schemi diversi. Nel nostro progetto: 6 code-list SKOS proprie (vedi 4.3) per modellare i tipi di gestione INPS, i regimi di liquidazione, le voci di reddito MEF, gli indicatori demografici ISTAT, le componenti IDPT, le aree geografiche. Coerenza stilistica con l'ancora AGID: il TTL dei vocabolari controllati territoriali è già modellato in SKOS, quindi la nostra scelta non introduce un dialetto estraneo nel grafo. Alternative scartate: OWL "vero" con assiomi e restriction (over-engineering per code-list a 4-8 valori), reinvenzione tramite <code>rdfs:label</code> (reinventerebbe metà di SKOS).</p>
+<p><strong>OntoPiA CLV + Vocabolari Controllati Territoriali AGID</strong> (<code>clv:</code> = <code>https://w3id.org/italia/onto/CLV/</code>, URI canoniche <code>https://w3id.org/italia/controlled-vocabulary/territorial-classifications/...</code>) — OntoPiA è la rete di ontologie ufficiale della Pubblica Amministrazione italiana, sviluppata da AgID a partire dal 2018 nel quadro del Piano Triennale per l'Informatica nella PA. Contiene una decina di ontologie connesse fra loro (Persona, Organizzazione, Indirizzo, Documento, Luogo, ecc.) allineate al Core Vocabulary del programma europeo ISA². CLV (Core Location Vocabulary) è la sua ontologia per le entità territoriali italiane: definisce classi come <code>clv:Province</code>, <code>clv:Region</code>, <code>clv:City</code>, e property come <code>clv:acronym</code> (sigla auto a 2 lettere), <code>clv:situatedWithin</code> (regione di appartenenza), <code>clv:hasRankOrder</code> (ordinaria vs città metropolitana). I "Vocabolari Controllati territoriali" (province, regioni, comuni) istanziano già tutte le 107 province e le 20 regioni con URI canoniche, codice ISTAT, sigla, NUTS, label IT/EN. Nel nostro progetto: <strong>ancora primaria</strong> del grafo. Riusiamo integralmente le 107 URI canoniche AGID per identificare le province — non ne emettiamo una sola di nostra. Il pattern multi-typing OntoPiA fa sì che ogni provincia AGID sia automaticamente <code>clv:Province</code> + <code>clv:AdminUnitComponent</code> + <code>skos:Concept</code> + <code>clv:Feature</code>, ereditando quattro punti di vista semantici al prezzo di una sola URI. Alternative scartate: GeoNames (non ufficiale italiano, gerarchia amministrativa povera), DBpedia o Wikidata come ancora primaria (anti-pattern: sono target di linking esterno, non ancore native), URI proprie del progetto (anti-pattern, perderemmo l'allineamento al contesto della PA italiana).</p>
+<h4 id="tier-2-accessori-per-i-cubi-statistici">Tier 2 — Accessori per i cubi statistici</h4>
+<p><strong>SDMX content vocabulary</strong> (<code>sdmx-attribute:</code> = <code>http://purl.org/linked-data/sdmx/2009/attribute#</code>, <code>sdmx-code:</code>, <code>sdmx-concept:</code>) — Pubblicato dal W3C insieme a <code>qb</code> nel 2014, è la traduzione RDF dello standard internazionale SDMX. Fornisce <strong>attributi standard</strong> (<code>sdmx-attribute:obsStatus</code>, <code>sdmx-attribute:unitMeasure</code>, <code>sdmx-attribute:obsConf</code>, ecc.) e <strong>code-list standard</strong> riusabili in qualunque cubo qb. Il caso d'uso nostro più rilevante è la code-list di <code>obsStatus</code> con i valori <code>sdmx-code:obsStatus-A</code> (Normal, valore primario), <code>-E</code> (Estimated, valore stimato/derivato), <code>-P</code> (Provisional, dato provvisorio), <code>-F</code> (Forecast), <code>-M</code> (Missing), <code>-B</code> (Time series break). Inoltre fornisce <strong>concetti standard</strong> (<code>sdmx-concept:refArea</code> per la dimensione territoriale, <code>sdmx-concept:refPeriod</code> per la temporale, <code>sdmx-concept:obsValue</code> per le misure) a cui le nostre <code>qb:DimensionProperty</code> e <code>qb:MeasureProperty</code> si ancorano via <code>qb:concept</code> per dichiarare esplicitamente la loro semantica SDMX. Nel nostro progetto: 4.399 osservazioni del grafo portano <code>obsStatus=E</code> (Plan B GDP cubo 9, importo annuo stimato cubi 2 e 3, aggregazione retroattiva Sardegna cubo 3, IDPT computed cubo 8); l'osservazione del cubo 4 aggregata sull'anno 1980 porta <code>obsStatus=E</code> per coerenza pattern. Alternative scartate: booleani propri tipo <code>:isProjected true</code> (zero interoperabilità), stringhe libere per lo stato (anti-pattern).</p>
+<p><strong>OWL-Time</strong> (<code>time:</code> = <code>http://www.w3.org/2006/time#</code>) — Raccomandazione W3C del 19 ottobre 2017. Ontologia generale per concetti temporali in RDF: istanti, intervalli, durate, calendari, relazioni di ordine (Allen's interval algebra), validità storica delle entità. Risponde a <em>"come modello in modo formale fatti che hanno una dimensione temporale strutturata?"</em>. Nel nostro progetto: uso <strong>minimale</strong>. La dimensione temporale puntuale (anno snapshot, anno decorrenza) è modellata con <code>xsd:gYear</code> (literal XSD standard), che è significativamente più leggero senza perdita di semantica. OWL-Time sarebbe stato opzionalmente impiegato per intervalli di validità di entità territoriali estinte/nate (Olbia-Tempio 2005–2016, BAT dal 2009) via <code>dcterms:valid</code>, ma le 4 ex-province sarde sono state aggregate retroattivamente (vedi sez. 2.1) e quindi non compaiono come entità del grafo. La presenza di OWL-Time nel grafo finale è minima — è dichiarato fra i vocabolari riusati per onestà di inventario, non per peso semantico.</p>
+<h4 id="tier-3-packaging-del-dataset">Tier 3 — Packaging del dataset</h4>
+<p><strong>DCAT-AP_IT</strong> (<code>dcatapit:</code> = <code>http://dati.gov.it/onto/dcatapit#</code>) — Profilo italiano AGID di DCAT-AP (profilo applicativo europeo), che a sua volta è il profilo europeo di DCAT (Data Catalog Vocabulary, Raccomandazione W3C). DCAT è la <em>lingua franca</em> per descrivere dataset pubblici: chi li ha pubblicati, quando, sotto quale licenza, in quale formato, dove scaricarli, a quale tema appartengono, di cosa parlano. DCAT-AP_IT è quello che usa il portale italiano <code>dati.gov.it</code> ed è obbligatorio per la pubblicazione nei cataloghi PA italiana. Estende DCAT con vincoli aggiuntivi (es. licenze obbligatorie via code-list AGID, conformsTo verso standard nazionali) e con classi specifiche (<code>dcatapit:Dataset</code>, <code>dcatapit:Distribution</code>, <code>dcatapit:Agent</code>, <code>dcatapit:Organization</code>). Nel nostro progetto: il deliverable finale <code>idpt:atlante-idpt</code> è un <code>dcatapit:Dataset</code> (oltre che <code>dcat:Dataset</code> + <code>void:Dataset</code> per triple-typing — vedi 4.8) con metadati conformi al profilo italiano. Alternative scartate: DCAT puro o DCAT-AP europeo (perdono il contesto italiano), Schema.org <code>Dataset</code> (orientato SEO, non LOD-grade per PA).</p>
+<p><strong>dcterms + foaf + vcard</strong> — il trio "infrastruttura Dublin Core" che DCAT-AP_IT trascina con sé. <strong><code>dcterms:</code></strong> (Dublin Core Terms, <code>http://purl.org/dc/terms/</code>) è lo standard storico (1995, refresh 2008) per metadati documentali: <code>dcterms:title</code>, <code>dcterms:description</code>, <code>dcterms:license</code>, <code>dcterms:issued</code>, <code>dcterms:modified</code>, <code>dcterms:source</code>, <code>dcterms:conformsTo</code>, <code>dcterms:creator</code>, <code>dcterms:publisher</code>, <code>dcterms:hasPart</code>, <code>dcterms:language</code>, <code>dcterms:valid</code>. <strong><code>foaf:</code></strong> (Friend Of A Friend, <code>http://xmlns.com/foaf/0.1/</code>, attivo dal 2000) è l'ontologia minimale per descrivere persone e organizzazioni come agenti — <code>foaf:Agent</code>, <code>foaf:Organization</code>, <code>foaf:name</code>, <code>foaf:homepage</code>. <strong><code>vcard:</code></strong> (<code>http://www.w3.org/2006/vcard/ns#</code>) è la traduzione RDF del formato vCard usato per i contact point: <code>vcard:fn</code> (full name), <code>vcard:hasEmail</code>. Nel nostro progetto: tutti e tre i vocabolari sul <code>dcatapit:Dataset</code> finale e sui 9 <code>qb:DataSet</code> interni — ogni cubo è autoesplicativo con il suo titolo, descrizione, fonte, licenza, in modo da poter essere citato e usato anche al di fuori del deliverable. L'autore del progetto è dichiarato come <code>foaf:Agent + dcatapit:Agent</code> con vCard contact point email.</p>
+<h4 id="tier-4-tattico-minimale">Tier 4 — Tattico minimale</h4>
+<p><strong>PROV-O</strong> (<code>prov:</code> = <code>http://www.w3.org/ns/prov#</code>) — Raccomandazione W3C del 30 aprile 2013 per <em>provenance</em> e <em>lineage</em> in RDF. Permette di esprimere il "come, quando, da chi" un'entità è stata derivata da altre. Concetti chiave: <code>prov:Entity</code> (un dato o un documento), <code>prov:Activity</code> (un processo), <code>prov:Agent</code> (chi ha eseguito l'attività), <code>prov:wasDerivedFrom</code> (relazione fondamentale fra entità derivate, supporta navigazione transitiva via SPARQL property path), <code>prov:wasGeneratedBy</code> (entità → attività), <code>prov:wasAssociatedWith</code> (attività → agente). Nel nostro progetto: uso <strong>minimale e tattico</strong> — solo <code>prov:wasDerivedFrom</code> sulle 4.399 osservazioni stimate. La provenance completa (Activity, Agent strutturato) sta già nei sidecar <code>*.history.json</code> di macrorefine (sez. 3.6), convertibili in PROV-O completo come upgrade post-progetto. Costo della scelta: una sola property. Beneficio: ogni osservazione stimata è esplicitamente etichettata come derivata da altre, e una singola query SPARQL con <code>prov:wasDerivedFrom+</code> (operatore transitivo +) recupera la catena di derivazione completa fino alle osservazioni primarie — pattern di audit applicabile a tutte le 4 famiglie di derivazione del grafo (4.5).</p>
+<p><strong><code>owl:sameAs</code></strong> — una <em>singola property</em> dell'ontologia OWL (Web Ontology Language, Raccomandazione W3C 2004, refresh OWL 2 del 2009). Sintatticamente afferma che "questa entità è identica a quest'altra entità", anche se vivono in dataset diversi. È <strong>lo standard di fatto per il linking esterno nel LOD Cloud</strong> — la "colla" che rende il web di dati un unico grafo globale. Nel nostro progetto: 107 <code>owl:sameAs</code> AGID → DBpedia materializzati come nostro contributo originale (sidecar <code>agid_to_dbpedia.ttl</code>, vedi 4.6), più 2 <code>owl:sameAs</code> aggiuntivi nel sidecar <code>nuts_aliases.ttl</code> per riconciliare le PA del Trentino-Alto Adige (NUTS-2 <code>ITD1</code>↔NUTS-3 <code>ITD10</code>, idem <code>ITD2</code>↔<code>ITD20</code>). Il resto degli <code>owl:sameAs</code> NUTS — verso <code>nuts.geovocab.org</code> — arriva già pre-cotto dal TTL AGID nativo (116 link totali, incluse 9 revisioni NUTS storiche multiple). Alternative scartate per il linking esterno: linking diretto verso Wikidata (raggiunto comunque transitivamente via DBpedia), GeoNames (escluso per parsimonia ragionata — un'unica fonte esterna ben curata vale più di tre fonti parziali da mantenere).</p>
+<h4 id="vocabolari-valutati-e-scartati">Vocabolari valutati e scartati</h4>
+<p>Per completezza di rendicontazione metodologica, vale la pena dichiarare anche cosa abbiamo <em>consapevolmente lasciato fuori</em>: <strong>Schema.org Dataset</strong> (SEO-only, non LOD-grade per PA italiana), <strong>OWL "vero" con assiomi e restriction</strong> (over-engineering — usiamo solo <code>owl:sameAs</code>), <strong>GeoSPARQL</strong> (non modelliamo geometrie nel grafo RDF; il rendering avviene via GeoJSON Openpolis dichiarato in sez. 2.4 e discusso in sez. 5), <strong>Eurostat dimension namespace</strong> (ridondante con <code>sdmx-attribute:</code> per i nostri attributi), <strong>XKOS</strong> (estensione SKOS per classificazioni statistiche multilivello con storicizzazione formale — sovradimensionato per code-list a 4-8 valori, citato nel report come alternativa valutata e scartata per parsimonia), <strong>VoID completo</strong> (incluso solo in forma minimale, 3 property <code>void:triples</code> + <code>void:sparqlEndpoint</code> + <code>void:exampleResource</code> sul <code>dcatapit:Dataset</code>).</p>
+<h3 id="42-una-sola-classe-propria-idptsedeinps">4.2 Una sola classe propria: <code>idpt:SedeINPS</code></h3>
+<p>Su un grafo di ~117.000 triple, abbiamo definito <em>una sola</em> classe propria — <code>idpt:SedeINPS</code> — più due ObjectProperty associate. Tutto il resto è istanza di classi standard (<code>clv:Province</code>, <code>clv:Region</code>, <code>skos:Concept</code>, <code>qb:Observation</code>, <code>qb:DataSet</code>, <code>qb:DataStructureDefinition</code>, <code>dcatapit:Dataset</code>, ecc.). Questa parsimonia non è uno stilismo: è la metrica diretta su cui si misura "LOD ben fatto vs LOD inventato".</p>
+<p>La motivazione della classe propria è semantica, non comoda. Come dichiarato nella sez. 2.1, l'asimmetria fra "provincia di residenza" (asse del cubo 1, 107 entità) e "provincia della sede INPS" (asse dei cubi 2 e 3, 106 sedi) è una realtà del dominio INPS che il grafo deve rappresentare onestamente. Le due opzioni alternative sarebbero state semanticamente disoneste: (a) "appiattire" le sedi sulla residenza richiederebbe duplicare alcune osservazioni e introdurrebbe doppi conteggi nelle query di aggregazione; (b) modellare le sedi come <code>clv:Province</code> confonderebbe due assi che il dato sorgente tiene distinti. Una classe propria preserva la distinzione senza intaccare la centralità dell'ancora AGID.</p>
+<pre><code class="language-turtle">@prefix idpt: &lt;https://example.org/idpt/&gt; .
+@prefix clv:  &lt;https://w3id.org/italia/onto/CLV/&gt; .
+@prefix skos: &lt;http://www.w3.org/2004/02/skos/core#&gt; .
+@prefix owl:  &lt;http://www.w3.org/2002/07/owl#&gt; .
+
+idpt:SedeINPS a owl:Class ;
+    rdfs:label &quot;Sede territoriale INPS&quot;@it ;
+    rdfs:subClassOf clv:Feature ;
+    rdfs:comment &quot;Unità territoriale di gestione INPS, distinta dalla provincia amministrativa AGID.&quot;@it .
+
+idpt:correspondsToProvinceAGID a owl:ObjectProperty ;
+    rdfs:domain idpt:SedeINPS ; rdfs:range clv:Province ;
+    rdfs:comment &quot;Relazione 1-a-1: la sede corrisponde a una sola provincia AGID.&quot;@it .
+
+idpt:aggregatesProvince a owl:ObjectProperty ;
+    rdfs:domain idpt:SedeINPS ; rdfs:range clv:Province ;
+    rdfs:comment &quot;Relazione 1-a-N: la sede aggrega più province AGID (usato solo per Cagliari + Sud Sardegna).&quot;@it .
+
+# Esempio: la sede aggregata sarda
+idpt:sede-inps-cagliari-e-sud-sardegna a idpt:SedeINPS ;
+    skos:prefLabel &quot;Cagliari e Sud Sardegna&quot;@it ;
+    skos:notation &quot;INPS-CA-SU&quot; ;
+    idpt:aggregatesProvince
+        &lt;https://w3id.org/italia/controlled-vocabulary/territorial-classifications/provinces/092&gt; ,
+        &lt;https://w3id.org/italia/controlled-vocabulary/territorial-classifications/provinces/111&gt; .
+</code></pre>
+<p>Delle 106 sedi INPS del grafo, 105 sono in relazione <code>idpt:correspondsToProvinceAGID</code> (1-a-1) con una <code>clv:Province</code> AGID; solo 1 (la sede aggregata <code>idpt:sede-inps-cagliari-e-sud-sardegna</code>) è in relazione <code>idpt:aggregatesProvince</code> (1-a-N) con 2 province AGID. La distinzione delle due property — invece di unificarle in una sola con cardinalità variabile — rende le query SPARQL più pulite: chi cerca le sedi "normali" 1-a-1 le interroga via <code>correspondsToProvinceAGID</code>, chi vuole il caso aggregato lo riconosce immediatamente via <code>aggregatesProvince</code>. Le 106 sedi sono istanziate nel sidecar <code>inps_to_agid.ttl</code> (sez. 4.6) come parte dello stesso lavoro di linking che vi salva le label INPS originali come <code>skos:altLabel</code>.</p>
+<h3 id="43-le-sei-code-list-skos-proprie">4.3 Le sei code-list SKOS proprie</h3>
+<p>Il grafo ha bisogno di code-list controllate per le dimensioni qualitative dei cubi: tipi di gestione INPS, regimi di liquidazione, voci di reddito MEF, indicatori demografici ISTAT, componenti dell'IDPT, aree geografiche. Sono tutte modellate come <code>skos:ConceptScheme</code> (lo schema) con <code>skos:Concept</code> (i singoli termini) per coerenza col TTL AGID delle province e per parsimonia ontologica. Riusiamo come <code>skos:notation</code> le <strong>sigle native</strong> dei dataset sorgenti dove esistono, per coerenza forte con i CSV originari.</p>
+<table>
+<thead>
+<tr>
+<th>Code-list</th>
+<th style="text-align: right;"># concetti</th>
+<th><code>skos:notation</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>idpt:tipi-gestione-inps</code></td>
+<td style="text-align: right;">5</td>
+<td><code>PRIV</code>, <code>PUB</code>, <code>AUTO</code>, <code>ASS</code>, <code>TOT</code></td>
+</tr>
+<tr>
+<td><code>idpt:regimi-liquidazione</code></td>
+<td style="text-align: right;">4</td>
+<td><code>RETR</code>, <code>MIX-DINI</code>, <code>MIX-FORNERO</code>, <code>CONTR</code></td>
+</tr>
+<tr>
+<td><code>idpt:indicatori-demografici</code></td>
+<td style="text-align: right;">8</td>
+<td>sigle native ISTAT: <code>POP014</code>, <code>POP1564</code>, <code>POP65OVER</code>, <code>OLDAGEDEPR</code>, <code>AGEINDEX</code>, <code>MEANAGEP</code>, <code>BIRTHRATE</code>, <code>LIFEEXP65T</code></td>
+</tr>
+<tr>
+<td><code>idpt:voci-reddito-mef</code></td>
+<td style="text-align: right;">5</td>
+<td>sigle native MEF: <code>v2</code>, <code>v4</code>, <code>v5</code>, <code>v6</code>, <code>v7</code></td>
+</tr>
+<tr>
+<td><code>idpt:componenti-idpt</code></td>
+<td style="text-align: right;">4</td>
+<td><code>PRESS-DEM</code>, <code>PESO-ECO</code>, <code>ERED-ST</code>, <code>IDPT-AGG</code></td>
+</tr>
+<tr>
+<td><code>idpt:aree-geografiche</code> (ausiliaria)</td>
+<td style="text-align: right;">1</td>
+<td><code>IT-TOT</code> (per il cubo 4 nazionale)</td>
+</tr>
+</tbody>
+</table>
+<p>Esempio della code-list <code>idpt:regimi-liquidazione</code>:</p>
+<pre><code class="language-turtle">idpt:regimi-liquidazione a skos:ConceptScheme ;
+    skos:prefLabel &quot;Regimi di liquidazione delle pensioni&quot;@it ;
+    dcterms:description &quot;Sistema di calcolo della pensione, derivante dalla stratificazione storica delle riforme previdenziali italiane (Dini 1995, Fornero 2011).&quot;@it ;
+    skos:hasTopConcept idpt:regime-retributivo, idpt:regime-misto-dini,
+                       idpt:regime-misto-fornero, idpt:regime-contributivo-puro .
+
+idpt:regime-retributivo a skos:Concept ;
+    skos:inScheme idpt:regimi-liquidazione ;
+    skos:prefLabel &quot;Retributivo&quot;@it ;
+    skos:notation &quot;RETR&quot; ;
+    skos:scopeNote &quot;Pensione calcolata sulle retribuzioni di fine carriera. Sistema pre-Riforma Dini 1995, per chi aveva ≥18 anni di contribuzione al 31/12/1995.&quot;@it .
+</code></pre>
+<p>Il riuso delle sigle ISTAT (cubo 6) e MEF (cubo 7) come <code>skos:notation</code> è il piccolo dettaglio LOD-aware che fa la differenza: chi legge il grafo riconosce immediatamente che <code>POP65OVER</code> o <code>v2</code> sono gli identificatori nativi delle fonti sorgenti — il legame fra CSV e RDF è esplicito a livello di vocabolario, non solo a livello di documentazione. La code-list <code>idpt:tipi-gestione-inps</code> include un quinto concetto <code>idpt:gestione-totale</code> (notation <code>TOT</code>) necessario al cubo 3 della serie storica, dove i dati INPS arrivano già aggregati sulle 4 gestioni e quindi modellati come "gestione totale". Le 6 code-list materializzate vivono in <code>output/vocabularies/code_lists.ttl</code> insieme alle classi e property proprie (<code>classes_and_properties.ttl</code>), e sono caricate nel <code>graph:vocabularies</code> di Fuseki.</p>
+<p><strong>Packaging unificato per esplorazione visuale.</strong> I due file ontologici sopra elencati (classi/property e code-list) sono affiancati da un terzo file <code>output/vocabularies/ontology.ttl</code>, generato come <em>bundle aggregato</em> dei due. Il bundle aggiunge in testa una dichiarazione <code>&lt;idpt:&gt; a owl:Ontology</code> con metadati ricchi (titolo bilingue, descrizione, creator, publisher, licenza CC-BY 4.0, versione, prefisso preferito via VANN) e include sotto il contenuto sostantivo di entrambi i file sorgente, per un totale di 551 triple. Lo scopo del bundle non è la pubblicazione in Fuseki — per quella vengono caricati i due file singoli nei rispettivi grafi nominati — ma il <strong>caricamento in editor ontologici come Protégé</strong>, che si aspettano una singola dichiarazione <code>owl:Ontology</code> come radice del file aperto. Aprendo <code>ontology.ttl</code> in Protégé via <em>File → Open File</em>, si naviga ad albero la classe propria <code>idpt:SedeINPS</code> con la sua subClassOf <code>clv:Feature</code>, le 2 ObjectProperty associate, le 10 <code>qb:DimensionProperty</code> e le 9 <code>qb:MeasureProperty</code>, le 9 <code>qb:DataStructureDefinition</code> e i 6 <code>skos:ConceptScheme</code> con i 27 <code>skos:Concept</code> totali. La generazione del bundle è una semplice concatenazione dei due file più il preambolo: i file sorgente restano la fonte di verità.</p>
+<h3 id="44-le-nove-dsd-dei-cubi-qb">4.4 Le nove DSD dei cubi qb</h3>
+<p>Ogni <code>qb:DataSet</code> del progetto ha una sua DSD (Data Structure Definition) esplicita, che dichiara dimensioni, misure e attributi. Tutte le <code>qb:DimensionProperty</code> con range <code>skos:Concept</code> sono linkate alla rispettiva code-list via <code>qb:codeList</code>; tutte le <code>qb:DimensionProperty</code> e <code>qb:MeasureProperty</code> sono ancorate al concetto SDMX appropriato via <code>qb:concept</code>. La tabella seguente sintetizza i 9 cubi.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th><code>qb:DataSet</code></th>
+<th>Dimensioni</th>
+<th>Misure</th>
+<th>Stile qb</th>
+<th style="text-align: right;"># Obs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>cubo-pensioni-vigenti-residenza</code></td>
+<td>provincia AGID × anno × tipoGestione</td>
+<td>numeroPensioni, importoMedioMensile, importoAnnuoComplessivo</td>
+<td>A</td>
+<td style="text-align: right;">535</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>cubo-pensioni-regime-sede</code></td>
+<td>sedeINPS × anno × regimeLiquidazione × measureType</td>
+<td>(3 misure via measureType)</td>
+<td>B</td>
+<td style="text-align: right;">1.272</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>cubo-pensioni-serie-storica-sede</code></td>
+<td>sedeINPS × anno × tipoGestione × measureType</td>
+<td>(3 misure via measureType)</td>
+<td>B</td>
+<td style="text-align: right;">9.105</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>cubo-pensioni-decorrenza-gdp</code></td>
+<td>areaGeografica × annoDecorrenza</td>
+<td>numeroPensioni, importoMedioMensile, etàMediaDecorrenza</td>
+<td>A</td>
+<td style="text-align: right;">46</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>cubo-occupati-istat</code></td>
+<td>provincia AGID × anno</td>
+<td>numeroOccupati</td>
+<td>A</td>
+<td style="text-align: right;">107</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>cubo-indicatori-demografici-istat</code></td>
+<td>provincia AGID × anno × indicatoreDemografico</td>
+<td>valoreIndicatore</td>
+<td>A</td>
+<td style="text-align: right;">856</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>cubo-redditi-mef</code></td>
+<td>provincia AGID × anno × voceReddito</td>
+<td>frequenzaDichiaranti, ammontareTotale</td>
+<td>A</td>
+<td style="text-align: right;">535</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>cubo-idpt-computed</code> <em>(graph nominato separato)</em></td>
+<td>provincia AGID × anno × componenteIDPT</td>
+<td>valoreIDPT</td>
+<td>A</td>
+<td style="text-align: right;">428</td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>cubo-plan-b-gdp-projected</code></td>
+<td>provincia AGID × anno × regimeLiquidazione</td>
+<td>numeroPensioni</td>
+<td>A</td>
+<td style="text-align: right;">428</td>
+</tr>
+</tbody>
+</table>
+<p>Il <strong>mix di stili A + B</strong> è una decisione metodologica esplicita. Lo stile A (multi-measure cubes: più misure per <code>qb:Observation</code>) è usato per 7 cubi dove tutte le misure hanno pari status semantico (cubi 1, 4, 5, 6, 7, 8, 9). Lo stile B (<code>qb:measureType</code> come dimensione: una osservazione per misura) è usato per i 2 cubi dove convivono misure primarie e misure stimate (cubi 2 e 3, dove l'<code>importoAnnuoComplessivo</code> è ricostruito come <code>n × media × 13</code> con <code>obsStatus=E</code> mentre le altre due misure sono primarie con <code>obsStatus=A</code>). Lo stile B permette di marcare diversamente lo status delle singole misure all'interno della stessa "cella" del cubo concettuale. Adottare lo stile A ovunque avrebbe perso questa distinzione; adottare lo stile B ovunque avrebbe triplicato il numero di osservazioni nei cubi che non ne hanno bisogno (es. il cubo 6 passerebbe da 856 a 856 × 1 = 856 — perché ha già una misura unica — ma il cubo 5 che ha una sola misura sarebbe inutilmente complicato).</p>
+<p>Le URI delle osservazioni seguono un <strong>pattern leggibile</strong> <code>idpt:obs-{cubo-short}-{provincia-istat o sede-short}-{anno}-{dimensioni-residue}</code>. Esempi: <code>idpt:obs-vigenti-001-2026-privati</code> (Torino, gestione privati nel cubo 1), <code>idpt:obs-regime-sas-2026-priv-retr-num</code> (sede Sassari, privati, retributivo, misura <code>numeroPensioni</code> nel cubo 2), <code>idpt:obs-idpt-001-2026-press-dem</code> (Torino, pressione demografica nel cubo 8). Il pattern dà URI leggibili nelle query SPARQL e nei debug — anti-pattern hash UUID che sarebbero cortissimi ma illeggibili per chi scrive SPARQL a mano.</p>
+<p>Frammento Turtle dello schema del cubo 1 — l'esempio più leggibile, da cui derivano tutti gli altri con piccole variazioni:</p>
+<pre><code class="language-turtle">@prefix idpt: &lt;https://example.org/idpt/&gt; .
+@prefix qb:   &lt;http://purl.org/linked-data/cube#&gt; .
+@prefix sdmx-concept:   &lt;http://purl.org/linked-data/sdmx/2009/concept#&gt; .
+@prefix sdmx-attribute: &lt;http://purl.org/linked-data/sdmx/2009/attribute#&gt; .
+@prefix clv:  &lt;https://w3id.org/italia/onto/CLV/&gt; .
+
+idpt:provincia a qb:DimensionProperty ;
+    rdfs:range clv:Province ;
+    qb:concept sdmx-concept:refArea .
+
+idpt:annoRiferimento a qb:DimensionProperty ;
+    rdfs:range xsd:gYear ;
+    qb:concept sdmx-concept:refPeriod .
+
+idpt:tipoGestione a qb:DimensionProperty ;
+    rdfs:range skos:Concept ;
+    qb:codeList idpt:tipi-gestione-inps .
+
+idpt:numeroPensioni a qb:MeasureProperty ;
+    rdfs:range xsd:nonNegativeInteger ;
+    qb:concept sdmx-concept:obsValue .
+
+idpt:dsd-pensioni-vigenti-residenza a qb:DataStructureDefinition ;
+    qb:component [ qb:dimension idpt:provincia       ; qb:order 1 ] ;
+    qb:component [ qb:dimension idpt:annoRiferimento ; qb:order 2 ] ;
+    qb:component [ qb:dimension idpt:tipoGestione    ; qb:order 3 ] ;
+    qb:component [ qb:measure   idpt:numeroPensioni ] ;
+    qb:component [ qb:measure   idpt:importoMedioMensile ] ;
+    qb:component [ qb:measure   idpt:importoAnnuoComplessivo ] ;
+    qb:component [ qb:attribute sdmx-attribute:obsStatus ;
+                   qb:componentRequired &quot;true&quot;^^xsd:boolean ;
+                   qb:componentAttachment qb:Observation ] .
+</code></pre>
+<p>L'emissione di tutte e 13.312 le <code>qb:Observation</code> è realizzata dal quattordicesimo step custom di macrorefine — <code>EmitQbObservations</code> in <code>macrorefine/src/macrorefine/steps/lod/emit.py</code>, brevemente già citato nella sez. 3.2 — che è lo step "ponte" fra elaborazione tabellare e trasformazione RDF. Lo step prende in input il <code>Dataset</code> finale di una Recipe (con colonne <code>provincia_uri</code>, <code>tipo_gestione_uri</code>, <code>anno</code>, eventuali misure, eventuale <code>_status</code>, eventuale <code>_derived_from</code>) e genera un file Turtle conforme alla DSD del cubo, completo di tutte le <code>qb:Observation</code> con URI a pattern, valori tipati, <code>obsStatus</code>, <code>prov:wasDerivedFrom</code> dove pertinenti. Lo step è parametrizzato e ha attraversato cinque revisioni durante le Fasi 4–6 (<code>obs_status_column</code> e <code>prov_derived_from_column</code> aggiunti per il pattern obs derivata, <code>measure_type_column</code> e <code>value_column</code> aggiunti per lo stile B, supporto a dimensioni con literal tipato <code>(uri, xsd_datatype)</code> aggiunto per <code>xsd:gYear</code>).</p>
+<h3 id="45-il-pattern-osservazione-derivata-uniforme">4.5 Il pattern "osservazione derivata" uniforme</h3>
+<p>Il principio adottato dalla modellazione è che ogni misura del grafo che <em>non</em> è un dato primario letto dal CSV sorgente, ma una stima o un'aggregazione del progetto, deve essere etichettata <strong>in modo uniforme</strong> come tale. Il pattern è composto da una coppia di asserzioni:</p>
+<ul>
+<li><code>sdmx-attribute:obsStatus sdmx-code:obsStatus-E</code> (Estimated)</li>
+<li><code>prov:wasDerivedFrom &lt;obs-origine-1&gt; , &lt;obs-origine-2&gt; , ...</code> (una o più sorgenti)</li>
+</ul>
+<p>Il pattern uniforme è applicato in <strong>4 punti del grafo</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Caso</th>
+<th>Cubo</th>
+<th>Origini</th>
+<th style="text-align: right;"># obs marcate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Aggregazione retroattiva Sardegna 2005–2011</td>
+<td>3</td>
+<td>obs sede sarda + obs ex-provincia stessa fascia anno</td>
+<td style="text-align: right;">84</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Importo annuo ricostruito (<code>n × media × 13</code>)</td>
+<td>2, 3</td>
+<td>obs <code>numeroPensioni</code> + obs <code>importoMedioMensile</code> stessa cella</td>
+<td style="text-align: right;">3.459</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Plan B GDP proiettato</td>
+<td>9</td>
+<td>obs cubo 1 gestione=Pubblici + DataSet cubo 4</td>
+<td style="text-align: right;">428</td>
+</tr>
+<tr>
+<td>4</td>
+<td>IDPT computed</td>
+<td>8</td>
+<td>obs primarie usate nel calcolo della componente</td>
+<td style="text-align: right;">428</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td><strong>Totale obs estimate</strong></td>
+<td style="text-align: right;"><strong>4.399</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Esempio dell'osservazione del Plan B GDP per Torino, regime retributivo:</p>
+<pre><code class="language-turtle">idpt:obs-plan-b-001-2026-retributivo a qb:Observation ;
+    qb:dataSet idpt:cubo-plan-b-gdp-projected ;
+    idpt:provincia &lt;https://w3id.org/italia/controlled-vocabulary/territorial-classifications/provinces/001&gt; ;
+    idpt:annoRiferimento &quot;2026&quot;^^xsd:gYear ;
+    idpt:regimeLiquidazione idpt:regime-retributivo ;
+    idpt:numeroPensioni &quot;4900&quot;^^xsd:nonNegativeInteger ;
+    sdmx-attribute:obsStatus sdmx-code:obsStatus-E ;
+    prov:wasDerivedFrom
+        idpt:obs-vigenti-001-2026-pubblici ,         # 35.000 GDP Torino totali (cubo 1)
+        idpt:cubo-pensioni-decorrenza-gdp ;          # 14% retributivo nazionale (cubo 4)
+    rdfs:comment &quot;Stima: 35.000 (GDP Torino) × 14% (retributivo nazionale) = 4.900 pensioni.&quot;@it .
+</code></pre>
+<p>Il vantaggio della scelta è duplice. Innanzitutto, una <strong>singola query SPARQL</strong> recupera tutte le 4.399 osservazioni stimate del grafo, ovunque si trovino, qualunque sia il loro tipo:</p>
+<pre><code class="language-sparql">SELECT ?obs ?cubo WHERE {
+  ?obs a qb:Observation ; qb:dataSet ?cubo ;
+       sdmx-attribute:obsStatus sdmx-code:obsStatus-E .
+}
+</code></pre>
+<p>E secondo, una query parallela mostra la <strong>catena transitiva</strong> di derivazione di qualsiasi osservazione stimata, fino alle sue origini primarie:</p>
+<pre><code class="language-sparql">SELECT ?origine WHERE {
+  idpt:obs-plan-b-001-2026-retributivo prov:wasDerivedFrom+ ?origine .
+}
+</code></pre>
+<p>L'operatore SPARQL <code>+</code> (uno o più passi) segue la catena transitivamente; per le osservazioni dell'IDPT computed che derivano dal Plan B che a sua volta deriva dal cubo 1, una sola query mostra la quadrupla origine. È il pattern di <strong>lineage auditabile</strong> che giustifica l'uso minimale di PROV-O senza dover ricostruire una macchina della provenance da zero. Vale la pena ricordare che la materia prima di tutto questo esisteva già a livello tabellare nei sidecar <code>*.history.json</code> di macrorefine (sez. 3.6): la transizione "tabellare → RDF" è stata progettata in modo che ogni catena di derivazione che era tracciata nelle History venisse materializzata come <code>prov:wasDerivedFrom</code> nel grafo. Le due rappresentazioni sono ortogonali ma coerenti.</p>
+<h3 id="46-interlinking-i-tre-sidecar-ttl">4.6 Interlinking — i tre sidecar TTL</h3>
+<p>Il linking interno (fra dati e ancore semantiche del grafo IDPT) e il linking esterno (verso il LOD Cloud) sono materializzati in tre sidecar TTL caricati nel <code>graph:linking</code> di Fuseki. Sono distinti dai cubi statistici perché sono asserzioni di equivalenza e di identità, non osservazioni statistiche.</p>
+<p><strong><code>output/mappings/nuts_aliases.ttl</code></strong> — 6 asserzioni. Le 2 sono <code>owl:sameAs</code> semantici locali per le PA Trentino-Alto Adige, che riconciliano il cubo ISTAT-RFL (occupati, NUTS-2) con il cubo ISTAT-Demo (indicatori, NUTS-3) come dichiarato nella sez. 2.2: <code>ITD10 owl:sameAs ITD1</code> e <code>ITD20 owl:sameAs ITD2</code>, con <code>rdfs:comment</code> che dichiara esplicitamente la natura locale dell'equivalenza ("valida solo per le PA dove regione NUTS-2 coincide con provincia NUTS-3"). Le altre 4 sono <code>skos:exactMatch</code> per i fake-NUTS ISTAT proprietari (<code>IT108</code>/<code>IT109</code>/<code>IT110</code>/<code>IT111</code> per Monza-Brianza, Fermo, BAT, Sud Sardegna — le 4 province moderne senza NUTS-3 Eurostat ufficiale, anch'esse anticipate in sez. 2.2). La scelta di <code>skos:exactMatch</code> invece di <code>owl:sameAs</code> per i fake-NUTS è metodologicamente cauta: <code>IT108</code> non è "lo stesso oggetto" di Monza-Brianza nel senso identitario forte, è un identificatore concettualmente equivalente prodotto da un sistema diverso (ISTAT vs Eurostat).</p>
+<p><strong><code>output/mappings/inps_to_agid.ttl</code></strong> — circa 440 triple. Contiene due pattern. Primo: <code>skos:altLabel</code> con tag di lingua privato <code>it-x-inps</code> (estensione BCP47 <code>x-</code> per subtag privato, pattern usato in archivi e biblioteche per registrare varianti grafiche) sulle URI AGID delle province, che preserva le anomalie nominali INPS senza creare entità nuove. Esempio: <code>agidp:047 skos:altLabel "MASSA CARRARA"@it-x-inps</code>. Secondo: le 106 istanze <code>idpt:SedeINPS</code> con <code>idpt:correspondsToProvinceAGID</code> (1-a-1, 105 istanze) o <code>idpt:aggregatesProvince</code> (1-a-N, solo la sede Cagliari-e-Sud-Sardegna). Il sidecar è generato come effetto collaterale dello step <code>LinkSedeINPS</code> durante la Recipe del cubo 2 (sez. 3.5).</p>
+<p><strong><code>output/mappings/agid_to_dbpedia.ttl</code></strong> — 107 <code>owl:sameAs</code> AGID → DBpedia, materializzati come contributo originale del progetto via lo script standalone <code>scripts/generate_agid_to_dbpedia.py</code> (sez. 3.2). La procedura di matching è: query SPARQL su <code>https://dbpedia.org/sparql</code> per estrarre tutte le province italiane (<code>?p a dbo:Province ; dbo:country dbpedia:Italy</code>), match esatto su <code>prefLabel</code> italiana normalizzata, reconciliation manuale con 25 override hardcoded (14 città metropolitane "Metropolitan City of …" + 11 anomalie nominali). Il file contiene un header con <code>dcterms:source &lt;https://dbpedia.org/sparql&gt;</code> e <code>dcterms:created</code> con timestamp della query, perché DBpedia evolve nel tempo e il mapping va datato.</p>
+<p>I tre sidecar insieme producono la <strong>quintupla identità</strong> di ogni provincia italiana nel LOD Cloud. Per Torino:</p>
+<pre><code class="language-turtle">agidp:001  # = &lt;https://w3id.org/italia/controlled-vocabulary/territorial-classifications/provinces/001&gt;
+    a clv:Province, clv:AdminUnitComponent, skos:Concept, clv:Feature ;
+    skos:prefLabel &quot;Torino&quot;@it , &quot;Turin&quot;@en ;
+    skos:notation &quot;001&quot; ;
+    clv:acronym &quot;TO&quot; ;
+    clv:hasRankOrder 4 ;                                # città metropolitana
+    clv:situatedWithin &lt;.../regions/01&gt; ;               # Piemonte
+    owl:sameAs &lt;http://nuts.geovocab.org/id/ITC11&gt; ;    # AGID nativo
+    owl:sameAs &lt;http://dbpedia.org/resource/Metropolitan_City_of_Turin&gt; ;  # nostro sidecar
+    skos:altLabel &quot;TORINO&quot;@it-x-inps .                  # nostro sidecar
+
+idpt:sede-inps-torino a idpt:SedeINPS ;
+    skos:prefLabel &quot;Torino&quot;@it ;
+    skos:notation &quot;INPS-TO&quot; ;
+    idpt:correspondsToProvinceAGID agidp:001 .          # nostro sidecar
+</code></pre>
+<p>Cinque "punti di identità" sulla stessa entità: la URI canonica AGID (ancora primaria), il codice NUTS Eurostat (linking europeo), la risorsa DBpedia (linking LOD globale, transitivo verso Wikidata e oltre), la label INPS originale preservata, l'identificatore della sede INPS che la gestisce amministrativamente. Pattern <strong>LOD 5★ pieno</strong> sulla scala di Berners-Lee.</p>
+<h3 id="47-il-cubo-8-idpt-computed-il-cuore-narrativo">4.7 Il cubo 8 IDPT computed — il cuore narrativo</h3>
+<p>Il cubo 8 è ciò che il progetto produce di originale: l'<strong>Indice di Dipendenza Previdenziale Territoriale</strong> materializzato come <code>qb:DataSet</code> in un grafo nominato separato <code>graph:idpt-computed</code>. La materializzazione (preferita all'alternativa "vista on-the-fly via SPARQL puro") è la scelta giusta per la pratica LOD: il deliverable RDF deve contenere il risultato della ricerca, non lasciarlo a una query da rieseguire ogni volta.</p>
+<p>Le tre dimensioni dell'IDPT (sez. 1 del report — Abstract) sono calcolate per ogni provincia secondo formule esplicite:</p>
+<ul>
+<li><strong>D1 — Pressione demografica previdenziale</strong> = pensionati_totale (cubo 1) / (occupati_migliaia (cubo 5) × 1000). Range grezzo sulle 107 province: 0.59 (Bolzano) – 1.48 (Reggio di Calabria).</li>
+<li><strong>D2 — Peso economico delle pensioni</strong> = monte_pensioni_€ (cubo 1, somma dei <code>importoAnnuoComplessivo</code> per provincia × 10⁶) / monte_redditi_da_lavoro_€ (cubo 7, somma di <code>v2 + v4 + v5 + v6 + v7</code> per provincia). Range grezzo: 0.33 – 0.77.</li>
+<li><strong>D3 — Eredità storica delle riforme</strong> = pensioni_in_regime_retributivo (cubo 2 + cubo 9 per la quota Pubblici stimata via Plan B) / pensioni_totali_con_regime (cubo 2 esteso a Pubblici dal cubo 9). Range grezzo: 0.42 – 1.37 (il valore &gt; 1 di alcune province non sarde con <code>agidp:092</code> Cagliari e <code>agidp:111</code> Sud Sardegna è effetto della decisione "Sardegna 1:N" discussa sotto).</li>
+</ul>
+<p>Le tre dimensioni grezze sono poi <strong>normalizzate min-max</strong> sui 107 valori della stessa componente: per ognuna, <code>(x − min) / (max − min)</code> produce un valore in [0,1] dove 0 è la provincia con il valore minimo e 1 è la provincia con il valore massimo. Le tre componenti normalizzate sono poi <strong>aggregate via media aritmetica</strong> in un valore IDPT finale anch'esso in [0,1]:</p>
+<p><code>IDPT(provincia) = (D1_normalizzato + D2_normalizzato + D3_normalizzato) / 3</code></p>
+<p>Le 428 osservazioni del cubo 8 (107 province × 4 concetti — le 3 componenti più l'aggregato) portano tutte <code>obsStatus=E</code> (sono derivate per costruzione) e <code>prov:wasDerivedFrom</code> esplicito verso le osservazioni dei cubi primari usate nel calcolo. Decisione metodologica delicata sul caso Sardegna: D3 viene calcolata sulla sede INPS "Cagliari e Sud Sardegna" (sede aggregata) ma deve essere attribuita a <em>due</em> province AGID separate (<code>092</code> Cagliari e <code>111</code> Sud Sardegna). La decisione adottata (Opzione a del Blocco F) è di <strong>replicare l'intero valore della sede aggregata su entrambe le province AGID</strong> — sceltà semantica preferita rispetto a una divisione arbitraria 50/50 perché non abbiamo dati su come la composizione regime varia fra le due province; la replica è documentata nei <code>prov:wasDerivedFrom</code> delle osservazioni interessate, quindi auditabile.</p>
+<p>Il risultato sostantivo è un <strong>divario Nord/Sud nettissimo</strong>, con un rapporto di circa 20× fra le province più dipendenti e quelle meno dipendenti dal sistema pensionistico:</p>
+<p><strong>Top 5 IDPT</strong> (più dipendenti): Reggio di Calabria 0.675, Taranto 0.651, Catanzaro 0.627, Oristano 0.580, Nuoro 0.552.
+<strong>Bottom 5 IDPT</strong> (meno dipendenti): Bolzano/Bozen 0.034, Milano 0.100, Trento 0.104, Prato 0.121, Padova 0.141.</p>
+<p>La narrativa è solida: due province alpine autonome con economia dinamica e demografia ancora giovane (Bolzano, Trento) all'estremo basso; due metropoli del triangolo industriale (Milano, Padova) e una città di distretto tessile (Prato) accanto a loro; all'estremo alto cinque province meridionali — quattro calabresi/pugliesi e una sarda — dove la combinazione di bassa occupazione, demografia anziana, ed eredità retributiva del periodo pre-Dini produce un livello di dipendenza dal sistema pensionistico nettamente più alto. La lettura cartografica viene approfondita nella sez. 5.</p>
+<h3 id="48-dcat-ap_it-del-deliverable-finale">4.8 DCAT-AP_IT del deliverable finale</h3>
+<p>Il deliverable del progetto è impacchettato come <code>dcatapit:Dataset</code> in <code>output/dataset/atlante_idpt_dataset.ttl</code>, con triple-typing (<code>dcatapit:Dataset</code> + <code>dcat:Dataset</code> + <code>void:Dataset</code>) per ottenere sia la conformità al profilo italiano AGID (<code>dcatapit:</code>) sia la compatibilità con DCAT puro (<code>dcat:</code>) sia la dichiarazione minimale delle caratteristiche tecniche del grafo (<code>void:</code>). I 9 <code>qb:DataSet</code> interni sono collegati al dataset di packaging via <code>dcterms:hasPart</code>, in modo che il consumer del DCAT possa navigare al cubo specifico di interesse senza dover decostruire il bundle.</p>
+<p>I metadati del <code>dcatapit:Dataset</code> includono: titolo bilingue IT/EN, descrizione, 3 temi EuroVoc (SOCI = Affari sociali, ECON = Economia, REGI = Regioni), 11 keyword bilingue, licenza CC-BY 4.0, <code>dcterms:rights</code> esplicativo della composizione delle 5 licenze sorgente (IODL 2.0 INPS + CC-BY 3.0 IT ISTAT + CC-BY 3.0 MEF + CC-BY 4.0 AGID, ricompilato sotto CC-BY 4.0 — vedi sez. 2.5), <code>dcterms:conformsTo</code> verso SKOS, qb e dcatapit (triplice conformità), pubblicatore Roberto Bruno come <code>foaf:Agent + dcatapit:Agent</code>, contact point vCard con email. Sono dichiarate <strong>3 distribuzioni</strong>: il bundle TTL aggregato (<code>atlante-idpt.ttl</code>), la versione JSON-LD (<code>atlante-idpt.jsonld</code>), e un bundle ZIP con i sorgenti separati per chi vuole i singoli cubi distinti. La componente VoID minimale espone <code>void:triples</code> (calcolato sui file emessi: 116.633 triple al momento dell'emissione finale), <code>void:sparqlEndpoint</code> (URL placeholder verso il Fuseki di pubblicazione), e tre <code>void:exampleResource</code> (la URI di Torino in AGID, una <code>qb:Observation</code> esemplare, l'IDPT computed di Torino).</p>
+<p>Il file passa <strong>14/14 check SPARQL</strong> di validazione (<code>scripts/validate_dataset.py</code>): conformità DCAT-AP_IT, presenza di tutti i metadati obbligatori, integrità delle relazioni <code>dcterms:hasPart</code> verso i 9 cubi, validità delle URI delle distribuzioni, presenza dei due agenti (publisher, creator), presenza del contact point.</p>
+<h3 id="49-il-caso-di-studio-negativo-rdf-di-facciata-del-mef">4.9 Il caso di studio negativo: "RDF di facciata" del MEF</h3>
+<p>Il file <code>data/mef_redditi_irpef_comune_2024_v1.rdf</code> distribuito dal MEF a fianco del CSV (sez. 2.3) è la cartina al tornasole di cosa <em>non</em> è il Linked Open Data. Lo conserviamo in repository non come fonte di dati — usiamo il CSV per il cubo 7 — ma come <strong>caso di studio negativo</strong> che fa risaltare per contrasto il lavoro di modellazione fatto altrove nel progetto. L'anatomia del file mostra cinque problemi cumulativi.</p>
+<p><strong>Namespace placeholder mai sostituito</strong>: la dichiarazione XML del file è <code>xmlns:s="http://www1.finanze.gov.it/fakeurl#"</code>. Sì, "fakeurl" è letteralmente scritto nel namespace. Vale a dire che ogni asserzione del file ha come predicato un'URI che inizia con la stringa "fakeurl" — un dettaglio inequivocabile che il file non è stato pubblicato con la cura del LOD ma è il risultato di un export automatico da un template mai personalizzato.</p>
+<p><strong>Variabili anonime senza URI semantiche</strong>: i predicati del file sono <code>s:v1</code>, <code>s:v2</code>, ..., <code>s:v22</code> — numeri ordinali invece di concetti. Chi legge l'RDF deve aprire una documentazione esterna per scoprire che <code>v2</code> significa "Reddito da lavoro dipendente". Nel nostro grafo, in netto contrasto, la stessa informazione vive come <code>idpt:voce-redd-lavoro-dipendente</code> (URI semantica) con <code>skos:notation "v2"</code> (preserviamo la sigla nativa del MEF come notazione) — <code>v2</code> è preservato come riconoscibilità, ma l'URI canonica è <code>voce-redd-lavoro-dipendente</code> per consumo machine-readable.</p>
+<p><strong>Modellazione "wide" senza Data Cube</strong>: ogni record è una <code>&lt;s:riga&gt;</code> con tutti gli attributi compressi come property dirette. Zero <code>qb:Observation</code>, zero <code>qb:DataStructureDefinition</code>, zero pattern di cubo. È esattamente il pattern anti-LOD documentato in W3C come anti-pattern (un singolo nodo "tutto-contenente" è opaco a query strutturate). Nel nostro grafo la stessa informazione è modellata come 535 <code>qb:Observation</code> distinte, con dimensioni interrogabili separatamente via SPARQL.</p>
+<p><strong>Zero linking, zero ancore semantiche</strong>: il file contiene zero occorrenze di SKOS, zero di qb, zero di DCAT, zero di <code>owl:sameAs</code>, zero di vocabolari AGID, zero di classificazioni ISTAT. Le sigle delle province sono stringhe libere, non collegate al vocabolario controllato che è pubblicato dalla stessa PA italiana. Non c'è un solo "ponte" semantico verso il resto del LOD Cloud.</p>
+<p><strong>Data malformata</strong>: il file dichiara <code>&lt;s:aggiornato&gt;2026-23-04&lt;/s:aggiornato&gt;</code>. Mese 23. Formato non ISO 8601. Per un file che si presenta come 5★ — il MEF lo dichiara esplicitamente nella sua pagina open data ("statistiche distribuzioni esportabili in PDF, Excel, CSV e in 5-star RDF format") — la data malformata è il sigillo della distanza fra dichiarato e implementato.</p>
+<p>Il caso MEF è in netto contrasto con il TTL AGID delle province (<code>data/provinces.ttl</code>, sez. 2.4), pubblicato dalla stessa Pubblica Amministrazione italiana ma con cura LOD-grade: vocabolario SKOS canonico, ontologia CLV ufficiale italiana, <code>owl:sameAs</code> nativi verso NUTS Eurostat (116 link), URI canoniche risolvibili via <code>w3id.org</code>, licenza esplicita CC-BY 4.0 dichiarata come <code>dct:license</code> nel file stesso. Stessa fonte di rilascio (la PA italiana), due esempi opposti di pratica LOD. L'insegnamento che il contrasto consegna è che il giudizio sostantivo sul LOD non si fa sulla compliance formale (il file ha estensione <code>.rdf</code>, valida sintatticamente, viene servito con MIME type corretto, è conforme alla grammatica RDF/XML), ma sulla <strong>onestà semantica</strong> (riusa vocabolari standard? espone URI significative? è interrogabile come parte del Web di dati? è connesso al LOD Cloud globale?). Per usare la scala di Berners-Lee, il file MEF è ★★★ vestite da ★★★★★: ha la forma esteriore del LOD 5★ ma il contenuto di un dump XML di una tabella.</p>
+<hr />
+<h2 id="5-visualizzazione-e-interrogazione">5. Visualizzazione e interrogazione</h2>
+<p>Le sezioni 2, 3 e 4 hanno raccontato la costruzione del grafo IDPT. Questa sezione racconta i tre canali attraverso cui il grafo diventa <strong>fruibile</strong>: la <strong>visualizzazione cartografica</strong> che traduce le 428 osservazioni dell'IDPT computed in due mappe coropletiche interattive; l'<strong>interrogazione SPARQL</strong> con 12 query di demo che coprono la domanda di ricerca del progetto ed estraggono dal grafo letture aggregate, traiettorie storiche, validazioni cross-fonte; la <strong>pubblicazione</strong> in stack DCAT-AP_IT + GitHub Pages, con la demo dal vivo ancorata a una istanza Fuseki locale per evitare dipendenze di rete in fase di presentazione. Un grafo che non si interroga è solo un file Turtle; un grafo che non si visualizza è opaco al lettore non tecnico; un grafo che non si pubblica non è LOD. I tre canali sono complementari e ognuno indirizza un'audience diversa — il decisore politico vuole la mappa, il ricercatore vuole l'endpoint SPARQL, il portale di catalogazione vuole il <code>dcatapit:Dataset</code>.</p>
+<h3 id="51-mappe-coropletiche-idpt">5.1 Mappe coropletiche IDPT</h3>
+<p>Le due mappe coropletiche del progetto vivono in <code>output/visualizations/idpt_map.html</code> e <code>output/visualizations/idpt_components.html</code> come <strong>pagine HTML standalone</strong> generate da <code>scripts/build_maps.py</code>. La scelta di <strong>Folium</strong> (binding Python di Leaflet) è motivata da tre vincoli: (a) la mappa deve essere integrabile nella landing page GitHub Pages del progetto senza richiedere un backend GIS, (b) deve essere interattiva (tooltip al passaggio mouse, zoom, pan) per permettere la lettura provincia per provincia, (c) deve funzionare offline. Folium soddisfa tutti e tre i requisiti emettendo un singolo file HTML autocontenuto con tutta la libreria JavaScript inlinizzata. Le <strong>geometrie provinciali</strong> arrivano dal GeoJSON di Openpolis introdotto in sez. 2.4 (eredità ISTAT CC-BY), in proiezione WGS84; il match poligoni ↔ osservazioni IDPT avviene sul campo <code>codice_istat</code> come intero a 3 cifre.</p>
+<div class="map-embed">
+  <iframe src="../output/visualizations/idpt_map_embed.html"
+          title="Mappa IDPT interattiva"
+          loading="lazy"></iframe>
+  <p class="map-caption">
+    Mappa interattiva con scala a quintili.
+    <a href="../output/visualizations/idpt_map.html" target="_blank">
+      Apri la versione full-screen con sidebar classifica e ricerca ↗
+    </a>
+  </p>
+</div>
+
+<p>La mappa principale <code>idpt_map.html</code> visualizza l'<strong>IDPT aggregato</strong> per le 107 province con scala a 5 quintili dal giallo (basso) al rosso (alto). L'uso dei quintili invece di una scala lineare è una scelta cartografica metodologica: distribuisce equamente le province nelle 5 classi di colore evitando che i picchi estremi (Reggio di Calabria 0.675) schiaccino visivamente la maggioranza delle province in un'unica fascia. Al passaggio del mouse su una provincia, un tooltip espone quattro valori: l'IDPT aggregato e le tre componenti normalizzate D1, D2, D3 — il lettore vede non solo "quanto" ma anche "perché" una provincia ha quel punteggio (es. per Reggio di Calabria D1 = 1.000 e D2 = 1.000 ma D3 = 0.026, contro Catanzaro con D1 = 0.638, D2 = 0.835, D3 = 0.409, che mostra una storia diversa fra pressione demografica e eredità retributiva).</p>
+<p>La mappa componenti <code>idpt_components.html</code> espone <strong>quattro mappe affiancate in CSS grid 2×2</strong> — le 3 componenti separate più l'aggregato finale — per permettere il confronto visuale diretto. Una lettura interessante che emerge dal confronto: D1 (pressione demografica) e D2 (peso economico) hanno gradienti Nord/Sud molto simili (Sud più alto), mentre D3 (eredità storica del retributivo) mostra un gradiente diverso, più legato alla composizione storica del lavoro pubblico nelle singole province che non al gradiente economico complessivo — Sondrio e Belluno, per esempio, mostrano valori D3 alti pur essendo nel Nord, perché hanno alta concentrazione di pensioni di magistrati e impiegati pubblici di carriera lunga. Il limite di questa visualizzazione è che è <strong>uno snapshot 2026</strong>, senza animazione storica — un'animazione che mostrasse la traiettoria IDPT 1998–2026 (sulle dimensioni effettivamente disponibili nei cubi 3 e 5) sarebbe un upgrade post-progetto naturale, citato in 5.4.</p>
+<h3 id="52-interrogazione-via-sparql-12-query-di-demo">5.2 Interrogazione via SPARQL — 12 query di demo</h3>
+<p>Il grafo IDPT è caricato in Apache Jena <strong>Fuseki 5.2.0</strong> locale via lo script <code>scripts/load_fuseki.sh</code> (HTTP PUT/POST idempotente sui 6 grafi nominati documentati in sez. 4 — <code>graph:agid</code>, <code>graph:vocabularies</code>, <code>graph:linking</code>, <code>graph:observations</code>, <code>graph:idpt-computed</code>, <code>graph:metadata</code>). L'avvio di Fuseki con il flag <code>--set tdb:unionDefaultGraph=true</code> è una <strong>necessità configurativa scoperta empiricamente</strong>: per default in Fuseki TDB2 le query SPARQL <code>SELECT ?s ?p ?o WHERE { ?s ?p ?o }</code> interrogano <em>solo</em> il default graph; visto che noi carichiamo tutto in grafi nominati, il default graph resta vuoto e le query restituirebbero zero risultati. La flag fa sì che il default graph sia l'unione dei 6 nominati, rendendo le query trasparenti senza dover modificare ogni query con <code>FROM &lt;graph:...&gt;</code> espliciti. La trappola è raccontabile nel report come "tipica della pratica LOD": caricare i dati in grafi nominati è semanticamente la cosa giusta da fare, ma richiede una configurazione lato server per essere immediatamente fruibile da SPARQL standard.</p>
+<p>Lo script <code>scripts/run_sparql_demo.sh</code> esegue in batch le 12 query e ne stampa i risultati in formato CSV — il pattern di consumo previsto per la demo dal vivo. Le 12 query sono organizzate intorno alla domanda di ricerca del progetto (chi sono le province più dipendenti, perché lo sono, come si distribuisce l'eredità retributiva) e ne estendono il raggio a interrogazioni accessorie permesse dalla ricchezza del grafo (traiettoria storica del numero di pensioni, evoluzione dell'età alla decorrenza GDP nei decenni, durata attesa di una pensione provincia per provincia, validazioni cross-fonte INPS × MEF). La tabella riassuntiva:</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Query</th>
+<th>Cubo / vocabolario</th>
+<th>Domanda</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>q01</td>
+<td>Top 10 IDPT</td>
+<td>cubo 8 + AGID</td>
+<td>Province più dipendenti dal sistema</td>
+</tr>
+<tr>
+<td>q02</td>
+<td>Bottom 10 IDPT</td>
+<td>cubo 8 + AGID</td>
+<td>Province meno dipendenti</td>
+</tr>
+<tr>
+<td>q03</td>
+<td>Drill-down Torino</td>
+<td>cubo 8 + AGID</td>
+<td>Composizione IDPT di una specifica provincia</td>
+</tr>
+<tr>
+<td>q04</td>
+<td>Distribuzione gestioni Calabria</td>
+<td>cubo 1 + AGID regione</td>
+<td>Composizione previdenziale al Sud</td>
+</tr>
+<tr>
+<td>q05</td>
+<td>Serie storica top 5 sedi</td>
+<td>cubo 3</td>
+<td>Crescita pensioni in 28 anni</td>
+</tr>
+<tr>
+<td>q06</td>
+<td>Catena PROV</td>
+<td>cubi 1, 4, 9</td>
+<td>Audit completo di una stima Plan B</td>
+</tr>
+<tr>
+<td>q07</td>
+<td>Aggregato obs stimate</td>
+<td>tutti</td>
+<td>Dove vivono le stime nel grafo</td>
+</tr>
+<tr>
+<td>q08</td>
+<td>Cross-fonte INPS×MEF</td>
+<td>cubi 1 + 7 + AGID</td>
+<td>Validazione cross-source su città metropolitane</td>
+</tr>
+<tr>
+<td>q09</td>
+<td>Quintupla Torino</td>
+<td>tutti (sidecar inclusi)</td>
+<td>Cosa significa "5★" nel grafo concretamente</td>
+</tr>
+<tr>
+<td>q10</td>
+<td>% retributivo per regione</td>
+<td>cubi 1 + 2 + AGID</td>
+<td>Eredità retributiva pre-1995 per regione</td>
+</tr>
+<tr>
+<td>q11</td>
+<td>Età decorrenza per decennio</td>
+<td>cubo 4</td>
+<td>Effetto cumulato delle riforme previdenziali</td>
+</tr>
+<tr>
+<td>q12</td>
+<td>Durata attesa pensione</td>
+<td>cubi 6 + 4 + AGID</td>
+<td>Quanto durano in media le pensioni provincia per provincia</td>
+</tr>
+</tbody>
+</table>
+<p>Otto query sono commentate in dettaglio nei paragrafi che seguono, con snippet completo e lettura del risultato atteso.</p>
+<details class="block" id="q01-top-10-idpt-la-classifica-delle-province-piu-dipendenti-block">
+  <summary><strong>q01 — Top 10 IDPT: la classifica delle province più dipendenti</strong></summary>
+  <div class="block-content">
+<p>La query interroga il cubo 8 (IDPT computed) per restituire le 10 province con valore di IDPT aggregato più alto, ordinate dal massimo. Il join con il vocabolario AGID estrae per ciascuna provincia il codice ISTAT a 3 cifre, la sigla a 2 lettere e l'etichetta italiana — filtrata con <code>FILTER(LANG(?provincia) = "it")</code> per scartare l'etichetta inglese che AGID porta accanto a quella italiana.</p>
+<pre><code class="language-sparql">PREFIX qb:   &lt;http://purl.org/linked-data/cube#&gt;
+PREFIX skos: &lt;http://www.w3.org/2004/02/skos/core#&gt;
+PREFIX clv:  &lt;https://w3id.org/italia/onto/CLV/&gt;
+PREFIX idpt: &lt;https://example.org/idpt/&gt;
+
+SELECT ?codice_istat ?sigla ?provincia ?idpt
+WHERE {
+  ?obs qb:dataSet idpt:cubo-idpt-computed ;
+       idpt:componenteIDPT idpt:idpt-aggregato ;
+       idpt:provincia ?p ;
+       idpt:valoreIDPT ?idpt .
+  ?p skos:notation ?codice_istat ;
+     clv:acronym   ?sigla ;
+     skos:prefLabel ?provincia .
+  FILTER(LANG(?provincia) = &quot;it&quot;)
+}
+ORDER BY DESC(?idpt)
+LIMIT 10
+</code></pre>
+<p>Risultato (campione delle prime righe): Reggio di Calabria (RC) 0.675, Taranto (TA) 0.651, Catanzaro (CZ) 0.627, Oristano (OR) 0.580, Nuoro (NU) 0.552. Sotto: Cosenza, Brindisi, Vibo Valentia, Foggia, Crotone. <strong>Nove province su dieci sono al Sud</strong>, con la sola eccezione di una. È la risposta diretta alla domanda di ricerca del progetto.</p>
+  </div>
+</details>
+<details class="block" id="q05-serie-storica-del-numero-di-pensioni-nelle-5-sedi-inps-piu-popolose-block">
+  <summary><strong>q05 — Serie storica del numero di pensioni nelle 5 sedi INPS più popolose</strong></summary>
+  <div class="block-content">
+<p>La query interroga il cubo 3 (serie storica per sede INPS) per restituire l'andamento del numero di pensioni dal 1998 al 2026 sulle 5 sedi INPS più grandi (Milano, Roma, Torino, Napoli, Brescia), dichiarate inline tramite <code>VALUES</code>. Il cubo 3 è modellato in stile B qb con <code>qb:measureType</code> come dimensione, quindi il filtro <code>qb:measureType idpt:numeroPensioni ; idpt:numeroPensioni ?n_pensioni</code> seleziona le sole osservazioni della misura numerica.</p>
+<pre><code class="language-sparql">PREFIX qb:   &lt;http://purl.org/linked-data/cube#&gt;
+PREFIX skos: &lt;http://www.w3.org/2004/02/skos/core#&gt;
+PREFIX idpt: &lt;https://example.org/idpt/&gt;
+
+SELECT ?sede ?anno ?n_pensioni
+WHERE {
+  VALUES ?sede_uri {
+    idpt:sede-inps-torino idpt:sede-inps-milano idpt:sede-inps-roma
+    idpt:sede-inps-napoli idpt:sede-inps-brescia
+  }
+  ?obs qb:dataSet idpt:cubo-pensioni-serie-storica-sede ;
+       idpt:sedeINPS ?sede_uri ;
+       idpt:annoRiferimento ?anno ;
+       qb:measureType idpt:numeroPensioni ;
+       idpt:numeroPensioni ?n_pensioni .
+  ?sede_uri skos:prefLabel ?sede .
+  FILTER(LANG(?sede) = &quot;it&quot;)
+}
+ORDER BY ?sede ?anno
+</code></pre>
+<p>La query restituisce 145 righe (5 sedi × 29 anni); plottata come trend, mostra tutte e 5 le sedi in <strong>crescita +30/+40% in 28 anni</strong> — il "boom" pensionistico italiano in un grafico solo.</p>
+  </div>
+</details>
+<details class="block" id="q07-distribuzione-delle-osservazioni-stimate-fra-i-cubi-block">
+  <summary><strong>q07 — Distribuzione delle osservazioni stimate fra i cubi</strong></summary>
+  <div class="block-content">
+<p>La query conta per ciascun <code>qb:DataSet</code> del grafo quante delle sue <code>qb:Observation</code> portano <code>obsStatus=E</code> (Estimated). Il pattern uniforme di sez. 4.5 si traduce così in una singola query aggregata che mostra dove vivono tutte le 4.399 stime del grafo, distribuite fra i cubi.</p>
+<pre><code class="language-sparql">PREFIX qb:             &lt;http://purl.org/linked-data/cube#&gt;
+PREFIX sdmx-attribute: &lt;http://purl.org/linked-data/sdmx/2009/attribute#&gt;
+PREFIX sdmx-code:      &lt;http://purl.org/linked-data/sdmx/2009/code#&gt;
+
+SELECT ?cubo (COUNT(?obs) AS ?obs_estimate)
+WHERE {
+  ?obs a qb:Observation ;
+       qb:dataSet ?cubo ;
+       sdmx-attribute:obsStatus sdmx-code:obsStatus-E .
+}
+GROUP BY ?cubo
+ORDER BY DESC(?obs_estimate)
+</code></pre>
+<p>Risultato atteso: cubo 3 (3.119 obs — importo annuo stimato + Sardegna retroattiva), cubo 8 (428 — IDPT computed), cubo 9 (428 — Plan B GDP), cubo 2 (424 — importo annuo stimato), cubo 4 (1 — aggregato "anteriore 1980"). Totale <strong>4.399 osservazioni stimate</strong> materializzate col pattern uniforme — verificabili in una sola query, base del lineage di tutto il grafo.</p>
+  </div>
+</details>
+<details class="block" id="q10-percentuale-di-pensioni-in-regime-retributivo-per-regione-block">
+  <summary><strong>q10 — Percentuale di pensioni in regime retributivo per regione</strong></summary>
+  <div class="block-content">
+<p>La query calcola per ogni regione italiana la quota di pensioni in regime retributivo. Numeratore: pensioni del cubo 2 con <code>regimeLiquidazione = retributivo</code> sommate per sede INPS e raggruppate per regione (traversando la gerarchia <code>sede → provincia AGID → regione AGID</code> via <code>idpt:correspondsToProvinceAGID</code> e <code>clv:situatedWithin</code>). Denominatore: totale delle pensioni del cubo 1 sulle stesse province aggregato per regione. Il cast <code>xsd:decimal(SUM(?n_retr)) / SUM(?n_tot)</code> previene la divisione intera che restituirebbe altrimenti zero.</p>
+<pre><code class="language-sparql">SELECT ?regione
+       (SUM(?n_retr) AS ?totale_retr)
+       (SUM(?n_tot)  AS ?totale_pensioni)
+       (xsd:decimal(SUM(?n_retr)) / SUM(?n_tot) AS ?quota_retr)
+WHERE {
+  ?obs_r qb:dataSet idpt:cubo-pensioni-regime-sede ;
+         idpt:sedeINPS ?sede ;
+         idpt:regimeLiquidazione idpt:regime-retributivo ;
+         qb:measureType idpt:numeroPensioni ;
+         idpt:numeroPensioni ?n_retr .
+  ?sede idpt:correspondsToProvinceAGID ?prov .
+  ?prov clv:situatedWithin ?reg .
+  ?reg skos:prefLabel ?regione .
+  FILTER(LANG(?regione) = &quot;it&quot;)
+
+  ?obs_t qb:dataSet idpt:cubo-pensioni-vigenti-residenza ;
+         idpt:provincia ?prov ;
+         idpt:tipoGestione idpt:gestione-totale ;
+         idpt:numeroPensioni ?n_tot .
+}
+GROUP BY ?regione
+ORDER BY DESC(?quota_retr)
+</code></pre>
+<p>Risultato narrativo: le regioni del Centro-Sud (Calabria, Sicilia, Basilicata) mostrano quote di pensioni in regime retributivo più alte del Nord (Lombardia, Piemonte), riflesso della maggiore stabilità occupazionale pre-1995 nelle PA e nei settori protetti del Mezzogiorno e — al contrario — dell'alto turn-over post-Dini nel triangolo industriale.</p>
+  </div>
+</details>
+<details class="block" id="q06-catena-completa-di-derivazione-prov-di-una-stima-plan-b-block">
+  <summary><strong>q06 — Catena completa di derivazione PROV di una stima Plan B</strong></summary>
+  <div class="block-content">
+<p>La query usa l'operatore SPARQL <code>prov:wasDerivedFrom+</code> (property path con quantificatore "uno o più passi") per ricostruire, a partire da una singola osservazione del cubo 9 (Torino, regime retributivo, Plan B GDP 2026), tutte le entità del grafo da cui è stata derivata, navigando ricorsivamente la catena di provenance senza saperne in anticipo la profondità.</p>
+<pre><code class="language-sparql">PREFIX qb:   &lt;http://purl.org/linked-data/cube#&gt;
+PREFIX prov: &lt;http://www.w3.org/ns/prov#&gt;
+PREFIX idpt: &lt;https://example.org/idpt/&gt;
+
+SELECT DISTINCT ?origine
+WHERE {
+  idpt:obs-plan-b-001-retr-2026 prov:wasDerivedFrom+ ?origine .
+}
+</code></pre>
+<p>Per l'osservazione "Torino, regime retributivo Plan B GDP 2026", il <code>+</code> segue la catena attraverso due livelli: prima al cubo 1 con <code>gestione=Pubblici</code> (35.000 pensioni GDP totali Torino) e al <code>qb:DataSet</code> cubo 4 nazionale, poi — se anche quelle osservazioni hanno a loro volta una <code>prov:wasDerivedFrom</code> — risale ancora. È l'audit a profondità arbitraria che giustifica l'uso minimale di PROV-O senza dover ricostruire una macchina della provenance da zero. Lo stesso pattern applicato all'IDPT computed di una provincia (cubo 8) restituisce tutte le osservazioni primarie dei cubi 1, 2, 5, 7, 9 usate nel calcolo dell'indice.</p>
+  </div>
+</details>
+<details class="block" id="q09-quintupla-identita-semantica-di-torino-block">
+  <summary><strong>q09 — Quintupla identità semantica di Torino</strong></summary>
+  <div class="block-content">
+<p>La query è la dimostrazione operativa del LOD 5★ raggiunto dal grafo. Per la provincia di Torino, restituisce in una singola interrogazione tutti i punti di identità semantica disponibili: URI canonica AGID, <code>skos:prefLabel</code> italiana, sigla <code>clv:acronym</code>, codice NUTS via <code>owl:sameAs</code> nativo AGID, URI DBpedia via <code>owl:sameAs</code> del sidecar del progetto, label INPS originale preservata come <code>skos:altLabel @it-x-inps</code>, URI della sede INPS via <code>idpt:correspondsToProvinceAGID</code>. Visto che ognuno di questi è un pattern diverso, sono dichiarati come branch alternativi <code>UNION</code>, ognuno con un <code>BIND</code> etichetta leggibile.</p>
+<pre><code class="language-sparql">SELECT ?relation ?value
+WHERE {
+  {
+    BIND(&quot;AGID URI canonica&quot; AS ?relation)
+    BIND(STR(agidp:001) AS ?value)
+  } UNION {
+    BIND(&quot;NUTS via owl:sameAs&quot; AS ?relation)
+    agidp:001 owl:sameAs ?nuts .
+    FILTER(STRSTARTS(STR(?nuts), &quot;http://nuts.geovocab.org/&quot;))
+    BIND(STR(?nuts) AS ?value)
+  } UNION {
+    BIND(&quot;DBpedia via owl:sameAs&quot; AS ?relation)
+    agidp:001 owl:sameAs ?dbp .
+    FILTER(STRSTARTS(STR(?dbp), &quot;http://dbpedia.org/&quot;))
+    BIND(STR(?dbp) AS ?value)
+  } UNION {
+    BIND(&quot;skos:altLabel @it-x-inps (forma INPS originale)&quot; AS ?relation)
+    agidp:001 skos:altLabel ?al . FILTER(LANG(?al) = &quot;it-x-inps&quot;)
+    BIND(STR(?al) AS ?value)
+  } UNION {
+    BIND(&quot;Sede INPS (idpt:SedeINPS)&quot; AS ?relation)
+    ?sede idpt:correspondsToProvinceAGID agidp:001 .
+    BIND(STR(?sede) AS ?value)
+  }
+}
+</code></pre>
+<p>(La query completa nel file <code>q09_quintupla_torino.rq</code> include altre due branch per la sigla e per la <code>skos:prefLabel</code>.) Il risultato è una tabella di 7 righe con tutte le identità di Torino. Il <code>FILTER(STRSTARTS(STR(?nuts), "http://nuts.geovocab.org/"))</code> discrimina i <code>owl:sameAs</code> "NUTS" dai <code>owl:sameAs</code> "DBpedia" guardando il prefisso dell'URI — necessario perché entrambe le triple usano la stessa property <code>owl:sameAs</code> ma puntano a spazi di nomi diversi.</p>
+  </div>
+</details>
+<details class="block" id="q11-eta-media-alla-decorrenza-gdp-per-decennio-block">
+  <summary><strong>q11 — Età media alla decorrenza GDP per decennio</strong></summary>
+  <div class="block-content">
+<p>La query aggrega le 46 osservazioni del cubo 4 (decorrenza GDP nazionale) per decennio di decorrenza, restituendo per ogni decennio dal 1980 in avanti l'<strong>età media pesata</strong> alla decorrenza pensionistica della Gestione Dipendenti Pubblici. La media pesata <code>SUM(?eta * ?n) / SUM(?n)</code> è necessaria perché i numeri annui di pensioni nuove variano da poche migliaia a centinaia di migliaia: una media aritmetica semplice (<code>AVG(?eta)</code>) darebbe lo stesso peso a un 1980 con poche pensioni e a un 2020 con tantissime, distorcendo il risultato verso i valori meno rappresentativi. Le fasce decennali sono costruite con <code>BIND(FLOOR(?anno_int / 10) * 10 AS ?decennio)</code> dopo aver convertito <code>xsd:gYear</code> a integer via <code>BIND(xsd:integer(STR(?anno)) AS ?anno_int)</code>.</p>
+<pre><code class="language-sparql">SELECT ?decennio
+       (xsd:decimal(SUM(?eta * ?n)) / SUM(?n) AS ?eta_media_pesata)
+       (SUM(?n) AS ?n_pensioni_decennio)
+WHERE {
+  ?obs qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+       idpt:annoDecorrenza ?anno ;
+       idpt:etaMediaDecorrenza ?eta ;
+       idpt:numeroPensioni ?n .
+  BIND(xsd:integer(STR(?anno)) AS ?anno_int)
+  BIND((FLOOR(?anno_int / 10) * 10) AS ?decennio)
+  FILTER(?anno_int &gt;= 1980)
+}
+GROUP BY ?decennio
+ORDER BY ?decennio
+</code></pre>
+<p>Risultato narrativo: l'età alla decorrenza GDP è cresciuta significativamente nei 5 decenni 1980–2020+, per effetto cumulato delle quattro grandi riforme previdenziali italiane (Amato 1992, Dini 1995, Maroni 2004, Fornero 2011). Il dato emerge dal grafo <em>senza intermediari interpretativi</em>: chiunque scarichi il cubo 4 e lanci la query lo vede.</p>
+  </div>
+</details>
+<details class="block" id="q12-durata-attesa-di-una-pensione-di-vecchiaia-per-provincia-block">
+  <summary><strong>q12 — Durata attesa di una pensione di vecchiaia per provincia</strong></summary>
+  <div class="block-content">
+<p>La query combina il cubo 6 (indicatori demografici ISTAT) e il cubo 4 (decorrenza GDP nazionale) per stimare la durata media attesa di una pensione di vecchiaia per ognuna delle 107 province. Il calcolo è <code>LIFEEXP65T_provincia + (65 − eta_decorrenza_nazionale)</code>: la <code>LIFEEXP65T</code> è la speranza di vita restante a 65 anni; se la decorrenza media nazionale 2020–2025 è (poniamo) a 64 anni, una persona che va in pensione a 64 ha vissuto 1 anno in meno rispetto al riferimento dei 65, quindi la durata attesa è <code>LIFEEXP65T + 1</code> anno. La query interna è una <strong>subquery aggregata scalare</strong> che restituisce un singolo valore (l'età media pesata nazionale alla decorrenza nel decennio 2020–2025) riusato in tutte le 107 righe della query esterna.</p>
+<pre><code class="language-sparql">SELECT ?sigla ?provincia ?lifeexp65 ?eta_decorrenza_2020s ?durata_attesa_pensione
+WHERE {
+  ?obs_l qb:dataSet idpt:cubo-indicatori-demografici-istat ;
+         idpt:provincia ?p ;
+         idpt:indicatoreDemografico idpt:ind-lifeexp65t ;
+         idpt:valoreIndicatore ?lifeexp65 .
+  ?p clv:acronym ?sigla ; skos:prefLabel ?provincia .
+  FILTER(LANG(?provincia) = &quot;it&quot;)
+
+  {
+    SELECT (xsd:decimal(SUM(?eta * ?n)) / SUM(?n) AS ?eta_decorrenza_2020s)
+    WHERE {
+      ?obs_d qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+             idpt:annoDecorrenza ?anno ;
+             idpt:etaMediaDecorrenza ?eta ;
+             idpt:numeroPensioni ?n .
+      FILTER(xsd:integer(STR(?anno)) &gt;= 2020)
+    }
+  }
+
+  BIND(?lifeexp65 + 65 - ?eta_decorrenza_2020s AS ?durata_attesa_pensione)
+}
+ORDER BY DESC(?durata_attesa_pensione)
+</code></pre>
+<p>La narrativa sul gradiente Nord/Sud che emerge dalla query è significativa: il noto divario sulla speranza di vita a 65 anni (Bolzano 21,6 anni contro province meridionali sotto i 19 anni) si traduce in una <strong>differenza concreta di durata media della pensione</strong>, dato che la letteratura statistica italiana espone raramente in questa forma diretta. Il grafo IDPT lo restituisce come lettura derivata gratuita del cubo 6 in combinazione col cubo 4.</p>
+<p>Le query q02 (bottom 10), q03 (drill-down Torino), q04 (gestioni Calabria) e q08 (cross-fonte INPS×MEF) sono incluse nel set di demo e disponibili nei file <code>.rq</code> di <code>scripts/sparql/</code> — non sono qui commentate per parsimonia, ma seguono pattern già visti (filtri su URI vocabolario per q03 e q04, multi-cubo + cast per q08, <code>ORDER BY ASC</code> per q02).</p>
+  </div>
+</details>
+<h3 id="53-stack-di-pubblicazione">5.3 Stack di pubblicazione</h3>
+<p>Il deliverable finale è accessibile attraverso tre livelli complementari. Il primo livello è il <strong><code>dcatapit:Dataset</code></strong> del progetto, presentato in dettaglio in sez. 4.8 e materializzato in <code>output/dataset/atlante_idpt_dataset.ttl</code>. Le tre distribuzioni dichiarate nel DCAT — <code>atlante-idpt.ttl</code> (bundle RDF/Turtle aggregato dei 9 cubi + sidecar + vocabolari), <code>atlante-idpt.jsonld</code> (versione JSON-LD per consumer Web), <code>atlante-idpt-bundle.zip</code> (archivio con i file separati per chi vuole granularità di cubo) — sono i tre formati pubblicati per coprire tre casi d'uso diversi: il triplestore (Turtle), l'applicazione Web/SPA (JSON-LD), e l'archivio per analisi offline (ZIP). Il VoID minimale (<code>void:triples</code>, <code>void:sparqlEndpoint</code>, <code>void:exampleResource</code>) chiude il package con la dichiarazione delle caratteristiche tecniche del grafo.</p>
+<p>Il secondo livello è la <strong>landing page GitHub Pages</strong> in <code>docs/index.html</code>, generata come pagina HTML statica con: descrizione del dataset auto-estratta da <code>dcterms:description</code>, statistiche aggregate (~117k triple, 13.312 obs, 107 sameAs DBpedia), la mappa principale <code>idpt_map.html</code> embedded come iframe interattivo, top/bottom 10 IDPT come tabelle HTML, link alle tre distribuzioni downloadable, 4-5 query SPARQL di esempio come blocchi pre-formattati copiabili, link al <code>REPORT.md</code> e al repository GitHub del progetto. Il branch <code>main</code> con path <code>/docs/</code> è esposto come sito statico all'URL <code>https://robertobrunocl.github.io/idpt-italia/</code> (l'username GitHub viene concretizzato in fase di deploy finale via lo script <code>scripts/finalize_namespace.py</code> che esegue il find-and-replace globale del namespace <code>https://example.org/idpt/</code> → <code>https://robertobrunocl.github.io/idpt-italia/</code> su tutti i 13 file TTL del progetto).</p>
+<p>Il terzo livello è la <strong>demo dal vivo</strong>, in cui il grafo viene caricato in Fuseki locale e interrogato live con le 12 query commentate in 5.2. La scelta di non esporre un endpoint SPARQL pubblico permanente (es. via ngrok o cloud free-tier) è una decisione metodologica: in fase di presentazione conta avere zero dipendenze di rete, e Fuseki locale + <code>scripts/run_sparql_demo.sh</code> garantisce zero superficie di rischio. Un endpoint pubblico stabile (Trifid, Linked Data Frontend, oppure deploy di Fuseki su un VPS) è uno degli <strong>upgrade post-progetto</strong> naturali, citato in 5.4 insieme alla pubblicazione su <code>dati.gov.it</code> (registrazione standard per la PA italiana) e all'upgrade del namespace da GitHub Pages a <code>w3id.org/idpt-italia</code> via richiesta di Pull Request al maintainer di <code>perma-id/w3id.org</code>.</p>
+<h3 id="54-limiti-e-prospettive">5.4 Limiti e prospettive</h3>
+<p>Il progetto raggiunge l'obiettivo della pratica LOD 5★ e produce una risposta sostantiva alla sua domanda di ricerca, ma è uno snapshot di un sistema. Cinque limiti vanno dichiarati esplicitamente come parte dell'onestà del lavoro.</p>
+<p><strong>Granularità temporale dell'IDPT</strong>. L'indice è calcolato solo per l'anno 2026. La serie storica del cubo 3 (1998–2026) fornisce la traiettoria del numero di pensioni nel tempo, ma non i denominatori storici (occupati per provincia × anno, monte redditi da lavoro per provincia × anno) che servirebbero per calcolare l'IDPT per ogni anno. Estendere il calcolo dell'IDPT alla serie storica richiederebbe l'integrazione di ulteriori cubi ISTAT-RFL (occupati storici, parzialmente disponibili) e MEF (redditi storici, anche pubblicati con disallineamento temporale crescente all'indietro).</p>
+<p><strong>Plan B GDP — euristica decorrenza→regime</strong>. La stima della composizione regime delle pensioni della Gestione Dipendenti Pubblici è derivata via un'euristica calibrata sulla normativa (Riforma Dini 1995, Riforma Fornero 2011) ma mai validata su microdati amministrativi INPS (che non sono pubblici). Un'eventuale collaborazione con INPS-DC Statistica permetterebbe di verificare l'accuratezza dell'euristica e di sostituirla con dati primari.</p>
+<p><strong>Sardegna 1:N nella D3</strong>. La decisione di replicare l'intero valore della sede aggregata Cagliari-e-Sud-Sardegna sulle due province AGID Cagliari (092) e Sud Sardegna (111) è un'approssimazione esplicita (sez. 4.7). Una stima migliore richiederebbe disaggregare la sede aggregata sulle due province con qualche criterio proxy (es. popolazione 65+ residente in ciascuna). La decisione attuale è quella più trasparente in attesa di un dato di disaggregazione disponibile.</p>
+<p><strong>Disallineamento temporale MEF 2024 vs INPS 2026</strong>. I redditi MEF si riferiscono al 2024 (dichiarati nel 2024 per l'anno di imposta 2023), gli snapshot INPS al 1.1.2026, gli occupati ISTAT al 2025. Il disallineamento di 1–3 anni introduce un rumore secondario nel calcolo di D2 ma non altera il segnale Nord/Sud principale.</p>
+<p><strong>PROV-O minimale</strong>. La provenance del grafo usa solo <code>prov:wasDerivedFrom</code>. Una valorizzazione completa del lineage richiederebbe la serializzazione dei sidecar <code>*.history.json</code> di macrorefine come <code>prov:Activity</code> + <code>prov:Agent</code> + <code>prov:wasGeneratedBy</code> + <code>prov:wasAssociatedWith</code> strutturati — upgrade tecnicamente immediato (i dati esistono già nelle history) ma non realizzato per parsimonia di scope.</p>
+<p>Le <strong>prospettive di sviluppo</strong> che il lavoro apre sono varie. Una <strong>animazione storica dell'IDPT</strong> (su anni e indice ricalcolato) sarebbe il completamento naturale della visualizzazione. Un <strong>confronto cross-paese via Eurostat NUTS-3</strong> è praticabile poiché tutti i nostri 107 codici NUTS sono già linkati nel grafo via <code>owl:sameAs</code>: rifacendo lo stesso lavoro su Spagna, Francia, Germania (paesi con strutture pensionistiche comparabili) si potrebbero costruire IDPT comparabili a livello europeo. Una <strong>registrazione del dataset su <code>dati.gov.it</code></strong> chiuderebbe il cerchio della pubblicazione conforme alla PA italiana. L'<strong>upgrade del namespace a <code>w3id.org</code></strong> darebbe stabilità a 10+ anni alle URI canoniche del progetto. Un <strong>endpoint SPARQL pubblico stabile</strong> trasformerebbe il deliverable da repo statico a servizio interrogabile in modo persistente. Nessuno di questi è un blocco al risultato attuale, ma ognuno alza il valore del lavoro come infrastruttura riusabile da altri ricercatori.</p>
+<hr />
+<h2 id="6-licenza-del-deliverable-e-compatibilita-con-le-sorgenti">6. Licenza del deliverable e compatibilità con le sorgenti</h2>
+<p>Il <strong>deliverable finale del progetto</strong> — il grafo RDF dell'Atlante IDPT pubblicato come <code>dcatapit:Dataset</code> — adotta come licenza <strong>Creative Commons Attribuzione 4.0 Internazionale</strong> (CC-BY 4.0). La scelta è compatibile con tutte e cinque le licenze sorgente dichiarate in sez. 2.5: IODL 2.0 (INPS), CC-BY 3.0 IT (ISTAT), CC-BY 3.0 generica (MEF), CC-BY 4.0 (AGID) e CC-BY (Openpolis) ammettono opere derivate con attribuzione, condizione che CC-BY 4.0 richiede esplicitamente. CC-BY 4.0 è inoltre la stessa licenza scelta da AGID per i propri vocabolari controllati, garantendo coerenza stilistica con il contesto normativo nazionale.</p>
+<p>La dichiarazione di provenienza composita — "Dataset aggregato da fonti pubbliche con licenze CC-BY 3.0 IT (ISTAT), CC-BY 3.0 (MEF), CC-BY 4.0 (AGID), IODL 2.0 (INPS); riconfezionato come opera derivata con licenza CC-BY 4.0" — è materializzata nel campo <code>dcterms:rights</code> del <code>dcatapit:Dataset</code> finale e accompagna ogni distribuzione pubblicata (TTL, JSON-LD, ZIP).</p>
+<p>Una sesta licenza, <strong>CC-BY-SA 3.0</strong>, vincola DBpedia, che è il target del linking esterno <code>owl:sameAs</code> del progetto (107 triple nel sidecar <code>agid_to_dbpedia.ttl</code>). Poiché un'asserzione <code>owl:sameAs</code> referenzia un'entità esterna senza duplicarne i contenuti, la clausola share-alike di DBpedia non si propaga al nostro deliverable, che resta licenziabile come CC-BY 4.0. L'attribuzione DBpedia è comunque mantenuta nel sidecar via <code>dcterms:source</code> verso <code>https://dbpedia.org/sparql</code> con timestamp della query, perché DBpedia evolve nel tempo e il mapping va datato.</p>
+  </main>
+</div>
+
+<button class="back-to-top" id="backToTop" aria-label="Torna in alto">↑</button>
+
+<script>
+function setAllDetails(open) {
+  document.querySelectorAll('main details.block').forEach(function(d) {
+    if (open) d.setAttribute('open', '');
+    else d.removeAttribute('open');
+  });
+}
+(function() {
+  document.querySelectorAll('nav.toc a[href^="#"]').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      var target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        var d = target.closest('details.block');
+        if (d && !d.hasAttribute('open')) d.setAttribute('open', '');
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        history.pushState(null, '', this.getAttribute('href'));
+      }
+    });
+  });
+  var headings = document.querySelectorAll('main h2[id], main h3[id]');
+  var tocLinks = {};
+  document.querySelectorAll('nav.toc a').forEach(function(a) {
+    var id = a.getAttribute('href');
+    if (id && id.startsWith('#')) tocLinks[id.substring(1)] = a;
+  });
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        var id = entry.target.id;
+        Object.values(tocLinks).forEach(function(a) { a.classList.remove('active'); });
+        if (tocLinks[id]) tocLinks[id].classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  headings.forEach(function(h) { observer.observe(h); });
+  var btn = document.getElementById('backToTop');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 300) btn.classList.add('visible');
+    else btn.classList.remove('visible');
+  });
+  btn.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  var KW = ['PREFIX','SELECT','WHERE','FILTER','ORDER','BY','LIMIT','GROUP',
+            'DISTINCT','UNION','BIND','VALUES','ASC','DESC','OPTIONAL','AS',
+            'STR','LANG','STRSTARTS','FLOOR','SUM','COUNT','AVG','MIN','MAX',
+            'OFFSET','HAVING','FROM','GRAPH'];
+  document.querySelectorAll('main pre code').forEach(function(code) {
+    var t = code.innerHTML;
+    t = t.replace(/(^|\n)(#[^\n]*)/g, '$1<span class="cmt">$2</span>');
+    t = t.replace(/(&quot;[^&]*?&quot;(?:@[a-z\-]+)?(?:\^\^[a-zA-Z:]+)?)/g,
+                  '<span class="str">$1</span>');
+    t = t.replace(/(?:^|\s|&lt;|&gt;|\(|\[|,|\.)([a-z][a-z0-9\-]*:)/gi,
+                  function(m, p) { return m.replace(p, '<span class="px">' + p + '</span>'); });
+    KW.forEach(function(kw) {
+      var re = new RegExp('\\b(' + kw + ')\\b', 'g');
+      t = t.replace(re, '<span class="kw">$1</span>');
+    });
+    code.innerHTML = t;
+  });
+})();
+</script>
+
+</body>
+</html>

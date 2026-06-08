@@ -1,0 +1,740 @@
+@prefix idpt:           <https://robertobrunocl.github.io/idpt-italia/> .
+@prefix qb:             <http://purl.org/linked-data/cube#> .
+@prefix sdmx-attribute: <http://purl.org/linked-data/sdmx/2009/attribute#> .
+@prefix sdmx-code:      <http://purl.org/linked-data/sdmx/2009/code#> .
+@prefix sdmx-concept:   <http://purl.org/linked-data/sdmx/2009/concept#> .
+@prefix clv:            <https://w3id.org/italia/onto/CLV/> .
+@prefix skos:           <http://www.w3.org/2004/02/skos/core#> .
+@prefix owl:            <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:            <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:           <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:            <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms:        <http://purl.org/dc/terms/> .
+@prefix vann:           <http://purl.org/vocab/vann/> .
+@prefix foaf:           <http://xmlns.com/foaf/0.1/> .
+
+# =============================================================================
+# ontology.ttl — Bundle aggregato dell'ontologia del progetto IDPT
+#
+# Questo file è il packaging unificato dei due file ontologici del progetto:
+#   - classes_and_properties.ttl  (classe propria idpt:SedeINPS,
+#                                  property qb e 9 DataStructureDefinition)
+#   - code_lists.ttl              (6 ConceptScheme SKOS proprie)
+#
+# Generato per facilitare il caricamento in editor ontologici come Protégé,
+# che si aspettano un singolo file con un'unica dichiarazione `owl:Ontology`
+# in cima. I due file singoli restano la fonte di verità per il caricamento
+# nei grafi nominati Fuseki (vedi `scripts/load_fuseki.sh`).
+#
+# Per esplorare l'ontologia con Protégé:
+#   File → Open File → ontology.ttl
+# Protégé mostrerà:
+#   - 1 owl:Class propria (idpt:SedeINPS, sottoclasse di clv:Feature)
+#   - 2 owl:ObjectProperty proprie (correspondsToProvinceAGID, aggregatesProvince)
+#   - le 10 qb:DimensionProperty e 9 qb:MeasureProperty
+#   - le 9 qb:DataStructureDefinition (una per cubo del grafo)
+#   - 6 skos:ConceptScheme con 27 skos:Concept totali
+# =============================================================================
+
+
+# =============================================================================
+# DICHIARAZIONE owl:Ontology
+# =============================================================================
+
+idpt: a owl:Ontology ;
+    rdfs:label "Atlante della dipendenza previdenziale italiana — ontologia"@it ,
+               "Italian pension dependency atlas — ontology"@en ;
+    dcterms:title "Atlante IDPT — ontologia"@it ;
+    dcterms:description "Ontologia del progetto Atlante della dipendenza previdenziale italiana. Definisce la singola classe propria idpt:SedeINPS (sottoclasse di clv:Feature, per modellare l'asimmetria tra residenza del titolare e sede INPS di gestione), le due ObjectProperty associate, le 10 qb:DimensionProperty e le 9 qb:MeasureProperty condivise dai 9 cubi statistici del progetto, le 9 qb:DataStructureDefinition (una per cubo), e le 6 code-list SKOS (tipi di gestione INPS, regimi di liquidazione, indicatori demografici ISTAT, voci di reddito MEF, componenti IDPT, aree geografiche). L'ontologia è radicata sul vocabolario controllato territoriale AGID OntoPiA per la classe clv:Province e applica il pattern multi-typing OntoPiA per il riuso delle URI canoniche delle 107 province italiane."@it ;
+    dcterms:creator [ a foaf:Person ;
+                      foaf:name "Roberto Bruno" ] ;
+    dcterms:publisher [ a foaf:Person ;
+                        foaf:name "Roberto Bruno" ] ;
+    dcterms:issued "2026-06-01"^^xsd:date ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    owl:versionInfo "1.0" ;
+    vann:preferredNamespacePrefix "idpt" ;
+    vann:preferredNamespaceUri    "https://robertobrunocl.github.io/idpt-italia/" ;
+    rdfs:comment "Per il caricamento nei grafi nominati Fuseki si usano i due file sorgente separati (classes_and_properties.ttl + code_lists.ttl). Questo file aggregato è il packaging unificato pensato per editor ontologici."@it .
+
+
+# =============================================================================
+# classes_and_properties.ttl — Classi proprie, property qb e 9 DSD
+#
+# Tre strati distinti:
+#   1. Classi proprie + 2 ObjectProperty proprie (sez. 10.9 PROGETTO_CONTESTO.md)
+#   2. Property qb condivise tra cubi (Dimension/Measure/Attribute)
+#   3. Le 9 DataStructureDefinition, una per cubo (sez. 10.11 + 10.12)
+#
+# Mix di stili qb:
+#   - Stile A (multi-measure): cubi 1, 4, 5, 6, 7, 8, 9
+#   - Stile B (measure dimension via qb:measureType): cubi 2, 3
+# =============================================================================
+
+
+# =============================================================================
+# STRATO 1 — Classi proprie + ObjectProperty proprie
+# =============================================================================
+
+idpt:SedeINPS a owl:Class ;
+    rdfs:label "Sede territoriale INPS"@it , "INPS territorial office"@en ;
+    rdfs:comment "Unità territoriale di gestione INPS, distinta dalla provincia amministrativa AGID. Le sedi INPS aggregano o segmentano le province in modo non perfettamente sovrapposto: il CSV INPS 'vigenti per residenza' usa 110 entità di residenza, mentre 'regime liquidazione' e 'serie storica' usano 106 sedi INPS. Tipico esempio di asimmetria reale dentro INPS che merita un asse territoriale distinto nel grafo."@it ;
+    rdfs:subClassOf clv:Feature .
+
+idpt:correspondsToProvinceAGID a owl:ObjectProperty ;
+    rdfs:label "corrisponde a provincia AGID"@it ;
+    rdfs:comment "Relazione 1-a-1 tra una sede INPS e la provincia AGID che essa serve completamente (105 sedi su 106 usano questa property)."@it ;
+    rdfs:domain idpt:SedeINPS ;
+    rdfs:range clv:Province .
+
+idpt:aggregatesProvince a owl:ObjectProperty ;
+    rdfs:label "aggrega provincia"@it ;
+    rdfs:comment "Relazione 1-a-N tra una sede INPS e le province AGID che essa serve (usata solo per la sede aggregata 'Cagliari e Sud Sardegna', che copre le province AGID 092 + 111)."@it ;
+    rdfs:domain idpt:SedeINPS ;
+    rdfs:range clv:Province .
+
+
+# =============================================================================
+# STRATO 2 — Property qb condivise (Dimension/Measure/Attribute)
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Dimension property — territoriali
+# -----------------------------------------------------------------------------
+
+idpt:provincia a rdf:Property , qb:DimensionProperty ;
+    rdfs:label "provincia"@it ;
+    rdfs:comment "Dimensione territoriale: provincia amministrativa italiana, identificata via URI canonica AGID."@it ;
+    rdfs:range clv:Province ;
+    qb:concept sdmx-concept:refArea .
+
+idpt:sedeINPS a rdf:Property , qb:DimensionProperty ;
+    rdfs:label "sede INPS"@it ;
+    rdfs:comment "Dimensione territoriale: sede INPS (asse distinto dalla provincia AGID, usato dai cubi 2 e 3)."@it ;
+    rdfs:range idpt:SedeINPS ;
+    qb:concept sdmx-concept:refArea .
+
+idpt:areaGeografica a rdf:Property , qb:DimensionProperty ;
+    rdfs:label "area geografica"@it ;
+    rdfs:comment "Dimensione territoriale per cubi nazionali o aggregati continentali (cubo 4 = Italia nazionale)."@it ;
+    rdfs:range skos:Concept ;
+    qb:codeList idpt:aree-geografiche ;
+    qb:concept sdmx-concept:refArea .
+
+# -----------------------------------------------------------------------------
+# Dimension property — temporali
+# -----------------------------------------------------------------------------
+
+idpt:annoRiferimento a rdf:Property , qb:DimensionProperty ;
+    rdfs:label "anno di riferimento"@it ;
+    rdfs:comment "Dimensione temporale: anno di snapshot dei dati (stato al 1.1.AAAA)."@it ;
+    rdfs:range xsd:gYear ;
+    qb:concept sdmx-concept:refPeriod .
+
+idpt:annoDecorrenza a rdf:Property , qb:DimensionProperty ;
+    rdfs:label "anno di decorrenza"@it ;
+    rdfs:comment "Dimensione temporale: anno in cui la pensione è entrata in pagamento (coorte di decorrenza). Distinta da annoRiferimento (snapshot vs cohort), pattern coerente con SDMX REF_PERIOD vs COHORT_PERIOD."@it ;
+    rdfs:range xsd:gYear ;
+    qb:concept sdmx-concept:refPeriod .
+
+# -----------------------------------------------------------------------------
+# Dimension property — code-list specifiche
+# -----------------------------------------------------------------------------
+
+idpt:tipoGestione a rdf:Property , qb:DimensionProperty ;
+    rdfs:label "tipo di gestione INPS"@it ;
+    rdfs:comment "Dimensione: comparto di gestione previdenziale INPS."@it ;
+    rdfs:range skos:Concept ;
+    qb:codeList idpt:tipi-gestione-inps .
+
+idpt:regimeLiquidazione a rdf:Property , qb:DimensionProperty ;
+    rdfs:label "regime di liquidazione"@it ;
+    rdfs:comment "Dimensione: sistema di calcolo della pensione (retributivo/misto-dini/misto-fornero/contributivo-puro)."@it ;
+    rdfs:range skos:Concept ;
+    qb:codeList idpt:regimi-liquidazione .
+
+idpt:indicatoreDemografico a rdf:Property , qb:DimensionProperty ;
+    rdfs:label "indicatore demografico"@it ;
+    rdfs:comment "Dimensione: indicatore demografico ISTAT (POP014, AGEINDEX, BIRTHRATE, ...)."@it ;
+    rdfs:range skos:Concept ;
+    qb:codeList idpt:indicatori-demografici .
+
+idpt:voceReddito a rdf:Property , qb:DimensionProperty ;
+    rdfs:label "voce di reddito MEF"@it ;
+    rdfs:comment "Dimensione: componente del monte redditi da lavoro (v2/v4/v5/v6/v7) dalle dichiarazioni IRPEF MEF."@it ;
+    rdfs:range skos:Concept ;
+    qb:codeList idpt:voci-reddito-mef .
+
+idpt:componenteIDPT a rdf:Property , qb:DimensionProperty ;
+    rdfs:label "componente IDPT"@it ;
+    rdfs:comment "Dimensione: componente dell'Indice di Dipendenza Previdenziale Territoriale (3 elementari + 1 aggregato)."@it ;
+    rdfs:range skos:Concept ;
+    qb:codeList idpt:componenti-idpt .
+
+# -----------------------------------------------------------------------------
+# Measure property
+# -----------------------------------------------------------------------------
+
+idpt:numeroPensioni a rdf:Property , qb:MeasureProperty ;
+    rdfs:label "numero di pensioni"@it ;
+    rdfs:comment "Conteggio pensioni vigenti nell'unità territoriale e temporale."@it ;
+    rdfs:range xsd:nonNegativeInteger ;
+    qb:concept sdmx-concept:obsValue .
+
+idpt:importoMedioMensile a rdf:Property , qb:MeasureProperty ;
+    rdfs:label "importo medio mensile"@it ;
+    rdfs:comment "Importo medio mensile della pensione, in euro."@it ;
+    rdfs:range xsd:decimal ;
+    qb:concept sdmx-concept:obsValue .
+
+idpt:importoAnnuoComplessivo a rdf:Property , qb:MeasureProperty ;
+    rdfs:label "importo complessivo annuo"@it ;
+    rdfs:comment "Importo annuo complessivo, in milioni di euro. Quando ricostruito come numero × media × 13 va dichiarato come obsStatus=E + prov:wasDerivedFrom."@it ;
+    rdfs:range xsd:decimal ;
+    qb:concept sdmx-concept:obsValue .
+
+idpt:etaMediaDecorrenza a rdf:Property , qb:MeasureProperty ;
+    rdfs:label "età media alla decorrenza"@it ;
+    rdfs:comment "Età media (anni) dei pensionati all'atto della decorrenza della pensione."@it ;
+    rdfs:range xsd:decimal ;
+    qb:concept sdmx-concept:obsValue .
+
+idpt:numeroOccupati a rdf:Property , qb:MeasureProperty ;
+    rdfs:label "numero di occupati"@it ;
+    rdfs:comment "Occupati medi annui (15-89 anni), espressi in migliaia di persone (fonte ISTAT RFL)."@it ;
+    rdfs:range xsd:decimal ;
+    qb:concept sdmx-concept:obsValue .
+
+idpt:valoreIndicatore a rdf:Property , qb:MeasureProperty ;
+    rdfs:label "valore indicatore"@it ;
+    rdfs:comment "Valore dell'indicatore demografico ISTAT. L'unità di misura (%, per mille, anni) varia per indicatore ed è dichiarata via sdmx-attribute:unitMeasure a livello di osservazione."@it ;
+    rdfs:range xsd:decimal ;
+    qb:concept sdmx-concept:obsValue .
+
+idpt:frequenzaDichiaranti a rdf:Property , qb:MeasureProperty ;
+    rdfs:label "frequenza dichiaranti"@it ;
+    rdfs:comment "Numero di dichiaranti IRPEF per voce di reddito."@it ;
+    rdfs:range xsd:nonNegativeInteger ;
+    qb:concept sdmx-concept:obsValue .
+
+idpt:ammontareTotale a rdf:Property , qb:MeasureProperty ;
+    rdfs:label "ammontare totale"@it ;
+    rdfs:comment "Ammontare totale in euro per la voce di reddito, aggregato a livello provinciale."@it ;
+    rdfs:range xsd:decimal ;
+    qb:concept sdmx-concept:obsValue .
+
+idpt:valoreIDPT a rdf:Property , qb:MeasureProperty ;
+    rdfs:label "valore IDPT"@it ;
+    rdfs:comment "Valore normalizzato in [0,1] della componente IDPT (o dell'aggregato finale)."@it ;
+    rdfs:range xsd:decimal ;
+    qb:concept sdmx-concept:obsValue .
+
+
+# =============================================================================
+# STRATO 3 — Le 9 DataStructureDefinition (1 sezione per cubo)
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Cubo 1 — pensioni-vigenti-residenza (stile A, multi-measure)
+# Sorgente: CSV INPS "vigenti per residenza" 2026, 107 province × 5 gestioni.
+# Cardinalità attesa: 535 obs.
+# -----------------------------------------------------------------------------
+
+idpt:dsd-pensioni-vigenti-residenza a qb:DataStructureDefinition ;
+    rdfs:label "DSD — Pensioni vigenti per provincia di residenza"@it ;
+    qb:component [ qb:dimension idpt:provincia       ; qb:order 1 ] ;
+    qb:component [ qb:dimension idpt:annoRiferimento ; qb:order 2 ] ;
+    qb:component [ qb:dimension idpt:tipoGestione    ; qb:order 3 ] ;
+    qb:component [ qb:measure   idpt:numeroPensioni ] ;
+    qb:component [ qb:measure   idpt:importoMedioMensile ] ;
+    qb:component [ qb:measure   idpt:importoAnnuoComplessivo ] ;
+    qb:component [ qb:attribute sdmx-attribute:obsStatus ;
+                   qb:componentRequired "true"^^xsd:boolean ;
+                   qb:componentAttachment qb:Observation ] ;
+    qb:component [ qb:attribute sdmx-attribute:unitMeasure ;
+                   qb:componentRequired "false"^^xsd:boolean ;
+                   qb:componentAttachment qb:DataSet ] .
+
+
+# -----------------------------------------------------------------------------
+# Cubo 2 — pensioni-regime-sede (stile B, measure dimension)
+# Sorgente: CSV INPS "regime di liquidazione" 2026, 106 sedi INPS × 4 regimi.
+# DSD aggiornata in Fase 5 (29 maggio 2026): rimossa dimensione tipoGestione
+# perché il cubo OLAP INPS aggrega già Privati + Autonomi/Parasub (esclude
+# Pubblici per costruzione). Sottoinsieme gestione = caratteristica del cubo
+# intero, dichiarata in dcterms:description del DataSet.
+# Cardinalità attesa: 106 × 1 × 4 × 3 = 1.272 obs (stile B triplica per measureType).
+# Importo annuo complessivo: ricostruito come numero × media × 13
+# (obsStatus=E + prov:wasDerivedFrom a livello osservazione).
+# -----------------------------------------------------------------------------
+
+idpt:dsd-pensioni-regime-sede a qb:DataStructureDefinition ;
+    rdfs:label "DSD — Pensioni per sede INPS × regime di liquidazione"@it ;
+    rdfs:comment "DSD aggiornata in Fase 5 cubo 2: rimossa dimensione tipoGestione perché il cubo OLAP INPS aggrega già Privati + Autonomi/Parasub (esclude Pubblici per costruzione). Documentato in dcterms:description del DataSet."@it ;
+    qb:component [ qb:dimension idpt:sedeINPS          ; qb:order 1 ] ;
+    qb:component [ qb:dimension idpt:annoRiferimento   ; qb:order 2 ] ;
+    qb:component [ qb:dimension idpt:regimeLiquidazione ; qb:order 3 ] ;
+    qb:component [ qb:dimension qb:measureType         ; qb:order 4 ] ;
+    qb:component [ qb:measure   idpt:numeroPensioni ] ;
+    qb:component [ qb:measure   idpt:importoMedioMensile ] ;
+    qb:component [ qb:measure   idpt:importoAnnuoComplessivo ] ;
+    qb:component [ qb:attribute sdmx-attribute:obsStatus ;
+                   qb:componentRequired "true"^^xsd:boolean ;
+                   qb:componentAttachment qb:Observation ] .
+
+
+# -----------------------------------------------------------------------------
+# Cubo 3 — pensioni-serie-storica-sede (stile B, measure dimension)
+# Sorgente: CSV INPS serie storica 1998-2026, 106 sedi INPS × 29 anni × 5
+# gestioni (incluso 'gestione-totale' aggregato esplicito).
+# Cardinalità attesa: ~46.110 obs.
+# 1998-2011: obsStatus=E sulle 3 sedi sarde (aggregazione retroattiva).
+# Importo annuo complessivo: ricostruito (obsStatus=E + wasDerivedFrom).
+# Province nate 2009 (BAT, Fermo, Monza): obsStatus=M per 1998-2008 oppure
+# omissione delle osservazioni.
+# -----------------------------------------------------------------------------
+
+idpt:dsd-pensioni-serie-storica-sede a qb:DataStructureDefinition ;
+    rdfs:label "DSD — Pensioni serie storica per sede INPS (1998-2026)"@it ;
+    qb:component [ qb:dimension idpt:sedeINPS        ; qb:order 1 ] ;
+    qb:component [ qb:dimension idpt:annoRiferimento ; qb:order 2 ] ;
+    qb:component [ qb:dimension idpt:tipoGestione    ; qb:order 3 ] ;
+    qb:component [ qb:dimension qb:measureType       ; qb:order 4 ] ;
+    qb:component [ qb:measure   idpt:numeroPensioni ] ;
+    qb:component [ qb:measure   idpt:importoMedioMensile ] ;
+    qb:component [ qb:measure   idpt:importoAnnuoComplessivo ] ;
+    qb:component [ qb:attribute sdmx-attribute:obsStatus ;
+                   qb:componentRequired "true"^^xsd:boolean ;
+                   qb:componentAttachment qb:Observation ] .
+
+
+# -----------------------------------------------------------------------------
+# Cubo 4 — pensioni-decorrenza-gdp (stile A)
+# Sorgente: CSV INPS "anno di decorrenza" 2026 (nazionale GDP, tutte categorie).
+# 46 righe: 1 "Decorrenza anteriore al 31/12/1980" + 45 anni 1981-2025.
+# Solo gestione Pubblici per costruzione del cubo OLAP. Area = Italia.
+# Cardinalità attesa: 46 obs.
+# -----------------------------------------------------------------------------
+
+idpt:dsd-pensioni-decorrenza-gdp a qb:DataStructureDefinition ;
+    rdfs:label "DSD — Pensioni GDP per anno di decorrenza (nazionale)"@it ;
+    qb:component [ qb:dimension idpt:areaGeografica ; qb:order 1 ] ;
+    qb:component [ qb:dimension idpt:annoDecorrenza ; qb:order 2 ] ;
+    qb:component [ qb:measure   idpt:numeroPensioni ] ;
+    qb:component [ qb:measure   idpt:importoMedioMensile ] ;
+    qb:component [ qb:measure   idpt:etaMediaDecorrenza ] ;
+    qb:component [ qb:attribute sdmx-attribute:obsStatus ;
+                   qb:componentRequired "true"^^xsd:boolean ;
+                   qb:componentAttachment qb:Observation ] .
+
+
+# -----------------------------------------------------------------------------
+# Cubo 5 — occupati-istat (stile A)
+# Sorgente: CSV ISTAT RFL occupati 2025, 107 province (con alias NUTS-2/NUTS-3
+# per PA Trento-Bolzano via nuts_aliases.ttl + 4 fake-NUTS IT108-IT111).
+# Cardinalità attesa: 107 obs (1 misura, 2 dimensioni).
+# Unità di misura: migliaia di persone.
+# -----------------------------------------------------------------------------
+
+idpt:dsd-occupati-istat a qb:DataStructureDefinition ;
+    rdfs:label "DSD — Occupati ISTAT per provincia"@it ;
+    qb:component [ qb:dimension idpt:provincia       ; qb:order 1 ] ;
+    qb:component [ qb:dimension idpt:annoRiferimento ; qb:order 2 ] ;
+    qb:component [ qb:measure   idpt:numeroOccupati ] ;
+    qb:component [ qb:attribute sdmx-attribute:obsStatus ;
+                   qb:componentRequired "true"^^xsd:boolean ;
+                   qb:componentAttachment qb:Observation ] ;
+    qb:component [ qb:attribute sdmx-attribute:unitMeasure ;
+                   qb:componentRequired "true"^^xsd:boolean ;
+                   qb:componentAttachment qb:DataSet ] .
+
+
+# -----------------------------------------------------------------------------
+# Cubo 6 — indicatori-demografici-istat (stile A)
+# Sorgente: CSV ISTAT indicatori demografici provinciali 1.1.2026 (6 indicatori)
+# + CSV BIRTHRATE/LIFEEXP65T 2025 (2 indicatori).
+# 107 province × 6 indicatori @ 2026 + 107 × 2 indicatori @ 2025.
+# Cardinalità attesa: ~856 obs. Unità di misura variabile per indicatore →
+# unitMeasure attaccato a Observation.
+# -----------------------------------------------------------------------------
+
+idpt:dsd-indicatori-demografici-istat a qb:DataStructureDefinition ;
+    rdfs:label "DSD — Indicatori demografici ISTAT per provincia"@it ;
+    qb:component [ qb:dimension idpt:provincia           ; qb:order 1 ] ;
+    qb:component [ qb:dimension idpt:annoRiferimento     ; qb:order 2 ] ;
+    qb:component [ qb:dimension idpt:indicatoreDemografico ; qb:order 3 ] ;
+    qb:component [ qb:measure   idpt:valoreIndicatore ] ;
+    qb:component [ qb:attribute sdmx-attribute:obsStatus ;
+                   qb:componentRequired "true"^^xsd:boolean ;
+                   qb:componentAttachment qb:Observation ] ;
+    qb:component [ qb:attribute sdmx-attribute:unitMeasure ;
+                   qb:componentRequired "true"^^xsd:boolean ;
+                   qb:componentAttachment qb:Observation ] .
+
+
+# -----------------------------------------------------------------------------
+# Cubo 7 — redditi-mef (stile A)
+# Sorgente: CSV MEF IRPEF 2024, 7897 comuni → group-by Sigla Provincia su
+# 107 province × 5 voci di reddito (v2/v4/v5/v6/v7).
+# Cardinalità attesa: ~535 obs. 2 misure (frequenza dichiaranti + ammontare in
+# euro).
+# -----------------------------------------------------------------------------
+
+idpt:dsd-redditi-mef a qb:DataStructureDefinition ;
+    rdfs:label "DSD — Redditi MEF per provincia × voce reddito"@it ;
+    qb:component [ qb:dimension idpt:provincia       ; qb:order 1 ] ;
+    qb:component [ qb:dimension idpt:annoRiferimento ; qb:order 2 ] ;
+    qb:component [ qb:dimension idpt:voceReddito     ; qb:order 3 ] ;
+    qb:component [ qb:measure   idpt:frequenzaDichiaranti ] ;
+    qb:component [ qb:measure   idpt:ammontareTotale ] ;
+    qb:component [ qb:attribute sdmx-attribute:obsStatus ;
+                   qb:componentRequired "true"^^xsd:boolean ;
+                   qb:componentAttachment qb:Observation ] ;
+    qb:component [ qb:attribute sdmx-attribute:unitMeasure ;
+                   qb:componentRequired "false"^^xsd:boolean ;
+                   qb:componentAttachment qb:DataSet ] .
+
+
+# -----------------------------------------------------------------------------
+# Cubo 8 — idpt-computed (stile A)
+# Cubo derivato che materializza l'IDPT (3 componenti elementari + 1 aggregato)
+# per ognuna delle 107 province × 1 anno snapshot.
+# Cardinalità attesa: 428 obs (107 × 4 componenti).
+# Tutte le osservazioni: obsStatus=E + prov:wasDerivedFrom verso obs primarie.
+# Materializzato in grafo nominato separato `graph:idpt-computed`.
+# -----------------------------------------------------------------------------
+
+idpt:dsd-idpt-computed a qb:DataStructureDefinition ;
+    rdfs:label "DSD — IDPT computed per provincia × componente"@it ;
+    qb:component [ qb:dimension idpt:provincia       ; qb:order 1 ] ;
+    qb:component [ qb:dimension idpt:annoRiferimento ; qb:order 2 ] ;
+    qb:component [ qb:dimension idpt:componenteIDPT  ; qb:order 3 ] ;
+    qb:component [ qb:measure   idpt:valoreIDPT ] ;
+    qb:component [ qb:attribute sdmx-attribute:obsStatus ;
+                   qb:componentRequired "true"^^xsd:boolean ;
+                   qb:componentAttachment qb:Observation ] .
+
+
+# -----------------------------------------------------------------------------
+# Cubo 9 — plan-b-gdp-projected (stile A)
+# Cubo derivato (Plan B GDP) che proietta la composizione regime nazionale
+# GDP (stimata via euristica decorrenza→regime sul cubo 4) sulle quote
+# provinciali GDP (cubo 1).
+# Cardinalità attesa: 107 × 1 × 4 = 428 obs.
+# Gestione "Pubblici" caratteristica del cubo intero (non dimensione).
+# Tutte le obs: obsStatus=E + doppia prov:wasDerivedFrom verso cubo 1 + cubo 4.
+# -----------------------------------------------------------------------------
+
+idpt:dsd-plan-b-gdp-projected a qb:DataStructureDefinition ;
+    rdfs:label "DSD — Plan B GDP, composizione regime stimata per provincia"@it ;
+    qb:component [ qb:dimension idpt:provincia          ; qb:order 1 ] ;
+    qb:component [ qb:dimension idpt:annoRiferimento    ; qb:order 2 ] ;
+    qb:component [ qb:dimension idpt:regimeLiquidazione ; qb:order 3 ] ;
+    qb:component [ qb:measure   idpt:numeroPensioni ] ;
+    qb:component [ qb:attribute sdmx-attribute:obsStatus ;
+                   qb:componentRequired "true"^^xsd:boolean ;
+                   qb:componentAttachment qb:Observation ] .
+
+# =============================================================================
+# CODE-LIST SKOS (contenuto importato da code_lists.ttl)
+# =============================================================================
+
+
+# =============================================================================
+# code_lists.ttl — Code-list SKOS proprie del progetto IDPT
+#
+# 6 code-list (5 principali + 1 ausiliaria) materializzate qui per essere
+# caricate nel grafo nominato Fuseki `graph:vocabularies`.
+# Riferimento: PROGETTO_CONTESTO.md sez. 10.10.
+#
+# Pattern uniforme per ogni code-list:
+#   idpt:<scheme-name> a skos:ConceptScheme ;
+#       skos:prefLabel "..."@it ;
+#       dcterms:description "..."@it ;
+#       skos:hasTopConcept idpt:<concept-1>, idpt:<concept-2>, ... .
+#
+#   idpt:<concept-name> a skos:Concept ;
+#       skos:inScheme idpt:<scheme-name> ;
+#       skos:topConceptOf idpt:<scheme-name> ;
+#       skos:prefLabel "..."@it ;
+#       skos:notation "..." ;
+#       skos:scopeNote "..."@it .
+# =============================================================================
+
+
+# -----------------------------------------------------------------------------
+# Code-list 1 — idpt:tipi-gestione-inps (5 concetti)
+# Comparti di gestione previdenziale INPS adottati nel progetto.
+# -----------------------------------------------------------------------------
+
+idpt:tipi-gestione-inps a skos:ConceptScheme ;
+    skos:prefLabel "Tipi di gestione pensionistica INPS"@it ,
+                   "INPS pension management types"@en ;
+    dcterms:description "Classificazione dei comparti di gestione previdenziale INPS adottata nel progetto IDPT."@it ;
+    skos:hasTopConcept idpt:gestione-privati ,
+                       idpt:gestione-pubblici ,
+                       idpt:gestione-autonomi-parasub ,
+                       idpt:gestione-assistenziali ,
+                       idpt:gestione-totale .
+
+idpt:gestione-privati a skos:Concept ;
+    skos:inScheme idpt:tipi-gestione-inps ;
+    skos:topConceptOf idpt:tipi-gestione-inps ;
+    skos:prefLabel "Pensioni ai lavoratori dipendenti privati"@it ;
+    skos:altLabel "Privati"@it , "FPLD"@it ;
+    skos:notation "PRIV" ;
+    skos:scopeNote "Fondo Pensioni Lavoratori Dipendenti (FPLD) del settore privato."@it .
+
+idpt:gestione-pubblici a skos:Concept ;
+    skos:inScheme idpt:tipi-gestione-inps ;
+    skos:topConceptOf idpt:tipi-gestione-inps ;
+    skos:prefLabel "Pensioni ai lavoratori dipendenti pubblici"@it ;
+    skos:altLabel "Pubblici"@it , "GDP"@it ;
+    skos:notation "PUB" ;
+    skos:scopeNote "Gestione Dipendenti Pubblici (ex INPDAP, dal 2012 confluita in INPS)."@it .
+
+idpt:gestione-autonomi-parasub a skos:Concept ;
+    skos:inScheme idpt:tipi-gestione-inps ;
+    skos:topConceptOf idpt:tipi-gestione-inps ;
+    skos:prefLabel "Pensioni ai lavoratori autonomi e parasubordinati"@it ;
+    skos:altLabel "Autonomi/Parasub"@it ;
+    skos:notation "AUTO" ;
+    skos:scopeNote "Artigiani, commercianti, coltivatori diretti, gestione separata parasubordinati."@it .
+
+idpt:gestione-assistenziali a skos:Concept ;
+    skos:inScheme idpt:tipi-gestione-inps ;
+    skos:topConceptOf idpt:tipi-gestione-inps ;
+    skos:prefLabel "Pensioni assistenziali"@it ;
+    skos:altLabel "Assistenziali"@it ;
+    skos:notation "ASS" ;
+    skos:scopeNote "Prestazioni non contributive: invalidità civile, pensioni sociali, accompagnamento."@it .
+
+idpt:gestione-totale a skos:Concept ;
+    skos:inScheme idpt:tipi-gestione-inps ;
+    skos:topConceptOf idpt:tipi-gestione-inps ;
+    skos:prefLabel "Totale gestioni INPS"@it ;
+    skos:altLabel "Totale"@it ;
+    skos:notation "TOT" ;
+    skos:scopeNote "Aggregato delle 4 gestioni. Usato nel cubo 3 (serie storica) dove il totale è esplicito."@it .
+
+
+# -----------------------------------------------------------------------------
+# Code-list 2 — idpt:regimi-liquidazione (4 concetti)
+# Sistemi di calcolo della pensione, derivanti dalla stratificazione storica
+# delle riforme previdenziali italiane (Dini 1995, Fornero 2011).
+# -----------------------------------------------------------------------------
+
+idpt:regimi-liquidazione a skos:ConceptScheme ;
+    skos:prefLabel "Regimi di liquidazione delle pensioni"@it ;
+    dcterms:description "Sistema di calcolo della pensione, derivante dalla stratificazione storica delle riforme previdenziali italiane (Dini 1995, Fornero 2011)."@it ;
+    skos:hasTopConcept idpt:regime-retributivo ,
+                       idpt:regime-misto-dini ,
+                       idpt:regime-misto-fornero ,
+                       idpt:regime-contributivo-puro .
+
+idpt:regime-retributivo a skos:Concept ;
+    skos:inScheme idpt:regimi-liquidazione ;
+    skos:topConceptOf idpt:regimi-liquidazione ;
+    skos:prefLabel "Retributivo"@it ;
+    skos:notation "RETR" ;
+    skos:scopeNote "Pensione calcolata sulle retribuzioni di fine carriera. Sistema pre-Riforma Dini 1995, per chi aveva ≥18 anni di contribuzione al 31/12/1995."@it .
+
+idpt:regime-misto-dini a skos:Concept ;
+    skos:inScheme idpt:regimi-liquidazione ;
+    skos:topConceptOf idpt:regimi-liquidazione ;
+    skos:prefLabel "Misto Riforma Dini"@it ;
+    skos:notation "MIX-DINI" ;
+    skos:scopeNote "Sistema misto post-1995: retributivo per anzianità maturata fino al '95, contributivo per il resto. Per anzianità <18 anni al 31/12/1995."@it .
+
+idpt:regime-misto-fornero a skos:Concept ;
+    skos:inScheme idpt:regimi-liquidazione ;
+    skos:topConceptOf idpt:regimi-liquidazione ;
+    skos:prefLabel "Misto Riforma Fornero"@it ;
+    skos:notation "MIX-FORNERO" ;
+    skos:scopeNote "Sistema misto post-2011: retributivo fino al '11, contributivo per il resto. Introdotto dalla L.214/2011."@it .
+
+idpt:regime-contributivo-puro a skos:Concept ;
+    skos:inScheme idpt:regimi-liquidazione ;
+    skos:topConceptOf idpt:regimi-liquidazione ;
+    skos:prefLabel "Contributivo Puro"@it ;
+    skos:notation "CONTR" ;
+    skos:scopeNote "Sistema interamente contributivo. Per chi ha iniziato a contribuire dopo l'1/1/1996."@it .
+
+
+# -----------------------------------------------------------------------------
+# Code-list 3 — idpt:indicatori-demografici (8 concetti)
+# Indicatori derivati ISTAT, notation = sigle native (POP014, AGEINDEX, ...).
+# -----------------------------------------------------------------------------
+
+idpt:indicatori-demografici a skos:ConceptScheme ;
+    skos:prefLabel "Indicatori demografici ISTAT provinciali"@it ;
+    dcterms:description "Indicatori derivati ISTAT per popolazione e demografia, a livello provinciale (107 entità)."@it ;
+    skos:hasTopConcept idpt:ind-pop014 , idpt:ind-pop1564 , idpt:ind-pop65over ,
+                       idpt:ind-oldagedepr , idpt:ind-ageindex , idpt:ind-meanagep ,
+                       idpt:ind-birthrate , idpt:ind-lifeexp65t .
+
+idpt:ind-pop014 a skos:Concept ;
+    skos:inScheme idpt:indicatori-demografici ;
+    skos:topConceptOf idpt:indicatori-demografici ;
+    skos:prefLabel "Popolazione 0-14 anni"@it ;
+    skos:notation "POP014" ;
+    skos:scopeNote "Quota della popolazione residente 0-14 anni sul totale. Unità: %."@it .
+
+idpt:ind-pop1564 a skos:Concept ;
+    skos:inScheme idpt:indicatori-demografici ;
+    skos:topConceptOf idpt:indicatori-demografici ;
+    skos:prefLabel "Popolazione 15-64 anni"@it ;
+    skos:notation "POP1564" ;
+    skos:scopeNote "Quota della popolazione residente 15-64 anni (potenziale forza lavoro). Unità: %."@it .
+
+idpt:ind-pop65over a skos:Concept ;
+    skos:inScheme idpt:indicatori-demografici ;
+    skos:topConceptOf idpt:indicatori-demografici ;
+    skos:prefLabel "Popolazione 65+ anni"@it ;
+    skos:notation "POP65OVER" ;
+    skos:scopeNote "Quota della popolazione residente 65+ anni (anziani). Unità: %."@it .
+
+idpt:ind-oldagedepr a skos:Concept ;
+    skos:inScheme idpt:indicatori-demografici ;
+    skos:topConceptOf idpt:indicatori-demografici ;
+    skos:prefLabel "Indice di dipendenza degli anziani"@it ;
+    skos:notation "OLDAGEDEPR" ;
+    skos:scopeNote "Rapporto pop. 65+ / pop. 15-64 × 100. Unità: rapporto × 100."@it .
+
+idpt:ind-ageindex a skos:Concept ;
+    skos:inScheme idpt:indicatori-demografici ;
+    skos:topConceptOf idpt:indicatori-demografici ;
+    skos:prefLabel "Indice di vecchiaia"@it ;
+    skos:notation "AGEINDEX" ;
+    skos:scopeNote "Rapporto pop. 65+ / pop. 0-14 × 100. Unità: rapporto × 100."@it .
+
+idpt:ind-meanagep a skos:Concept ;
+    skos:inScheme idpt:indicatori-demografici ;
+    skos:topConceptOf idpt:indicatori-demografici ;
+    skos:prefLabel "Età media della popolazione"@it ;
+    skos:notation "MEANAGEP" ;
+    skos:scopeNote "Età media in anni della popolazione residente. Unità: anni."@it .
+
+idpt:ind-birthrate a skos:Concept ;
+    skos:inScheme idpt:indicatori-demografici ;
+    skos:topConceptOf idpt:indicatori-demografici ;
+    skos:prefLabel "Tasso di natalità"@it ;
+    skos:notation "BIRTHRATE" ;
+    skos:scopeNote "Nati vivi per mille abitanti. Riferimento 2025 (provvisorio). Unità: per mille."@it .
+
+idpt:ind-lifeexp65t a skos:Concept ;
+    skos:inScheme idpt:indicatori-demografici ;
+    skos:topConceptOf idpt:indicatori-demografici ;
+    skos:prefLabel "Speranza di vita a 65 anni"@it ;
+    skos:notation "LIFEEXP65T" ;
+    skos:scopeNote "Speranza di vita a 65 anni, entrambi i sessi. Riferimento 2025 (stimato). Unità: anni."@it .
+
+
+# -----------------------------------------------------------------------------
+# Code-list 4 — idpt:voci-reddito-mef (5 concetti)
+# Componenti del monte redditi da lavoro selezionate dal CSV MEF IRPEF.
+# notation = sigle MEF native (v2, v4, v5, v6, v7).
+# -----------------------------------------------------------------------------
+
+idpt:voci-reddito-mef a skos:ConceptScheme ;
+    skos:prefLabel "Voci di reddito IRPEF (MEF)"@it ;
+    dcterms:description "Componenti del monte redditi da lavoro selezionate per il denominatore della dimensione 2 IDPT (peso economico delle pensioni). Aggregabili per provincia da dichiarazioni IRPEF comunali."@it ;
+    skos:hasTopConcept idpt:voce-redd-lavoro-dipendente , idpt:voce-redd-lavoro-autonomo ,
+                       idpt:voce-redd-imprenditore-ord , idpt:voce-redd-imprenditore-sempl ,
+                       idpt:voce-redd-partecipazione .
+
+idpt:voce-redd-lavoro-dipendente a skos:Concept ;
+    skos:inScheme idpt:voci-reddito-mef ;
+    skos:topConceptOf idpt:voci-reddito-mef ;
+    skos:prefLabel "Reddito da lavoro dipendente e assimilati"@it ;
+    skos:notation "v2" ;
+    skos:scopeNote "Componente principale del monte redditi da lavoro. Fonte: dichiarazioni IRPEF MEF."@it .
+
+idpt:voce-redd-lavoro-autonomo a skos:Concept ;
+    skos:inScheme idpt:voci-reddito-mef ;
+    skos:topConceptOf idpt:voci-reddito-mef ;
+    skos:prefLabel "Reddito da lavoro autonomo"@it ;
+    skos:notation "v4" ;
+    skos:scopeNote "Reddito da lavoro autonomo (comprensivo dei valori nulli)."@it .
+
+idpt:voce-redd-imprenditore-ord a skos:Concept ;
+    skos:inScheme idpt:voci-reddito-mef ;
+    skos:topConceptOf idpt:voci-reddito-mef ;
+    skos:prefLabel "Reddito imprenditore — contabilità ordinaria"@it ;
+    skos:notation "v5" ;
+    skos:scopeNote "Reddito di spettanza dell'imprenditore in contabilità ordinaria."@it .
+
+idpt:voce-redd-imprenditore-sempl a skos:Concept ;
+    skos:inScheme idpt:voci-reddito-mef ;
+    skos:topConceptOf idpt:voci-reddito-mef ;
+    skos:prefLabel "Reddito imprenditore — contabilità semplificata"@it ;
+    skos:notation "v6" ;
+    skos:scopeNote "Reddito di spettanza dell'imprenditore in contabilità semplificata."@it .
+
+idpt:voce-redd-partecipazione a skos:Concept ;
+    skos:inScheme idpt:voci-reddito-mef ;
+    skos:topConceptOf idpt:voci-reddito-mef ;
+    skos:prefLabel "Reddito da partecipazione"@it ;
+    skos:notation "v7" ;
+    skos:scopeNote "Reddito da partecipazione (comprensivo dei valori nulli)."@it .
+
+
+# -----------------------------------------------------------------------------
+# Code-list 5 — idpt:componenti-idpt (4 concetti)
+# Dimensioni dell'Indice di Dipendenza Previdenziale Territoriale (IDPT):
+# 3 componenti elementari + 1 aggregato finale.
+# -----------------------------------------------------------------------------
+
+idpt:componenti-idpt a skos:ConceptScheme ;
+    skos:prefLabel "Componenti dell'IDPT"@it ;
+    dcterms:description "Dimensioni dell'Indice di Dipendenza Previdenziale Territoriale: 3 componenti elementari + 1 aggregato finale."@it ;
+    skos:hasTopConcept idpt:componente-pressione-demografica , idpt:componente-peso-economico ,
+                       idpt:componente-eredita-storica , idpt:idpt-aggregato .
+
+idpt:componente-pressione-demografica a skos:Concept ;
+    skos:inScheme idpt:componenti-idpt ;
+    skos:topConceptOf idpt:componenti-idpt ;
+    skos:prefLabel "Pressione demografica previdenziale"@it ;
+    skos:notation "PRESS-DEM" ;
+    skos:scopeNote "Rapporto numero pensionati / numero occupati per provincia."@it .
+
+idpt:componente-peso-economico a skos:Concept ;
+    skos:inScheme idpt:componenti-idpt ;
+    skos:topConceptOf idpt:componenti-idpt ;
+    skos:prefLabel "Peso economico delle pensioni"@it ;
+    skos:notation "PESO-ECO" ;
+    skos:scopeNote "Rapporto monte pensioni / monte redditi da lavoro per provincia."@it .
+
+idpt:componente-eredita-storica a skos:Concept ;
+    skos:inScheme idpt:componenti-idpt ;
+    skos:topConceptOf idpt:componenti-idpt ;
+    skos:prefLabel "Eredità storica delle riforme"@it ;
+    skos:notation "ERED-ST" ;
+    skos:scopeNote "Quota delle pensioni in regime retributivo (pre-1995) sul totale delle vigenti — cattura il peso del passato delle riforme."@it .
+
+idpt:idpt-aggregato a skos:Concept ;
+    skos:inScheme idpt:componenti-idpt ;
+    skos:topConceptOf idpt:componenti-idpt ;
+    skos:prefLabel "IDPT aggregato"@it ;
+    skos:notation "IDPT-AGG" ;
+    skos:scopeNote "Combinazione delle 3 componenti elementari (formula documentata nel report)."@it .
+
+
+# -----------------------------------------------------------------------------
+# Code-list ausiliaria — idpt:aree-geografiche
+# Per la dimensione territoriale dei cubi nazionali (cubo 4 decorrenza-gdp)
+# e per il dataset pensioni-all'estero (futuro).
+# -----------------------------------------------------------------------------
+
+idpt:aree-geografiche a skos:ConceptScheme ;
+    skos:prefLabel "Aree geografiche"@it ;
+    dcterms:description "Code-list ausiliaria per la dimensione territoriale dei cubi nazionali e dataset pensioni-all'estero."@it ;
+    skos:hasTopConcept idpt:area-italia .
+
+idpt:area-italia a skos:Concept ;
+    skos:inScheme idpt:aree-geografiche ;
+    skos:topConceptOf idpt:aree-geografiche ;
+    skos:prefLabel "Italia (totale nazionale)"@it ;
+    skos:notation "IT-TOT" ;
+    skos:scopeNote "Aggregato nazionale, distinto dalle 107 province AGID."@it ;
+    owl:sameAs <http://nuts.geovocab.org/id/IT> .

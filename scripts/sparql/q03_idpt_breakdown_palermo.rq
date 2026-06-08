@@ -1,0 +1,19 @@
+# Q03 — Drill-down: le 4 componenti IDPT di Palermo (082).
+#
+# Cosa mostra: Scomposizione dell'IDPT di Palermo nelle sue tre componenti elementari (pressione demografica, peso economico, eredità storica) più l'aggregato.
+
+PREFIX qb:    <http://purl.org/linked-data/cube#>
+PREFIX skos:  <http://www.w3.org/2004/02/skos/core#>
+PREFIX idpt:  <https://robertobrunocl.github.io/idpt-italia/>
+PREFIX agidp: <https://w3id.org/italia/controlled-vocabulary/territorial-classifications/provinces/>
+
+SELECT ?componente ?valore
+WHERE {
+  ?obs qb:dataSet idpt:cubo-idpt-computed ;
+       idpt:provincia agidp:082 ;
+       idpt:componenteIDPT ?c ;
+       idpt:valoreIDPT ?valore .
+  ?c skos:prefLabel ?componente .
+  FILTER(LANG(?componente) = "it")
+}
+ORDER BY DESC(?valore)

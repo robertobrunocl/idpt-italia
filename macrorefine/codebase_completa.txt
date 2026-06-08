@@ -1,0 +1,2852 @@
+
+
+=== File: ./tests/conftest.py ===
+
+"""Fixture comuni per i test di macrorefine."""
+import pandas as pd
+import pytest
+
+
+@pytest.fixture
+def dirty_df() -> pd.DataFrame:
+    """DataFrame con vari problemi tipici: nomi sporchi, colonna vuota, duplicati, null."""
+    return pd.DataFrame({
+        "ID": [1, 2, 3, 3, 4],
+        "Full Name": ["Alice", "Bob", "Charlie", "Charlie", "Diana"],
+        "Age": [30, None, 25, 25, 40],
+        "EmptyCol": [None, None, None, None, None],
+        "City ": ["Rome", "Milan", "Naples", "Naples", "Turin"],
+    })
+
+
+@pytest.fixture
+def clean_df() -> pd.DataFrame:
+    """DataFrame pulito di partenza."""
+    return pd.DataFrame({
+        "id": [1, 2, 3],
+        "name": ["a", "b", "c"],
+        "value": [10.0, 20.0, 30.0],
+    })
+
+=== File: ./tests/test_profiling.py ===
+
+"""Test per il profiling."""
+import pandas as pd
+from macrorefine.dataset import Dataset
+
+
+class TestProfile:
+    def test_profile_returns_report(self, dirty_df):
+        report = Dataset(dirty_df).profile()
+        assert report is not None
+
+    def test_detects_non_snake_case_columns(self, dirty_df):
+        report = Dataset(dirty_df).profile()
+        # Le colonne "ID", "Full Name", "EmptyCol", "City " non sono snake_case
+        assert len(report.non_snake_case_columns) >= 3
+
+    def test_detects_empty_columns(self, dirty_df):
+        report = Dataset(dirty_df).profile()
+        assert "EmptyCol" in report.empty_columns
+
+    def test_detects_duplicate_rows(self, dirty_df):
+        report = Dataset(dirty_df).profile()
+        assert report.duplicate_rows == 1  # Charlie compare 2 volte
+
+    def test_detects_high_null_columns(self):
+        df = pd.DataFrame({
+            "a": [1, 2, 3, 4, 5],
+            "b": [None, None, None, None, 1],  # 80% null
+        })
+        report = Dataset(df).profile()
+        assert "b" in report.high_null_columns
+
+    def test_repr_is_readable(self, dirty_df):
+        report = Dataset(dirty_df).profile()
+        text = repr(report)
+        assert isinstance(text, str)
+        assert len(text) > 0
+
+=== File: ./tests/test_recipe.py ===
+
+"""Test per Recipe."""
+import pandas as pd
+import pytest
+from macrorefine.dataset import Dataset
+from macrorefine.pipeline import Pipeline
+from macrorefine.recipe import Recipe
+from macrorefine.steps import NormalizeColumnNames, DropEmptyColumns
+
+
+class TestRecipe:
+    def test_cannot_instantiate_abstract(self):
+        with pytest.raises(TypeError):
+            Recipe()
+
+    def test_subclass_must_implement_build(self):
+        class Incomplete(Recipe):
+            pass
+        with pytest.raises(TypeError):
+            Incomplete()
+
+    def test_recipe_applies_pipeline(self):
+        class MyRecipe(Recipe):
+            def build(self) -> Pipeline:
+                return Pipeline().add(NormalizeColumnNames()).add(DropEmptyColumns())
+
+        df = pd.DataFrame({"FullName": [1, 2], "Empty": [None, None]})
+        result = MyRecipe().apply(Dataset(df))
+        assert result.columns == ["full_name"]
+
+    def test_recipe_with_parameters(self):
+        class ParamRecipe(Recipe):
+            def __init__(self, drop_empty: bool):
+                self.drop_empty = drop_empty
+
+            def build(self) -> Pipeline:
+                p = Pipeline().add(NormalizeColumnNames())
+                if self.drop_empty:
+                    p.add(DropEmptyColumns())
+                return p
+
+        df = pd.DataFrame({"X": [1], "Empty": [None]})
+
+        kept = ParamRecipe(drop_empty=False).apply(Dataset(df))
+        assert kept.columns == ["x", "empty"]
+
+        dropped = ParamRecipe(drop_empty=True).apply(Dataset(df))
+        assert dropped.columns == ["x"]
+
+=== File: ./tests/__init__.py ===
+
+
+
+=== File: ./tests/test_io.py ===
+
+"""Test per il modulo io."""
+import json
+
+import pandas as pd
+import pytest
+
+from macrorefine import Dataset
+from macrorefine.history import StepRecord
+from macrorefine.io import save_dataset
+
+
+@pytest.fixture
+def simple_dataset() -> Dataset:
+    df = pd.DataFrame({"a": [1, 2, 3], "b": ["x", "y", "z"]})
+    ds = Dataset(df)
+    return ds.with_data(
+        df,
+        step_record=StepRecord(name="MockStep", metrics={"rows": 3}),
+    )
+
+
+class TestSaveDatasetCSV:
+    def test_save_csv(self, simple_dataset, tmp_path):
+        path = tmp_path / "out.csv"
+        save_dataset(simple_dataset, path)
+        assert path.exists()
+        loaded = pd.read_csv(path)
+        assert loaded.shape == (3, 2)
+
+    def test_save_creates_missing_directories(self, simple_dataset, tmp_path):
+        path = tmp_path / "nested" / "deeper" / "out.csv"
+        save_dataset(simple_dataset, path)
+        assert path.exists()
+
+    def test_returns_path(self, simple_dataset, tmp_path):
+        path = tmp_path / "out.csv"
+        result = save_dataset(simple_dataset, path)
+        assert result == path
+
+
+class TestSaveDatasetFormatDetection:
+    def test_csv_extension(self, simple_dataset, tmp_path):
+        save_dataset(simple_dataset, tmp_path / "out.csv")
+        assert (tmp_path / "out.csv").exists()
+
+    def test_parquet_extension(self, simple_dataset, tmp_path):
+        save_dataset(simple_dataset, tmp_path / "out.parquet")
+        assert (tmp_path / "out.parquet").exists()
+
+    def test_json_extension(self, simple_dataset, tmp_path):
+        path = tmp_path / "out.json"
+        save_dataset(simple_dataset, path)
+        assert path.exists()
+        data = json.loads(path.read_text())
+        assert isinstance(data, list)
+        assert data[0]["a"] == 1
+
+    def test_unsupported_extension_raises(self, simple_dataset, tmp_path):
+        with pytest.raises(ValueError, match="Unsupported"):
+            save_dataset(simple_dataset, tmp_path / "out.xyz")
+
+    def test_explicit_format_overrides_extension(self, simple_dataset, tmp_path):
+        # File senza estensione, formato esplicito
+        path = tmp_path / "out_no_ext"
+        save_dataset(simple_dataset, path, format="csv")
+        assert path.exists()
+        loaded = pd.read_csv(path)
+        assert loaded.shape == (3, 2)
+
+
+class TestSaveDatasetHistory:
+    def test_save_with_history_sidecar(self, simple_dataset, tmp_path):
+        path = tmp_path / "out.csv"
+        save_dataset(simple_dataset, path, save_history=True)
+
+        sidecar = tmp_path / "out.history.json"
+        assert sidecar.exists()
+
+        data = json.loads(sidecar.read_text())
+        assert "steps" in data
+        assert len(data["steps"]) == 1
+        assert data["steps"][0]["name"] == "MockStep"
+        assert data["steps"][0]["metrics"] == {"rows": 3}
+
+    def test_save_without_history_does_not_create_sidecar(
+        self, simple_dataset, tmp_path
+    ):
+        path = tmp_path / "out.csv"
+        save_dataset(simple_dataset, path, save_history=False)
+        assert not (tmp_path / "out.history.json").exists()
+
+    def test_history_includes_metadata(self, simple_dataset, tmp_path):
+        path = tmp_path / "out.csv"
+        save_dataset(simple_dataset, path, save_history=True)
+        data = json.loads((tmp_path / "out.history.json").read_text())
+        assert "rows" in data
+        assert "cols" in data
+        assert data["rows"] == 3
+        assert data["cols"] == 2
+
+
+class TestSaveDatasetCSVOptions:
+    def test_csv_kwargs_passed_through(self, simple_dataset, tmp_path):
+        path = tmp_path / "out.csv"
+        save_dataset(simple_dataset, path, sep=";")
+        # Il file usa ; come separatore
+        loaded = pd.read_csv(path, sep=";")
+        assert loaded.shape == (3, 2)
+
+=== File: ./tests/test_steps.py ===
+
+"""Test per gli step built-in."""
+import numpy as np
+import pandas as pd
+import pytest
+from macrorefine.dataset import Dataset
+from macrorefine.steps import (
+    NormalizeColumnNames,
+    DropEmptyColumns,
+    DropDuplicateRows,
+    DropColumns,
+    FillMissing,
+    RenameColumns,
+    CastTypes,
+    ParseDates,
+)
+
+from macrorefine.steps import AddNormalizedKey, FilterRows, LeftJoinEnrich
+
+
+
+class TestNormalizeColumnNames:
+    def test_uppercase_to_snake_case(self):
+        df = pd.DataFrame({"FullName": [1], "ID": [2]})
+        result = NormalizeColumnNames().apply(Dataset(df))
+        assert result.columns == ["full_name", "id"]
+
+    def test_spaces_to_underscores(self):
+        df = pd.DataFrame({"Full Name": [1], "City ": [2]})
+        result = NormalizeColumnNames().apply(Dataset(df))
+        assert result.columns == ["full_name", "city"]
+
+    def test_special_chars_removed(self):
+        df = pd.DataFrame({"name@home": [1], "price($)": [2]})
+        result = NormalizeColumnNames().apply(Dataset(df))
+        assert result.columns == ["name_home", "price"]
+
+    def test_already_snake_case_unchanged(self):
+        df = pd.DataFrame({"full_name": [1], "id": [2]})
+        result = NormalizeColumnNames().apply(Dataset(df))
+        assert result.columns == ["full_name", "id"]
+
+    def test_history_recorded(self):
+        df = pd.DataFrame({"a": [1]})
+        result = RenameColumns(mapping={"a": "x"}).apply(Dataset(df))
+        assert len(result.history) == 1
+        assert result.history[0].name == "RenameColumns"
+        assert result.history[0].params["mapping"] == {"a": "x"}
+
+    def test_rename_single_column(self):
+        df = pd.DataFrame({"a": [1], "b": [2]})
+        result = RenameColumns(mapping={"a": "alpha"}).apply(Dataset(df))
+        assert result.columns == ["alpha", "b"]
+
+    def test_rename_multiple_columns(self):
+        df = pd.DataFrame({"a": [1], "b": [2], "c": [3]})
+        result = RenameColumns(mapping={"a": "alpha", "c": "gamma"}).apply(Dataset(df))
+        assert result.columns == ["alpha", "b", "gamma"]
+
+    def test_rename_missing_column_raises(self):
+        df = pd.DataFrame({"a": [1]})
+        with pytest.raises(KeyError):
+            RenameColumns(mapping={"missing": "x"}).apply(Dataset(df))
+
+    def test_rename_to_existing_column_raises(self):
+        """Non si può rinominare in un nome già presente (eviterebbe duplicati)."""
+        df = pd.DataFrame({"a": [1], "b": [2]})
+        with pytest.raises(ValueError):
+            RenameColumns(mapping={"a": "b"}).apply(Dataset(df))
+
+
+
+class TestDropEmptyColumns:
+    def test_drops_fully_empty_columns(self):
+        df = pd.DataFrame({
+            "a": [1, 2, 3],
+            "empty": [None, None, None],
+            "b": [4, 5, 6],
+        })
+        result = DropEmptyColumns().apply(Dataset(df))
+        assert result.columns == ["a", "b"]
+
+    def test_keeps_non_empty(self):
+        df = pd.DataFrame({"a": [1, None, 3]})
+        result = DropEmptyColumns().apply(Dataset(df))
+        assert result.columns == ["a"]
+
+
+class TestDropDuplicateRows:
+    def test_drops_duplicates(self):
+        df = pd.DataFrame({"a": [1, 2, 2, 3], "b": [10, 20, 20, 30]})
+        result = DropDuplicateRows().apply(Dataset(df))
+        assert result.shape == (3, 2)
+
+    def test_no_duplicates_no_change(self):
+        df = pd.DataFrame({"a": [1, 2, 3]})
+        result = DropDuplicateRows().apply(Dataset(df))
+        assert result.shape == (3, 1)
+
+
+class TestDropColumns:
+    def test_drop_single_column(self):
+        df = pd.DataFrame({"a": [1], "b": [2], "c": [3]})
+        result = DropColumns(columns=["b"]).apply(Dataset(df))
+        assert result.columns == ["a", "c"]
+
+    def test_drop_multiple_columns(self):
+        df = pd.DataFrame({"a": [1], "b": [2], "c": [3]})
+        result = DropColumns(columns=["a", "c"]).apply(Dataset(df))
+        assert result.columns == ["b"]
+
+    def test_drop_missing_column_raises(self):
+        df = pd.DataFrame({"a": [1]})
+        with pytest.raises(KeyError):
+            DropColumns(columns=["x"]).apply(Dataset(df))
+
+
+class TestFillMissing:
+    def test_fill_with_constant(self):
+        df = pd.DataFrame({"a": [1.0, None, 3.0]})
+        result = FillMissing(columns=["a"], strategy="constant", value=0).apply(Dataset(df))
+        assert result.to_pandas()["a"].tolist() == [1.0, 0.0, 3.0]
+
+    def test_fill_with_mean(self):
+        df = pd.DataFrame({"a": [1.0, None, 3.0]})
+        result = FillMissing(columns=["a"], strategy="mean").apply(Dataset(df))
+        assert result.to_pandas()["a"].tolist() == [1.0, 2.0, 3.0]
+
+    def test_fill_with_median(self):
+        df = pd.DataFrame({"a": [1.0, None, 3.0, 5.0]})
+        result = FillMissing(columns=["a"], strategy="median").apply(Dataset(df))
+        filled = result.to_pandas()["a"].tolist()
+        assert filled[1] == 3.0  # median di [1, 3, 5]
+
+    def test_invalid_strategy_raises(self):
+        df = pd.DataFrame({"a": [1.0, None]})
+        with pytest.raises(ValueError):
+            FillMissing(columns=["a"], strategy="bogus").apply(Dataset(df))
+
+
+class TestCastTypes:
+    def test_cast_int_to_float(self):
+        df = pd.DataFrame({"a": [1, 2, 3]})
+        result = CastTypes(mapping={"a": "float"}).apply(Dataset(df))
+        assert result.to_pandas()["a"].dtype.kind == "f"
+
+    def test_cast_string_numbers_to_int(self):
+        df = pd.DataFrame({"a": ["1", "2", "3"]})
+        result = CastTypes(mapping={"a": "int"}).apply(Dataset(df))
+        assert result.to_pandas()["a"].tolist() == [1, 2, 3]
+
+    def test_cast_multiple_columns(self):
+        df = pd.DataFrame({"a": ["1", "2"], "b": [1.1, 2.2]})
+        result = CastTypes(mapping={"a": "int", "b": "str"}).apply(Dataset(df))
+        out = result.to_pandas()
+        assert out["a"].tolist() == [1, 2]
+        assert out["b"].tolist() == ["1.1", "2.2"]
+
+    def test_cast_missing_column_raises(self):
+        df = pd.DataFrame({"a": [1]})
+        with pytest.raises(KeyError):
+            CastTypes(mapping={"missing": "int"}).apply(Dataset(df))
+
+    def test_cast_invalid_value_raises_by_default(self):
+        df = pd.DataFrame({"a": ["1", "not_a_number", "3"]})
+        with pytest.raises(Exception):
+            CastTypes(mapping={"a": "int"}).apply(Dataset(df))
+
+    def test_cast_with_errors_coerce(self):
+        """Con errors='coerce' i valori non convertibili diventano NaN."""
+        df = pd.DataFrame({"a": ["1", "bad", "3"]})
+        result = CastTypes(mapping={"a": "float"}, errors="coerce").apply(Dataset(df))
+        out = result.to_pandas()["a"]
+        assert out[0] == 1.0
+        assert pd.isna(out[1])
+        assert out[2] == 3.0
+
+    def test_history_recorded(self):
+        df = pd.DataFrame({"a": [1]})
+        result = CastTypes(mapping={"a": "float"}).apply(Dataset(df))
+        assert result.history[0].name == "CastTypes"
+        assert result.history[0].params["mapping"] == {"a": "float"}
+
+
+class TestParseDates:
+    def test_parse_iso_format(self):
+        df = pd.DataFrame({"d": ["2024-01-15", "2024-02-20"]})
+        result = ParseDates(columns=["d"]).apply(Dataset(df))
+        out = result.to_pandas()["d"]
+        assert pd.api.types.is_datetime64_any_dtype(out)
+        assert out[0].year == 2024 and out[0].month == 1
+
+    def test_parse_with_format(self):
+        df = pd.DataFrame({"d": ["15/01/2024", "20/02/2024"]})
+        result = ParseDates(columns=["d"], format="%d/%m/%Y").apply(Dataset(df))
+        out = result.to_pandas()["d"]
+        assert out[0].day == 15 and out[0].month == 1
+
+    def test_parse_multiple_columns(self):
+        df = pd.DataFrame({
+            "start": ["2024-01-01", "2024-02-01"],
+            "end": ["2024-01-15", "2024-02-15"],
+        })
+        result = ParseDates(columns=["start", "end"]).apply(Dataset(df))
+        out = result.to_pandas()
+        assert pd.api.types.is_datetime64_any_dtype(out["start"])
+        assert pd.api.types.is_datetime64_any_dtype(out["end"])
+
+    def test_parse_invalid_with_coerce(self):
+        df = pd.DataFrame({"d": ["2024-01-01", "not_a_date", "2024-02-01"]})
+        result = ParseDates(columns=["d"], errors="coerce").apply(Dataset(df))
+        out = result.to_pandas()["d"]
+        assert pd.notna(out[0])
+        assert pd.isna(out[1])
+        assert pd.notna(out[2])
+
+    def test_parse_invalid_with_raise(self):
+        df = pd.DataFrame({"d": ["2024-01-01", "not_a_date"]})
+        with pytest.raises(Exception):
+            ParseDates(columns=["d"], errors="raise").apply(Dataset(df))
+
+    def test_missing_column_raises(self):
+        df = pd.DataFrame({"a": ["2024-01-01"]})
+        with pytest.raises(KeyError):
+            ParseDates(columns=["missing"]).apply(Dataset(df))
+
+    def test_accepts_single_column_as_string(self):
+        df = pd.DataFrame({"d": ["2024-01-01"]})
+        result = ParseDates(columns="d").apply(Dataset(df))
+        assert pd.api.types.is_datetime64_any_dtype(result.to_pandas()["d"])
+
+    def test_history_recorded(self):
+        df = pd.DataFrame({"d": ["2024-01-01"]})
+        result = ParseDates(columns=["d"], format="%Y-%m-%d").apply(Dataset(df))
+        assert result.history[0].name == "ParseDates"
+        assert result.history[0].params["columns"] == ["d"]
+        assert result.history[0].params["format"] == "%Y-%m-%d"
+
+
+class TestAddNormalizedKey:
+    def test_adds_new_column_preserving_original(self):
+        df = pd.DataFrame({"comune": ["Roma", "Milano"]})
+        result = AddNormalizedKey(source="comune", target="_key").apply(Dataset(df))
+        out = result.to_pandas()
+        assert out["comune"].tolist() == ["Roma", "Milano"]
+        assert out["_key"].tolist() == ["roma", "milano"]
+
+    def test_normalizes_accents(self):
+        df = pd.DataFrame({"c": ["Forlì", "Cesenà", "Münich"]})
+        result = AddNormalizedKey(source="c", target="_k").apply(Dataset(df))
+        assert result.to_pandas()["_k"].tolist() == ["forli", "cesena", "munich"]
+
+    def test_normalizes_whitespace(self):
+        df = pd.DataFrame({"c": ["  Roma  ", "Reggio   Emilia"]})
+        result = AddNormalizedKey(source="c", target="_k").apply(Dataset(df))
+        assert result.to_pandas()["_k"].tolist() == ["roma", "reggio emilia"]
+
+    def test_normalizes_curly_apostrophes(self):
+        df = pd.DataFrame({"c": ["Sant\u2019Angelo", "L'Aquila"]})
+        result = AddNormalizedKey(source="c", target="_k").apply(Dataset(df))
+        out = result.to_pandas()["_k"].tolist()
+        assert out == ["sant'angelo", "l'aquila"]
+
+    def test_handles_none(self):
+        df = pd.DataFrame({"c": ["Roma", None]})
+        result = AddNormalizedKey(source="c", target="_k").apply(Dataset(df))
+        out = result.to_pandas()["_k"].tolist()
+        assert out[0] == "roma"
+        assert out[1] is None or pd.isna(out[1])
+
+    def test_missing_source_raises(self):
+        df = pd.DataFrame({"x": [1]})
+        with pytest.raises(KeyError):
+            AddNormalizedKey(source="missing", target="_k").apply(Dataset(df))
+
+    def test_history_recorded(self):
+        df = pd.DataFrame({"a": ["X"]})
+        result = AddNormalizedKey(source="a", target="_a_key").apply(Dataset(df))
+        assert result.history[0].name == "AddNormalizedKey"
+        assert result.history[0].params == {"source": "a", "target": "_a_key"}
+
+
+class TestFilterRows:
+    def test_basic_filter(self):
+        df = pd.DataFrame({"a": [1, 2, 3, 4]})
+        result = FilterRows(predicate=lambda d: d["a"] > 2).apply(Dataset(df))
+        assert result.to_pandas()["a"].tolist() == [3, 4]
+
+    def test_empty_result(self):
+        df = pd.DataFrame({"a": [1, 2, 3]})
+        result = FilterRows(predicate=lambda d: d["a"] > 100).apply(Dataset(df))
+        assert result.shape == (0, 1)
+
+    def test_metrics(self):
+        df = pd.DataFrame({"a": [1, 2, 3, 4]})
+        result = FilterRows(predicate=lambda d: d["a"] > 2).apply(Dataset(df))
+        m = result.history[0].metrics
+        assert m["rows_before"] == 4
+        assert m["rows_after"] == 2
+        assert m["rows_removed"] == 2
+
+
+class TestLeftJoinEnrich:
+    def test_simple_join(self):
+        left = Dataset(pd.DataFrame({"id": [1, 2, 3], "name": ["a", "b", "c"]}))
+        right = Dataset(pd.DataFrame({"id": [1, 2, 3], "value": [10, 20, 30]}))
+        result = LeftJoinEnrich(
+            other=right, left_on="id", right_on="id", columns=["value"]
+        ).apply(left)
+        assert result.to_pandas()["value"].tolist() == [10, 20, 30]
+
+    def test_composite_key(self):
+        left = Dataset(pd.DataFrame({
+            "comune": ["Roma", "Castelnuovo"],
+            "prov": ["RM", "PD"],
+        }))
+        right = Dataset(pd.DataFrame({
+            "label": ["Roma", "Castelnuovo", "Castelnuovo"],
+            "sigla": ["RM", "PD", "VR"],
+            "id_comune": [1, 2, 3],
+        }))
+        result = LeftJoinEnrich(
+            other=right,
+            left_on=["comune", "prov"],
+            right_on=["label", "sigla"],
+            columns=["id_comune"],
+        ).apply(left)
+        assert result.to_pandas()["id_comune"].tolist() == [1, 2]
+
+    def test_no_match_produces_nan(self):
+        left = Dataset(pd.DataFrame({"id": [1, 2, 999]}))
+        right = Dataset(pd.DataFrame({"id": [1, 2], "value": [10, 20]}))
+        result = LeftJoinEnrich(
+            other=right, left_on="id", right_on="id", columns=["value"]
+        ).apply(left)
+        out = result.to_pandas()["value"].tolist()
+        assert out[0] == 10 and out[1] == 20
+        assert pd.isna(out[2])
+
+    def test_metrics_match_unmatch(self):
+        left = Dataset(pd.DataFrame({"id": [1, 2, 999]}))
+        right = Dataset(pd.DataFrame({"id": [1, 2], "value": [10, 20]}))
+        result = LeftJoinEnrich(
+            other=right, left_on="id", right_on="id", columns=["value"]
+        ).apply(left)
+        m = result.history[0].metrics
+        assert m["matched"] == 2
+        assert m["unmatched"] == 1
+
+    def test_left_on_right_on_length_mismatch(self):
+        right = Dataset(pd.DataFrame({"a": [1]}))
+        with pytest.raises(ValueError):
+            LeftJoinEnrich(other=right, left_on=["a", "b"], right_on=["a"], columns=[])
+
+    def test_missing_columns_raise(self):
+        left = Dataset(pd.DataFrame({"id": [1]}))
+        right = Dataset(pd.DataFrame({"id": [1], "value": [10]}))
+        with pytest.raises(KeyError):
+            LeftJoinEnrich(
+                other=right, left_on="missing", right_on="id", columns=["value"]
+            ).apply(left)
+        with pytest.raises(KeyError):
+            LeftJoinEnrich(
+                other=right, left_on="id", right_on="id", columns=["nope"]
+            ).apply(left)
+
+=== File: ./tests/test_dataset.py ===
+
+"""Test per Dataset."""
+import pandas as pd
+import pytest
+from macrorefine.dataset import Dataset
+from macrorefine.history import StepRecord
+
+
+class TestDatasetCreation:
+    def test_create_from_dataframe(self, clean_df):
+        ds = Dataset(clean_df)
+        assert ds.shape == (3, 3)
+        assert ds.columns == ["id", "name", "value"]
+
+    def test_history_is_empty_at_creation(self, clean_df):
+        ds = Dataset(clean_df)
+        assert len(ds.history) == 0
+
+
+class TestDatasetIO:
+    def test_from_csv(self, clean_df, tmp_path):
+        path = tmp_path / "test.csv"
+        clean_df.to_csv(path, index=False)
+
+        ds = Dataset.from_csv(path)
+        assert ds.shape == (3, 3)
+        assert "id" in ds.columns
+
+    def test_to_csv(self, clean_df, tmp_path):
+        ds = Dataset(clean_df)
+        path = tmp_path / "out.csv"
+        ds.to_csv(path)
+
+        loaded = pd.read_csv(path)
+        assert loaded.shape == (3, 3)
+
+    def test_from_parquet(self, clean_df, tmp_path):
+        path = tmp_path / "test.parquet"
+        clean_df.to_parquet(path)
+
+        ds = Dataset.from_parquet(path)
+        assert ds.shape == (3, 3)
+
+    def test_to_parquet(self, clean_df, tmp_path):
+        ds = Dataset(clean_df)
+        path = tmp_path / "out.parquet"
+        ds.to_parquet(path)
+        assert path.exists()
+
+
+class TestDatasetImmutability:
+    def test_to_pandas_returns_copy(self, clean_df):
+        """Modificare il df ottenuto da to_pandas non deve toccare il Dataset."""
+        ds = Dataset(clean_df)
+        df_copy = ds.to_pandas()
+        df_copy["id"] = 999
+
+        assert ds.to_pandas()["id"].tolist() == [1, 2, 3]
+
+    def test_with_data_returns_new_dataset(self, clean_df):
+        ds1 = Dataset(clean_df)
+        new_df = clean_df.assign(id=[10, 20, 30])
+        ds2 = ds1.with_data(new_df, step_name="ChangeIds")
+
+        assert ds1 is not ds2
+        assert ds1.to_pandas()["id"].tolist() == [1, 2, 3]
+        assert ds2.to_pandas()["id"].tolist() == [10, 20, 30]
+
+    def test_with_data_appends_to_history(self, clean_df):
+        ds1 = Dataset(clean_df)
+        ds2 = ds1.with_data(clean_df, step_name="StepA")
+        ds3 = ds2.with_data(clean_df, step_name="StepB")
+
+        assert len(ds1.history) == 0
+        assert len(ds2.history) == 1
+        assert len(ds3.history) == 2
+        assert [r.name for r in ds3.history] == ["StepA", "StepB"]
+
+    def test_with_data_accepts_step_record(self, clean_df):
+        ds1 = Dataset(clean_df)
+        record = StepRecord(name="X", params={"a": 1}, metrics={"b": 2})
+        ds2 = ds1.with_data(clean_df, step_record=record)
+
+        assert ds2.history[0].params == {"a": 1}
+        assert ds2.history[0].metrics == {"b": 2}
+
+
+class TestDatasetAccess:
+    def test_columns_property(self, clean_df):
+        assert Dataset(clean_df).columns == ["id", "name", "value"]
+
+    def test_shape_property(self, clean_df):
+        assert Dataset(clean_df).shape == (3, 3)
+
+    def test_head(self, clean_df):
+        head = Dataset(clean_df).head(2)
+        assert isinstance(head, pd.DataFrame)
+        assert len(head) == 2
+
+    def test_repr_contains_shape(self, clean_df):
+        text = repr(Dataset(clean_df))
+        assert "3" in text  # rows or cols
+
+=== File: ./tests/test_history.py ===
+
+"""Test per History e StepRecord."""
+import pytest
+from macrorefine.history import History, StepRecord
+
+
+class TestStepRecord:
+    def test_create_minimal_record(self):
+        record = StepRecord(name="MyStep")
+        assert record.name == "MyStep"
+        assert record.params == {}
+        assert record.metrics == {}
+
+    def test_create_full_record(self):
+        record = StepRecord(
+            name="FillMissing",
+            params={"strategy": "median"},
+            metrics={"filled": 12},
+        )
+        assert record.name == "FillMissing"
+        assert record.params["strategy"] == "median"
+        assert record.metrics["filled"] == 12
+
+    def test_record_is_frozen(self):
+        """StepRecord deve essere immutabile."""
+        record = StepRecord(name="X")
+        with pytest.raises(Exception):  # FrozenInstanceError
+            record.name = "Y"
+
+
+class TestHistory:
+    def test_empty_history(self):
+        h = History()
+        assert len(h) == 0
+        assert list(h) == []
+
+    def test_append_returns_new_history(self):
+        """append deve essere immutabile: ritorna nuova History."""
+        h1 = History()
+        record = StepRecord(name="StepA")
+        h2 = h1.append(record)
+
+        assert len(h1) == 0       # h1 invariata
+        assert len(h2) == 1
+        assert h2[0].name == "StepA"
+        assert h1 is not h2
+
+    def test_multiple_appends_preserve_order(self):
+        h = History()
+        h = h.append(StepRecord(name="A"))
+        h = h.append(StepRecord(name="B"))
+        h = h.append(StepRecord(name="C"))
+
+        assert [r.name for r in h] == ["A", "B", "C"]
+
+    def test_iteration(self):
+        h = History().append(StepRecord(name="A")).append(StepRecord(name="B"))
+        names = [r.name for r in h]
+        assert names == ["A", "B"]
+
+    def test_repr_is_readable(self):
+        h = History().append(StepRecord(name="StepA", params={"x": 1}))
+        text = repr(h)
+        assert "StepA" in text
+
+=== File: ./tests/test_pipeline.py ===
+
+"""Test per Pipeline."""
+import pandas as pd
+import pytest
+from macrorefine.dataset import Dataset
+from macrorefine.pipeline import Pipeline
+from macrorefine.step import PipelineStep
+
+
+# Step di test riutilizzabili
+class AddOneToId(PipelineStep):
+    def apply(self, dataset):
+        df = dataset.to_pandas().copy()
+        df["id"] = df["id"] + 1
+        return dataset.with_data(df, step_name=self.name)
+
+
+class FailingStep(PipelineStep):
+    def apply(self, dataset):
+        raise ValueError("intentional failure")
+
+
+class TestPipelineBasic:
+    def test_empty_pipeline_returns_same_dataset(self, clean_df):
+        ds = Dataset(clean_df)
+        result = Pipeline().run(ds)
+        assert result.to_pandas().equals(ds.to_pandas())
+
+    def test_add_returns_self_for_chaining(self):
+        p = Pipeline()
+        assert p.add(AddOneToId()) is p
+
+    def test_single_step_execution(self, clean_df):
+        ds = Dataset(clean_df)
+        result = Pipeline().add(AddOneToId()).run(ds)
+        assert result.to_pandas()["id"].tolist() == [2, 3, 4]
+
+    def test_multiple_steps_executed_in_order(self, clean_df):
+        ds = Dataset(clean_df)
+        result = Pipeline().add(AddOneToId()).add(AddOneToId()).run(ds)
+        assert result.to_pandas()["id"].tolist() == [3, 4, 5]
+
+    def test_pipeline_updates_history(self, clean_df):
+        ds = Dataset(clean_df)
+        result = Pipeline().add(AddOneToId()).add(AddOneToId()).run(ds)
+        assert len(result.history) == 2
+        assert all(r.name == "AddOneToId" for r in result.history)
+
+    def test_original_dataset_unchanged(self, clean_df):
+        ds = Dataset(clean_df)
+        Pipeline().add(AddOneToId()).run(ds)
+        assert ds.to_pandas()["id"].tolist() == [1, 2, 3]
+        assert len(ds.history) == 0
+
+
+class TestPipelineErrorHandling:
+    """In caso di errore: chiede all'utente [continue/skip/abort]."""
+
+    def test_abort_on_error(self, clean_df, monkeypatch):
+        monkeypatch.setattr("builtins.input", lambda _: "abort")
+        ds = Dataset(clean_df)
+
+        with pytest.raises(Exception):
+            Pipeline().add(FailingStep()).run(ds)
+
+    def test_skip_on_error_continues(self, clean_df, monkeypatch):
+        monkeypatch.setattr("builtins.input", lambda _: "skip")
+        ds = Dataset(clean_df)
+
+        result = (
+            Pipeline()
+            .add(FailingStep())
+            .add(AddOneToId())
+            .run(ds)
+        )
+        # FailingStep saltato, AddOneToId eseguito
+        assert result.to_pandas()["id"].tolist() == [2, 3, 4]
+
+    def test_on_error_param_overrides_prompt(self, clean_df):
+        """Se passo on_error='skip', non chiede input."""
+        ds = Dataset(clean_df)
+        result = (
+            Pipeline(on_error="skip")
+            .add(FailingStep())
+            .add(AddOneToId())
+            .run(ds)
+        )
+        assert result.to_pandas()["id"].tolist() == [2, 3, 4]
+
+    def test_on_error_raise_propagates(self, clean_df):
+        ds = Dataset(clean_df)
+        with pytest.raises(ValueError, match="intentional failure"):
+            Pipeline(on_error="raise").add(FailingStep()).run(ds)
+
+=== File: ./tests/test_column_step.py ===
+
+"""Test per ColumnStep."""
+import pandas as pd
+import pytest
+
+from macrorefine import ColumnStep, Dataset
+
+
+class TestColumnStepBasics:
+    def test_cannot_instantiate_abstract(self):
+        with pytest.raises(TypeError):
+            ColumnStep(columns=["a"])
+
+    def test_subclass_must_implement_transform_column(self):
+        class Incomplete(ColumnStep):
+            pass
+
+        with pytest.raises(TypeError):
+            Incomplete(columns=["a"])
+
+    def test_accepts_single_column_as_string(self):
+        class MyStep(ColumnStep):
+            def transform_column(self, series, column_name):
+                return series
+
+        assert MyStep(columns="a").columns == ["a"]
+
+    def test_accepts_list_of_columns(self):
+        class MyStep(ColumnStep):
+            def transform_column(self, series, column_name):
+                return series
+
+        assert MyStep(columns=["a", "b"]).columns == ["a", "b"]
+
+
+class TestColumnStepApply:
+    def test_transforms_single_column(self):
+        class DoubleValue(ColumnStep):
+            def transform_column(self, series, column_name):
+                return series * 2
+
+        df = pd.DataFrame({"a": [1, 2, 3], "b": [10, 20, 30]})
+        result = DoubleValue(columns="a").apply(Dataset(df))
+
+        assert result.to_pandas()["a"].tolist() == [2, 4, 6]
+        assert result.to_pandas()["b"].tolist() == [10, 20, 30]
+
+    def test_transforms_multiple_columns(self):
+        class DoubleValue(ColumnStep):
+            def transform_column(self, series, column_name):
+                return series * 2
+
+        df = pd.DataFrame({"a": [1, 2], "b": [10, 20], "c": [100, 200]})
+        result = DoubleValue(columns=["a", "b"]).apply(Dataset(df))
+
+        assert result.to_pandas()["a"].tolist() == [2, 4]
+        assert result.to_pandas()["b"].tolist() == [20, 40]
+        assert result.to_pandas()["c"].tolist() == [100, 200]
+
+    def test_receives_column_name(self):
+        """transform_column riceve sia la series sia il nome."""
+        seen_names: list[str] = []
+
+        class Recorder(ColumnStep):
+            def transform_column(self, series, column_name):
+                seen_names.append(column_name)
+                return series
+
+        df = pd.DataFrame({"x": [1], "y": [2]})
+        Recorder(columns=["x", "y"]).apply(Dataset(df))
+        assert seen_names == ["x", "y"]
+
+    def test_missing_column_raises(self):
+        class NoOp(ColumnStep):
+            def transform_column(self, series, column_name):
+                return series
+
+        df = pd.DataFrame({"a": [1]})
+        with pytest.raises(KeyError):
+            NoOp(columns=["missing"]).apply(Dataset(df))
+
+    def test_history_recorded(self):
+        class NoOp(ColumnStep):
+            def transform_column(self, series, column_name):
+                return series
+
+        df = pd.DataFrame({"a": [1]})
+        result = NoOp(columns=["a"]).apply(Dataset(df))
+
+        assert len(result.history) == 1
+        assert result.history[0].name == "NoOp"
+        assert result.history[0].params["columns"] == ["a"]
+
+    def test_immutability(self):
+        class AddHundred(ColumnStep):
+            def transform_column(self, series, column_name):
+                return series + 100
+
+        df = pd.DataFrame({"a": [1, 2]})
+        ds = Dataset(df)
+        result = AddHundred(columns="a").apply(ds)
+
+        assert ds.to_pandas()["a"].tolist() == [1, 2]
+        assert result.to_pandas()["a"].tolist() == [101, 102]
+
+
+class TestColumnStepRealWorldExamples:
+    """Test di casi d'uso realistici."""
+
+    def test_uppercase_multiple_cols(self):
+        class Uppercase(ColumnStep):
+            def transform_column(self, series, column_name):
+                return series.str.upper()
+
+        df = pd.DataFrame({
+            "name": ["alice", "bob"],
+            "city": ["rome", "milan"],
+            "id": [1, 2],
+        })
+        result = Uppercase(columns=["name", "city"]).apply(Dataset(df))
+
+        assert result.to_pandas()["name"].tolist() == ["ALICE", "BOB"]
+        assert result.to_pandas()["city"].tolist() == ["ROME", "MILAN"]
+        assert result.to_pandas()["id"].tolist() == [1, 2]
+
+    def test_strip_accents(self):
+        import unicodedata
+
+        class StripAccents(ColumnStep):
+            def transform_column(self, series, column_name):
+                return series.apply(
+                    lambda x: unicodedata.normalize("NFKD", str(x))
+                    .encode("ascii", "ignore")
+                    .decode()
+                )
+
+        df = pd.DataFrame({"city": ["Café", "Roma", "Münich"]})
+        result = StripAccents(columns="city").apply(Dataset(df))
+
+        assert result.to_pandas()["city"].tolist() == ["Cafe", "Roma", "Munich"]
+
+=== File: ./examples/03_recipe.py ===
+
+"""
+Esempio 3: Recipe per dataset ricorrenti.
+
+Quando lo stesso tipo di dataset arriva regolarmente (es. export mensile),
+incapsula la pipeline in una Recipe parametrizzabile.
+"""
+import pandas as pd
+
+from macrorefine import Dataset, Pipeline, PipelineStep, Recipe
+from macrorefine.steps import (
+    DropDuplicateRows,
+    DropEmptyColumns,
+    FillMissing,
+    NormalizeColumnNames,
+)
+
+
+# Step custom riutilizzabile in più recipe
+class StripStringColumns(PipelineStep):
+    """Rimuove gli spazi iniziali/finali da tutte le colonne testuali."""
+
+    def apply(self, dataset: Dataset) -> Dataset:
+        df = dataset.to_pandas()
+        text_cols = df.select_dtypes(include=["object", "string"]).columns
+        for col in text_cols:
+            # .str funziona sia su object sia su string dtype
+            df[col] = df[col].str.strip()
+        return dataset.with_data(df, step_name=self.name)
+
+
+class CRMRecipe(Recipe):
+    """
+    Pipeline standard per gli export CRM mensili.
+
+    Args:
+        fill_age_strategy: "mean" o "median" per riempire l'età.
+        drop_duplicates: se True rimuove le righe duplicate.
+    """
+
+    def __init__(
+        self,
+        fill_age_strategy: str = "median",
+        drop_duplicates: bool = True,
+    ) -> None:
+        self.fill_age_strategy = fill_age_strategy
+        self.drop_duplicates = drop_duplicates
+
+    def build(self) -> Pipeline:
+        pipeline = (
+            Pipeline(on_error="raise")
+            .add(NormalizeColumnNames())
+            .add(DropEmptyColumns())
+            .add(StripStringColumns())
+            .add(FillMissing(columns=["age"], strategy=self.fill_age_strategy))
+        )
+        if self.drop_duplicates:
+            pipeline.add(DropDuplicateRows())
+        return pipeline
+
+
+def main() -> None:
+    # Simuliamo due export mensili dello stesso formato
+    january = Dataset(pd.DataFrame({
+        "ID": [1, 2, 3, 3],
+        "Full Name": [" Alice ", "Bob", "Charlie", "Charlie"],
+        "Age": [30, None, 25, 25],
+        "Empty": [None, None, None, None],
+    }))
+
+    february = Dataset(pd.DataFrame({
+        "ID": [10, 11, 12],
+        "Full Name": ["Diana", " Eve ", "Frank"],
+        "Age": [22, None, 45],
+        "Empty": [None, None, None],
+    }))
+
+    # Stessa recipe applicata a entrambi
+    recipe = CRMRecipe(fill_age_strategy="median", drop_duplicates=True)
+
+    jan_clean = recipe.apply(january)
+    feb_clean = recipe.apply(february)
+
+    print("=== Gennaio (pulito) ===")
+    print(jan_clean.to_pandas())
+    print(f"\nStep applicati: {[r.name for r in jan_clean.history]}")
+
+    print("\n=== Febbraio (pulito) ===")
+    print(feb_clean.to_pandas())
+    print(f"\nStep applicati: {[r.name for r in feb_clean.history]}")
+
+
+if __name__ == "__main__":
+    main()
+
+=== File: ./examples/05_column_step.py ===
+
+"""
+Esempio 5: ColumnStep — step ad hoc per colonne specifiche.
+
+Questo esempio mostra come `ColumnStep` riduce drasticamente il boilerplate
+quando devi creare step custom che operano su singole colonne (caso comune
+quando un dataset ha campi con formattazioni particolari).
+"""
+import unicodedata
+
+import pandas as pd
+
+from macrorefine import ColumnStep, Dataset, Pipeline
+from macrorefine.steps import NormalizeColumnNames
+
+
+# --- Step 1: rimuove gli accenti (riusabile su qualsiasi colonna testuale) ---
+class StripAccents(ColumnStep):
+    def transform_column(self, series, column_name):
+        return series.apply(
+            lambda x: unicodedata.normalize("NFKD", str(x))
+            .encode("ascii", "ignore")
+            .decode()
+        )
+
+
+# --- Step 2: title case ---
+class TitleCase(ColumnStep):
+    def transform_column(self, series, column_name):
+        return series.str.strip().str.title()
+
+
+# --- Step 3: telefono italiano (versione con ColumnStep, niente boilerplate) ---
+class FormatItalianPhone(ColumnStep):
+    def transform_column(self, series, column_name):
+        def normalize(value):
+            if value is None or pd.isna(value):
+                return None
+            digits = "".join(ch for ch in str(value) if ch.isdigit())
+            if digits.startswith("00"):
+                digits = digits[2:]
+            if digits.startswith("39"):
+                digits = digits[2:]
+            return f"+39 {digits}" if digits else None
+
+        return series.apply(normalize)
+
+
+# --- Step 4: logica condizionale per nome colonna ---
+class SmartTrim(ColumnStep):
+    """Esempio di step che usa il nome della colonna per logica condizionale.
+
+    Tronca le stringhe a lunghezze diverse a seconda della colonna.
+    """
+
+    LIMITS = {"name": 50, "address": 100, "notes": 200}
+
+    def transform_column(self, series, column_name):
+        limit = self.LIMITS.get(column_name, 30)
+        return series.astype(str).str.slice(0, limit)
+
+
+def main() -> None:
+    df = pd.DataFrame({
+        "Full Name": [" mario rossi ", "LUIGI BIANCHI", "anna verdi"],
+        "City": ["Café", "Münich", "Rome"],
+        "Phone": ["+39 333 1234567", "0039-348-9876543", "3471122334"],
+        "Notes": ["a" * 300, "short note", "b" * 250],
+    })
+    ds = Dataset(df)
+
+    print("=== ORIGINALE ===")
+    print(ds.to_pandas())
+
+    pipeline = (
+        Pipeline(on_error="raise")
+        .add(NormalizeColumnNames())
+        .add(StripAccents(columns="city"))
+        .add(TitleCase(columns=["full_name", "city"]))
+        .add(FormatItalianPhone(columns="phone"))
+        .add(SmartTrim(columns="notes"))
+    )
+
+    clean = pipeline.run(ds)
+
+    print("\n=== PULITO ===")
+    print(clean.to_pandas())
+
+    print("\n=== HISTORY ===")
+    for record in clean.history:
+        print(f"  - {record.name}  params={record.params}")
+
+
+if __name__ == "__main__":
+    main()
+
+=== File: ./examples/07_enrich_municipality_id.py ===
+
+"""
+Esempio 7: arricchimento del dataset rifiuti con ID_COMUNE.
+
+Tre dataset:
+    - rifiuti     (COMUNE, PROVINCIA estesa, ...)
+    - province    (Provincia/Uts estesa, Codice Provincia)
+    - cities      (LABEL_COMUNE_IT, CODICE_PROVINCIA, ID_COMUNE, validità)
+
+Obiettivo: portare ID_COMUNE nel dataset rifiuti, gestendo:
+    1. omonimie tra comuni → join su (comune, codice_provincia)
+    2. provincia estesa vs codice_provincia → primo join via dataset province
+    3. storico dei comuni → tieni solo le righe con DATA_FINE_VALIDITA = 9999-12-31
+
+Per rendere l'esempio runnabile senza i CSV reali, usiamo dati inline.
+"""
+import pandas as pd
+
+from macrorefine import Dataset, Pipeline, Recipe
+from macrorefine.steps import (
+    AddNormalizedKey,
+    DropColumns,
+    FilterRows,
+    LeftJoinEnrich,
+    NormalizeColumnNames,
+    ParseDates,
+    RenameColumns,
+)
+
+from pathlib import Path
+
+
+# --- Recipe: prepara il vocabolario delle città ---
+class CitiesPreparationRecipe(Recipe):
+    """Pulisce cities.csv e prepara la chiave normalizzata sul nome comune."""
+
+    def build(self) -> Pipeline:
+        return (
+            Pipeline(on_error="raise")
+            .add(NormalizeColumnNames())
+            .add(ParseDates(columns="data_fine_validita", errors="coerce"))
+            # Tieni solo le righe attualmente valide:
+            # data_fine_validita NaT (mai cessate) o == 9999-12-31
+            .add(FilterRows(predicate=lambda df: (
+                df["data_fine_validita"].isna()
+                | (df["data_fine_validita"] == pd.Timestamp("9999-12-31"))
+            )))
+            .add(AddNormalizedKey(source="label_comune_it", target="_comune_key"))
+        )
+
+
+# --- Recipe: prepara il vocabolario delle province ---
+class ProvincePreparationRecipe(Recipe):
+    """Pulisce il CSV province, rinomina colonne e crea la chiave normalizzata.
+
+    Output garantito:
+        - colonna `provincia` (denominazione estesa)
+        - colonna `codice_provincia`
+        - colonna `_provincia_key` (per il join)
+    """
+
+    def build(self) -> Pipeline:
+        return (
+            Pipeline(on_error="raise")
+            .add(NormalizeColumnNames())
+            .add(RenameColumns(mapping={
+                "provincia_uts": "provincia",
+                "codice_provincia_storico": "codice_provincia",
+            }))
+            .add(AddNormalizedKey(source="provincia", target="_provincia_key"))
+        )
+
+# --- Recipe: arricchisce il dataset rifiuti con ID_COMUNE ---
+class WasteEnrichmentRecipe(Recipe):
+    def __init__(self, provinces: Dataset, cities: Dataset) -> None:
+        self.provinces = provinces
+        self.cities = cities
+
+    def build(self) -> Pipeline:
+        return (
+            Pipeline(on_error="raise")
+            .add(NormalizeColumnNames())
+            .add(AddNormalizedKey(source="provincia", target="_provincia_key"))
+            .add(AddNormalizedKey(source="comune", target="_comune_key"))
+            # Primo join: provincia estesa → codice_provincia
+            .add(LeftJoinEnrich(
+                other=self.provinces,
+                left_on="_provincia_key",
+                right_on="_provincia_key",
+                columns=["codice_provincia"],
+            ))
+            # Secondo join: (comune, codice_provincia) → id_comune
+            .add(LeftJoinEnrich(
+                other=self.cities,
+                left_on=["_comune_key", "codice_provincia"],
+                right_on=["_comune_key", "codice_provincia"],
+                columns=["id_comune"],
+            ))
+            # Pulizia colonne ausiliarie
+            .add(DropColumns(columns=[
+                "_comune_key",
+                "_provincia_key",
+                "codice_provincia",
+            ]))
+        )
+
+
+def main() -> None:
+    DATA_DIR = Path(__file__).parent / "data"
+
+    # ============================================================
+    # 1. Caricamento dei tre CSV
+    # ============================================================
+    province_raw = Dataset.from_csv(DATA_DIR / "province.csv", sep=";", encoding="utf-8")
+    cities_raw = Dataset.from_csv(DATA_DIR / "cities.csv", sep=",", encoding="utf-8")
+    waste_raw = Dataset.from_csv(DATA_DIR / "rifiuti.csv", sep=",", encoding="utf-8")
+
+    # ============================================================
+    # 2. Preparazione dei due dataset di lookup
+    # ============================================================
+    provinces = ProvincePreparationRecipe().apply(province_raw)
+    cities = CitiesPreparationRecipe().apply(cities_raw)
+
+    # --- DEBUG: verifichiamo le colonne effettive ---
+    print("=== DEBUG: colonne dei dataset preparati ===")
+    print(f"provinces: {provinces.columns}")
+    print(f"cities:    {cities.columns}")
+    print(f"waste:     {waste_raw.columns}")
+
+    # ============================================================
+    # 3. Arricchimento del dataset rifiuti
+    # ============================================================
+    enriched = WasteEnrichmentRecipe(
+        provinces=provinces,   # ✅ ora sono preparati
+        cities=cities,
+    ).apply(waste_raw)
+
+    print("\n=== RIFIUTI (arricchito) ===")
+    print(enriched.to_pandas())
+
+    # ============================================================
+    # 4. Audit trail
+    # ============================================================
+    print("\n=== HISTORY ===")
+    for r in enriched.history:
+        line = f"  - {r.name}"
+        if r.metrics:
+            line += f"  metrics={r.metrics}"
+        print(line)
+
+    # ============================================================
+    # 5. Report match / mismatch
+    # ============================================================
+    out = enriched.to_pandas()
+    matched = int(out["id_comune"].notna().sum())
+    total = len(out)
+    print(f"\n=== REPORT ===")
+    print(f"Match riusciti: {matched}/{total}")
+    if matched < total:
+        unmatched = out[out["id_comune"].isna()][["comune", "provincia"]]
+        print("Comuni senza match:")
+        print(unmatched.to_string(index=False))
+    
+    from macrorefine import save_dataset
+
+    OUT_DIR = Path(__file__).parent / "output"
+    out_path = save_dataset(
+        enriched,
+        OUT_DIR / "rifiuti_arricchito.csv",
+        save_history=True,
+        sep=";",        # standard italiano
+    )
+    print(f"\n✅ Dataset salvato in: {out_path}")
+    print(f"   History sidecar:    {out_path.with_suffix('.history.json')}")
+
+if __name__ == "__main__":
+    main()
+
+=== File: ./examples/01_quickstart.py ===
+
+"""
+Esempio 1: Quickstart end-to-end.
+
+Mostra il flusso base: caricamento → profiling → pipeline → output.
+"""
+import pandas as pd
+
+from macrorefine import Dataset, Pipeline
+from macrorefine.steps import (
+    DropDuplicateRows,
+    DropEmptyColumns,
+    FillMissing,
+    NormalizeColumnNames,
+)
+
+
+def main() -> None:
+    # Dataset sporco di esempio
+    df = pd.DataFrame({
+        "ID": [1, 2, 3, 3, 4, 5],
+        "Full Name": ["Alice", "Bob", "Charlie", "Charlie", "Diana", "Eve"],
+        "Age": [30, None, 25, 25, 40, None],
+        "EmptyCol": [None, None, None, None, None, None],
+        "City ": ["Rome", "Milan", "Naples", "Naples", "Turin", "Bologna"],
+    })
+    ds = Dataset(df)
+
+    print("=" * 60)
+    print("DATASET ORIGINALE")
+    print("=" * 60)
+    print(ds.to_pandas())
+    print(f"\nShape: {ds.shape}")
+
+    print("\n" + "=" * 60)
+    print("PROFILING")
+    print("=" * 60)
+    print(ds.profile())
+
+    print("\n" + "=" * 60)
+    print("PIPELINE")
+    print("=" * 60)
+    clean = (
+        Pipeline(on_error="raise")
+        .add(NormalizeColumnNames())
+        .add(DropEmptyColumns())
+        .add(DropDuplicateRows())
+        .add(FillMissing(columns=["age"], strategy="median"))
+        .run(ds)
+    )
+
+    print(clean.to_pandas())
+
+    print("\n" + "=" * 60)
+    print("HISTORY")
+    print("=" * 60)
+    print(clean.history)
+
+    # Verifica immutabilità: il dataset originale non è cambiato
+    print("\n" + "=" * 60)
+    print("Il dataset originale non è stato modificato (immutabilità):")
+    print("=" * 60)
+    print(f"Colonne originali: {ds.columns}")
+    print(f"Colonne dopo pipeline: {clean.columns}")
+
+
+if __name__ == "__main__":
+    main()
+
+=== File: ./examples/02_custom_step.py ===
+
+"""
+Esempio 2: Creare uno Step custom per un caso specifico.
+
+Mostra come scrivere step ad hoc per esigenze particolari di un dataset.
+"""
+import pandas as pd
+
+from macrorefine import Dataset, Pipeline, PipelineStep
+from macrorefine.history import StepRecord
+from macrorefine.steps import NormalizeColumnNames
+
+
+# --- Step custom 1: normalizza i nomi delle città ---
+class NormalizeCity(PipelineStep):
+    """Strip + Title Case sulla colonna 'city'."""
+
+    def apply(self, dataset: Dataset) -> Dataset:
+        df = dataset.to_pandas()
+        df["city"] = df["city"].str.strip().str.title()
+        return dataset.with_data(df, step_name=self.name)
+
+
+# --- Step custom 2: parametrizzato ---
+class FormatItalianPhone(PipelineStep):
+    """
+    Pulisce un numero di telefono italiano:
+    - rimuove caratteri non numerici
+    - rimuove prefisso internazionale '00' se presente
+    - rimuove prefisso paese '39' se presente
+    - aggiunge il prefisso '+39 '
+    """
+
+    def __init__(self, column: str) -> None:
+        super().__init__()
+        self.column = column
+
+    def _normalize(self, value: object) -> str | None:
+        if value is None:
+            return None
+        # Tieni solo le cifre
+        digits = "".join(ch for ch in str(value) if ch.isdigit())
+        if not digits:
+            return None
+        # Rimuove prefisso internazionale '00' (es. 0039...)
+        if digits.startswith("00"):
+            digits = digits[2:]
+        # Rimuove prefisso paese '39' (sia da +39 sia da 0039)
+        if digits.startswith("39"):
+            digits = digits[2:]
+        if not digits:
+            return None
+        return f"+39 {digits}"
+
+    def apply(self, dataset: Dataset) -> Dataset:
+        df = dataset.to_pandas()
+        original = df[self.column].copy()
+        df[self.column] = df[self.column].apply(self._normalize)
+
+        n_changed = int((original.fillna("") != df[self.column].fillna("")).sum())
+
+        record = StepRecord(
+            name=self.name,
+            params={"column": self.column},
+            metrics={"n_changed": n_changed},
+        )
+        return dataset.with_data(df, step_record=record)
+
+
+def main() -> None:
+    df = pd.DataFrame({
+        "Full Name": ["Mario Rossi", "Luigi Bianchi", "Anna Verdi"],
+        "City ": [" rome ", "MILAN", "naples"],
+        "Phone": ["+39 333 1234567", "0039-348-9876543", "3471122334"],
+    })
+    ds = Dataset(df)
+
+    pipeline = (
+        Pipeline(on_error="raise")
+        .add(NormalizeColumnNames())
+        .add(NormalizeCity())
+        .add(FormatItalianPhone(column="phone"))
+    )
+
+    clean = pipeline.run(ds)
+
+    print("Risultato:")
+    print(clean.to_pandas())
+    print("\nHistory:")
+    print(clean.history)
+
+
+if __name__ == "__main__":
+    main()
+
+=== File: ./examples/06_types_and_dates.py ===
+
+"""
+Esempio 6: Conversione tipi e parsing date.
+
+Caso d'uso comune: dataset CSV in cui i numeri sono salvati come stringhe
+e le date sono in formato non standard.
+"""
+import pandas as pd
+
+from macrorefine import Dataset, Pipeline
+from macrorefine.steps import (
+    CastTypes,
+    NormalizeColumnNames,
+    ParseDates,
+    RenameColumns,
+)
+
+
+def main() -> None:
+    df = pd.DataFrame({
+        "Customer ID": ["1", "2", "3", "4"],
+        "Revenue": ["100.50", "250.75", "bad_value", "75.20"],
+        "Created At": ["15/01/2024", "20/02/2024", "10/03/2024", "05/04/2024"],
+        "Active": ["1", "0", "1", "1"],
+    })
+    ds = Dataset(df)
+
+    print("=== ORIGINALE ===")
+    print(ds.to_pandas())
+    print("\nDtypes:")
+    print(ds.to_pandas().dtypes)
+
+    pipeline = (
+        Pipeline(on_error="raise")
+        .add(NormalizeColumnNames())
+        .add(RenameColumns(mapping={"customer_id": "id"}))
+        .add(CastTypes(mapping={"id": "int", "active": "bool"}))
+        .add(CastTypes(mapping={"revenue": "float"}, errors="coerce"))
+        .add(ParseDates(columns="created_at", format="%d/%m/%Y"))
+    )
+
+    clean = pipeline.run(ds)
+
+    print("\n=== PULITO ===")
+    print(clean.to_pandas())
+    print("\nDtypes:")
+    print(clean.to_pandas().dtypes)
+
+    print("\n=== HISTORY ===")
+    for record in clean.history:
+        print(f"  - {record.name}  params={record.params}")
+
+
+if __name__ == "__main__":
+    main()
+
+=== File: ./src/macrorefine/io.py ===
+
+"""Funzioni per il salvataggio dei Dataset.
+
+Il metodo `Dataset.to_csv()` / `Dataset.to_parquet()` resta disponibile
+per scritture semplici. Questo modulo offre invece:
+
+    - Auto-detection del formato dall'estensione
+    - Creazione automatica delle cartelle mancanti
+    - Salvataggio opzionale della history come file JSON sidecar
+"""
+from __future__ import annotations
+
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Literal
+
+from macrorefine.dataset import Dataset
+
+Format = Literal["csv", "parquet", "json"]
+_SUPPORTED_FORMATS: tuple[str, ...] = ("csv", "parquet", "json")
+
+
+def save_dataset(
+    dataset: Dataset,
+    path: str | Path,
+    *,
+    format: Format | None = None,
+    save_history: bool = False,
+    **writer_kwargs: Any,
+) -> Path:
+    """Salva un Dataset su disco con utility comode integrate.
+
+    Args:
+        dataset: il Dataset da salvare.
+        path: percorso di destinazione (le cartelle mancanti vengono create).
+        format: formato esplicito ("csv", "parquet", "json"). Se None viene
+            dedotto dall'estensione del path.
+        save_history: se True salva un file sidecar `<basename>.history.json`
+            con l'audit trail completo del Dataset.
+        **writer_kwargs: argomenti passati al writer pandas sottostante
+            (es. `sep=";"` per CSV, `index=False`, ...).
+
+    Returns:
+        Il path effettivo del file scritto.
+
+    Raises:
+        ValueError: se il formato non è supportato.
+    """
+    path = Path(path)
+    fmt = (format or _infer_format(path)).lower()
+
+    if fmt not in _SUPPORTED_FORMATS:
+        raise ValueError(
+            f"Unsupported format: {fmt!r}. "
+            f"Supported: {_SUPPORTED_FORMATS}"
+        )
+
+    # Crea le cartelle mancanti
+    path.parent.mkdir(parents=True, exist_ok=True)
+
+    df = dataset.to_pandas()
+
+    if fmt == "csv":
+        writer_kwargs.setdefault("index", False)
+        df.to_csv(path, **writer_kwargs)
+    elif fmt == "parquet":
+        df.to_parquet(path, **writer_kwargs)
+    elif fmt == "json":
+        writer_kwargs.setdefault("orient", "records")
+        writer_kwargs.setdefault("indent", 2)
+        writer_kwargs.setdefault("force_ascii", False)
+        df.to_json(path, **writer_kwargs)
+
+    if save_history:
+        _write_history_sidecar(dataset, path)
+
+    return path
+
+
+# ----- Helpers privati -----
+
+def _infer_format(path: Path) -> str:
+    """Deduce il formato dall'estensione del path."""
+    ext = path.suffix.lstrip(".").lower()
+    if not ext:
+        raise ValueError(
+            f"Cannot infer format from path without extension: {path}. "
+            f"Pass `format=` explicitly."
+        )
+    return ext
+
+
+def _write_history_sidecar(dataset: Dataset, data_path: Path) -> Path:
+    """Scrive un file <stem>.history.json accanto al file dati."""
+    sidecar = data_path.with_suffix(".history.json")
+    rows, cols = dataset.shape
+    payload = {
+        "saved_at": datetime.now(timezone.utc).isoformat(),
+        "data_file": data_path.name,
+        "rows": rows,
+        "cols": cols,
+        "columns": dataset.columns,
+        "steps": [
+            {
+                "name": r.name,
+                "params": r.params,
+                "metrics": r.metrics,
+            }
+            for r in dataset.history
+        ],
+    }
+    sidecar.write_text(json.dumps(payload, indent=2, ensure_ascii=False, default=str))
+    return sidecar
+
+=== File: ./src/macrorefine/__init__.py ===
+
+"""MacroRefine: a simple, modular and extensible data cleaning pipeline library."""
+from macrorefine.column_step import ColumnStep
+from macrorefine.dataset import Dataset
+from macrorefine.history import History, StepRecord
+from macrorefine.io import save_dataset
+from macrorefine.pipeline import Pipeline
+from macrorefine.recipe import Recipe
+from macrorefine.step import PipelineStep
+
+__version__ = "0.1.0"
+
+__all__ = [
+    "Dataset",
+    "Pipeline",
+    "PipelineStep",
+    "ColumnStep",
+    "Recipe",
+    "History",
+    "StepRecord",
+    "save_dataset",
+    "__version__",
+]
+
+=== File: ./src/macrorefine/dataset.py ===
+
+"""Dataset: wrapper immutabile attorno a un pandas DataFrame con history."""
+from __future__ import annotations
+
+from pathlib import Path
+from typing import TYPE_CHECKING, Any
+
+import pandas as pd
+
+from macrorefine.history import History, StepRecord
+
+if TYPE_CHECKING:
+    from macrorefine.profiling import ProfileReport
+
+
+class Dataset:
+    """Wrapper immutabile su un pandas DataFrame.
+
+    Ogni trasformazione produce un nuovo Dataset (via `with_data`),
+    accumulando una History di StepRecord.
+    """
+
+    def __init__(self, data: pd.DataFrame, history: History | None = None) -> None:
+        if not isinstance(data, pd.DataFrame):
+            raise TypeError(f"Expected pandas DataFrame, got {type(data).__name__}")
+        # Copia difensiva: garantisce immutabilità rispetto al df esterno
+        self._data: pd.DataFrame = data.copy()  #il copy è necessario per evitare che modifiche al DataFrame originale influenzino il Dataset, garantendo così l'immutabilità del Dataset stesso.
+        self._history: History = history if history is not None else History()
+
+    # ----- Costruttori da file -----
+
+    @classmethod
+    def from_csv(cls, path: str | Path, **kwargs: Any) -> "Dataset":
+        """Carica un Dataset da un file CSV."""
+        return cls(pd.read_csv(path, **kwargs))
+
+    @classmethod
+    def from_parquet(cls, path: str | Path, **kwargs: Any) -> "Dataset":
+        """Carica un Dataset da un file Parquet."""
+        return cls(pd.read_parquet(path, **kwargs))
+
+    # ----- Output su file -----
+
+    def to_csv(self, path: str | Path, **kwargs: Any) -> None:
+        """Scrive il Dataset in un file CSV (default: index=False)."""
+        kwargs.setdefault("index", False)
+        self._data.to_csv(path, **kwargs)
+
+    def to_parquet(self, path: str | Path, **kwargs: Any) -> None:
+        """Scrive il Dataset in un file Parquet."""
+        self._data.to_parquet(path, **kwargs)
+
+    # ----- Accesso ai dati -----
+
+    def to_pandas(self) -> pd.DataFrame:
+        """Ritorna una COPIA del DataFrame interno (immutabilità garantita)."""
+        return self._data.copy()
+
+    @property
+    def columns(self) -> list[str]:
+        return list(self._data.columns)
+
+    @property
+    def shape(self) -> tuple[int, int]:
+        return self._data.shape
+
+    @property
+    def history(self) -> History:
+        return self._history
+
+    def head(self, n: int = 5) -> pd.DataFrame:
+        return self._data.head(n).copy()
+
+    # ----- Trasformazione (immutabile) -----
+
+    def with_data(
+        self,
+        new_data: pd.DataFrame,
+        *,
+        step_name: str | None = None,
+        step_record: StepRecord | None = None,
+    ) -> "Dataset":
+        """Ritorna un nuovo Dataset con i nuovi dati e la history aggiornata.
+
+        Esattamente uno tra `step_name` e `step_record` deve essere fornito.
+        """
+        if step_record is None and step_name is None:
+            raise ValueError("Provide either `step_name` or `step_record`.")
+        if step_record is not None and step_name is not None:
+            raise ValueError("Provide only one of `step_name` or `step_record`.")
+
+        record = step_record if step_record is not None else StepRecord(name=step_name)  # type: ignore[arg-type]
+        return Dataset(new_data, history=self._history.append(record))
+    
+    def with_columns_renamed(self, mapping: dict[str, str]) -> "Dataset":
+        """Ritorna un nuovo Dataset con le colonne rinominate.
+
+        Args:
+            mapping: dizionario {nome_attuale: nuovo_nome}.
+
+        Raises:
+            KeyError: se una delle colonne nel mapping non esiste.
+        """
+        df = self.to_pandas()
+        missing = [c for c in mapping if c not in df.columns]
+        if missing:
+            raise KeyError(f"Columns not found in dataset: {missing}")
+        df = df.rename(columns=mapping)
+        return self.with_data(df, step_name="rename")
+
+    # ----- Profiling -----
+
+    def profile(self) -> "ProfileReport":
+        """Esegue una diagnostica del dataset e ritorna un ProfileReport."""
+        # Import lazy per evitare cicli
+        from macrorefine.profiling import profile
+        return profile(self)
+
+    # ----- Repr -----
+
+    def __repr__(self) -> str:
+        rows, cols = self._data.shape
+        return f"Dataset(rows={rows}, cols={cols}, history_steps={len(self._history)})"
+
+=== File: ./src/macrorefine/step.py ===
+
+"""PipelineStep: classe base astratta per tutti gli step (built-in e custom)."""
+from __future__ import annotations
+
+from abc import ABC, abstractmethod
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from macrorefine.dataset import Dataset
+
+
+class PipelineStep(ABC):
+    """Classe base per ogni step di una Pipeline.
+
+    Sottoclassi devono implementare `apply(dataset) -> Dataset`.
+    Il nome dello step viene preso dalla classe se non sovrascritto.
+    """
+
+    name: str = ""  # se vuoto, usato il nome della classe
+
+    def __init__(self) -> None:
+        # Imposta il nome di default come nome della classe
+        if not type(self).__dict__.get("name"):
+            self.name = type(self).__name__
+
+    @abstractmethod
+    def apply(self, dataset: "Dataset") -> "Dataset":
+        """Applica la trasformazione e ritorna un NUOVO Dataset."""
+        ...
+
+    def __repr__(self) -> str:
+        return f"{self.name}()"
+
+=== File: ./src/macrorefine/steps/missing.py ===
+
+"""Step per la gestione dei valori mancanti."""
+from __future__ import annotations
+
+from typing import Any, Literal
+
+from macrorefine.dataset import Dataset
+from macrorefine.history import StepRecord
+from macrorefine.step import PipelineStep
+
+Strategy = Literal["mean", "median", "constant"]
+_VALID_STRATEGIES = ("mean", "median", "constant")
+
+
+class FillMissing(PipelineStep):
+    """Riempie i valori mancanti nelle colonne specificate.
+
+    Args:
+        columns: Colonne su cui operare.
+        strategy: "mean", "median" o "constant".
+        value: Valore da usare se strategy="constant".
+    """
+
+    def __init__(
+        self,
+        columns: list[str],
+        strategy: Strategy = "mean",
+        value: Any = None,
+    ) -> None:
+        super().__init__()
+        if strategy not in _VALID_STRATEGIES:
+            raise ValueError(
+                f"strategy must be one of {_VALID_STRATEGIES}; got {strategy!r}"
+            )
+        if strategy == "constant" and value is None:
+            raise ValueError("strategy='constant' requires a `value`.")
+        self.columns = list(columns)
+        self.strategy: Strategy = strategy
+        self.value = value
+
+    def apply(self, dataset: Dataset) -> Dataset:
+        df = dataset.to_pandas()
+        missing = [c for c in self.columns if c not in df.columns]
+        if missing:
+            raise KeyError(f"Columns not found: {missing}")
+
+        filled_count: dict[str, int] = {}
+        for col in self.columns:
+            n_missing = int(df[col].isna().sum())
+            if self.strategy == "mean":
+                fill_value = df[col].mean()
+            elif self.strategy == "median":
+                fill_value = df[col].median()
+            else:  # constant
+                fill_value = self.value
+            df[col] = df[col].fillna(fill_value)
+            filled_count[col] = n_missing
+
+        record = StepRecord(
+            name=self.name,
+            params={"columns": self.columns, "strategy": self.strategy, "value": self.value},
+            metrics={"filled_per_column": filled_count},
+        )
+        return dataset.with_data(df, step_record=record)
+
+=== File: ./src/macrorefine/steps/__init__.py ===
+
+"""Step built-in di MacroRefine."""
+from macrorefine.steps.columns import (
+    DropColumns,
+    DropEmptyColumns,
+    NormalizeColumnNames,
+    RenameColumns,
+)
+from macrorefine.steps.join import LeftJoinEnrich
+from macrorefine.steps.missing import FillMissing
+from macrorefine.steps.rows import DropDuplicateRows, FilterRows
+from macrorefine.steps.text import AddNormalizedKey, normalize_text
+from macrorefine.steps.types import CastTypes, ParseDates
+
+__all__ = [
+    # columns
+    "NormalizeColumnNames",
+    "RenameColumns",
+    "DropEmptyColumns",
+    "DropColumns",
+    # rows
+    "DropDuplicateRows",
+    "FilterRows",
+    # missing
+    "FillMissing",
+    # types
+    "CastTypes",
+    "ParseDates",
+    # text
+    "AddNormalizedKey",
+    "normalize_text",
+    # join
+    "LeftJoinEnrich",
+]
+
+=== File: ./src/macrorefine/steps/types.py ===
+
+"""Step per la conversione dei tipi e il parsing delle date."""
+from __future__ import annotations
+
+from typing import Literal
+
+import pandas as pd
+
+from macrorefine.dataset import Dataset
+from macrorefine.history import StepRecord
+from macrorefine.step import PipelineStep
+
+ErrorMode = Literal["raise", "coerce"]
+_VALID_ERRORS = ("raise", "coerce")
+
+
+class CastTypes(PipelineStep):
+    """Cambia il tipo di una o più colonne.
+
+    Args:
+        mapping: dizionario {colonna: dtype}. Il dtype può essere una stringa
+            ("int", "float", "str", "bool") o un tipo numpy/pandas.
+        errors: "raise" (default) solleva eccezione su valori non convertibili;
+            "coerce" sostituisce i non convertibili con NaN (solo per tipi numerici).
+
+    Raises:
+        KeyError: se una colonna non esiste nel dataset.
+        ValueError: se `errors` ha un valore non valido.
+    """
+
+    def __init__(
+        self,
+        mapping: dict[str, str],
+        errors: ErrorMode = "raise",
+    ) -> None:
+        super().__init__()
+        if errors not in _VALID_ERRORS:
+            raise ValueError(
+                f"errors must be one of {_VALID_ERRORS}; got {errors!r}"
+            )
+        self.mapping = dict(mapping)
+        self.errors: ErrorMode = errors
+
+    def apply(self, dataset: Dataset) -> Dataset:
+        df = dataset.to_pandas()
+
+        missing = [c for c in self.mapping if c not in df.columns]
+        if missing:
+            raise KeyError(f"Columns not found in dataset: {missing}")
+
+        for col, dtype in self.mapping.items():
+            df[col] = self._cast_column(df[col], dtype)
+
+        record = StepRecord(
+            name=self.name,
+            params={"mapping": self.mapping, "errors": self.errors},
+        )
+        return dataset.with_data(df, step_record=record)
+
+    def _cast_column(self, series: pd.Series, dtype: str) -> pd.Series:
+        """Cast di una singola colonna, rispettando la modalità errori."""
+        if self.errors == "coerce" and dtype in ("int", "float", "Int64", "Float64"):
+            # to_numeric supporta errors="coerce" (NaN sui non convertibili)
+            casted = pd.to_numeric(series, errors="coerce")
+            # Per "int" classico non possiamo avere NaN: fallback a Float64 nullable
+            if dtype == "int":
+                # Se ci sono NaN, restiamo float; altrimenti castiamo a int
+                if casted.isna().any():
+                    return casted  # float con NaN
+                return casted.astype("int64")
+            if dtype == "float":
+                return casted.astype("float64")
+            return casted.astype(dtype)
+
+        # Modalità "raise" o tipi non numerici
+        return series.astype(dtype)
+
+
+class ParseDates(PipelineStep):
+    """Converte colonne in datetime.
+
+    Args:
+        columns: nome o lista di nomi di colonne.
+        format: formato strftime opzionale (es. "%d/%m/%Y").
+            Se None, pandas tenta di inferirlo.
+        errors: "raise" (default) o "coerce" (valori non parsabili → NaT).
+
+    Raises:
+        KeyError: se una colonna non esiste.
+        ValueError: se `errors` ha un valore non valido.
+    """
+
+    def __init__(
+        self,
+        columns: str | list[str],
+        format: str | None = None,
+        errors: ErrorMode = "raise",
+    ) -> None:
+        super().__init__()
+        if errors not in _VALID_ERRORS:
+            raise ValueError(
+                f"errors must be one of {_VALID_ERRORS}; got {errors!r}"
+            )
+        if isinstance(columns, str):
+            columns = [columns]
+        self.columns: list[str] = list(columns)
+        self.format = format
+        self.errors: ErrorMode = errors
+
+    def apply(self, dataset: Dataset) -> Dataset:
+        df = dataset.to_pandas()
+
+        missing = [c for c in self.columns if c not in df.columns]
+        if missing:
+            raise KeyError(f"Columns not found in dataset: {missing}")
+
+        for col in self.columns:
+            df[col] = pd.to_datetime(
+                df[col],
+                format=self.format,
+                errors=self.errors,
+            )
+
+        record = StepRecord(
+            name=self.name,
+            params={
+                "columns": self.columns,
+                "format": self.format,
+                "errors": self.errors,
+            },
+        )
+        return dataset.with_data(df, step_record=record)
+
+=== File: ./src/macrorefine/steps/join.py ===
+
+"""Step per combinare Dataset (join, enrichment)."""
+from __future__ import annotations
+
+from macrorefine.dataset import Dataset
+from macrorefine.history import StepRecord
+from macrorefine.step import PipelineStep
+
+
+class LeftJoinEnrich(PipelineStep):
+    """Arricchisce il Dataset con colonne di un altro Dataset tramite left join.
+
+    Args:
+        other: Dataset di lookup da cui prelevare le colonne aggiuntive.
+        left_on: colonna o lista di colonne del Dataset corrente per il join.
+        right_on: colonna o lista di colonne del Dataset di lookup per il join.
+        columns: lista delle colonne di `other` da aggiungere al risultato.
+
+    Note:
+        Le righe che non trovano corrispondenza avranno NaN nelle colonne
+        aggiunte. Le metriche dello step riportano `matched` e `unmatched`.
+    """
+
+    def __init__(
+        self,
+        other: Dataset,
+        left_on: str | list[str],
+        right_on: str | list[str],
+        columns: list[str],
+    ) -> None:
+        super().__init__()
+        self.other = other
+        self.left_on = [left_on] if isinstance(left_on, str) else list(left_on)
+        self.right_on = [right_on] if isinstance(right_on, str) else list(right_on)
+        self.columns = list(columns)
+
+        if len(self.left_on) != len(self.right_on):
+            raise ValueError(
+                f"left_on and right_on must have the same length; "
+                f"got {len(self.left_on)} vs {len(self.right_on)}"
+            )
+
+    def apply(self, dataset: Dataset) -> Dataset:
+        left_df = dataset.to_pandas()
+        right_df = self.other.to_pandas()
+
+        # Validazione
+        missing_left = [c for c in self.left_on if c not in left_df.columns]
+        if missing_left:
+            raise KeyError(f"Columns not found in left dataset: {missing_left}")
+        needed_right = list(set(self.right_on) | set(self.columns))
+        missing_right = [c for c in needed_right if c not in right_df.columns]
+        if missing_right:
+            raise KeyError(f"Columns not found in right dataset: {missing_right}")
+
+        # Subset del right per evitare di portare colonne non richieste
+        right_subset = right_df[needed_right].copy()
+
+        # Left join
+        merged = left_df.merge(
+            right_subset,
+            how="left",
+            left_on=self.left_on,
+            right_on=self.right_on,
+            suffixes=("", "_right"),
+        )
+
+        # Pulizia: rimuovi le right_on che hanno nome diverso da left_on
+        for lc, rc in zip(self.left_on, self.right_on):
+            if lc != rc and rc in merged.columns:
+                merged = merged.drop(columns=[rc])
+
+        # Metriche
+        if self.columns:
+            matched = int(merged[self.columns[0]].notna().sum())
+        else:
+            matched = len(merged)
+        unmatched = len(merged) - matched
+
+        record = StepRecord(
+            name=self.name,
+            params={
+                "left_on": self.left_on,
+                "right_on": self.right_on,
+                "columns": self.columns,
+            },
+            metrics={"matched": matched, "unmatched": unmatched},
+        )
+        return dataset.with_data(merged, step_record=record)
+
+=== File: ./src/macrorefine/steps/columns.py ===
+
+"""Step che operano sulle colonne."""
+from __future__ import annotations
+
+import re
+
+from macrorefine.dataset import Dataset
+from macrorefine.history import StepRecord
+from macrorefine.step import PipelineStep
+
+
+def _to_snake_case(name: str) -> str:
+    """Converte un nome di colonna in snake_case.
+
+    Esempi:
+        "FullName"     -> "full_name"
+        "ID"           -> "id"
+        "Full Name"    -> "full_name"
+        "City "        -> "city"
+        "name@home"    -> "name_home"
+        "price($)"     -> "price"
+    """
+    # Inserisce underscore tra minuscola/numero e maiuscola: "FullName" -> "Full_Name"
+    s = re.sub(r"(?<=[a-z0-9])(?=[A-Z])", "_", name)
+    # Tutto minuscolo
+    s = s.lower()
+    # Sostituisce caratteri non alfanumerici con underscore
+    s = re.sub(r"[^a-z0-9]+", "_", s)
+    # Rimuove underscore iniziali/finali e collassa quelli multipli
+    s = re.sub(r"_+", "_", s).strip("_")
+    return s
+
+
+class NormalizeColumnNames(PipelineStep):
+    """Normalizza i nomi delle colonne in snake_case."""
+
+    def apply(self, dataset: Dataset) -> Dataset:
+        df = dataset.to_pandas()
+        old_names = list(df.columns)
+        new_names = [_to_snake_case(c) for c in old_names]
+        df.columns = new_names
+
+        renamed = {o: n for o, n in zip(old_names, new_names) if o != n}
+        record = StepRecord(
+            name=self.name,
+            metrics={"renamed_count": len(renamed), "renamed": renamed},
+        )
+        return dataset.with_data(df, step_record=record)
+
+
+class DropEmptyColumns(PipelineStep):
+    """Rimuove colonne completamente vuote (tutti NaN/None)."""
+
+    def apply(self, dataset: Dataset) -> Dataset:
+        df = dataset.to_pandas()
+        empty_cols = [c for c in df.columns if df[c].isna().all()]
+        df = df.drop(columns=empty_cols)
+        record = StepRecord(
+            name=self.name,
+            metrics={"dropped_count": len(empty_cols), "dropped": empty_cols},
+        )
+        return dataset.with_data(df, step_record=record)
+
+
+class DropColumns(PipelineStep):
+    """Rimuove le colonne specificate."""
+
+    def __init__(self, columns: list[str]) -> None:
+        super().__init__()
+        self.columns = list(columns)
+
+    def apply(self, dataset: Dataset) -> Dataset:
+        df = dataset.to_pandas()
+        missing = [c for c in self.columns if c not in df.columns]
+        if missing:
+            raise KeyError(f"Columns not found in dataset: {missing}")
+        df = df.drop(columns=self.columns)
+        record = StepRecord(
+            name=self.name,
+            params={"columns": self.columns},
+            metrics={"dropped_count": len(self.columns)},
+        )
+        return dataset.with_data(df, step_record=record)
+    
+
+class RenameColumns(PipelineStep):
+    """Rinomina colonne secondo un mapping {nome_vecchio: nome_nuovo}.
+
+    Args:
+        mapping: dizionario {colonna_attuale: nuovo_nome}.
+
+    Raises:
+        KeyError: se una colonna del mapping non esiste nel dataset.
+        ValueError: se rinominare causerebbe un conflitto con una colonna esistente.
+    """
+
+    def __init__(self, mapping: dict[str, str]) -> None:
+        super().__init__()
+        self.mapping = dict(mapping)
+
+    def apply(self, dataset: Dataset) -> Dataset:
+        df = dataset.to_pandas()
+
+        missing = [c for c in self.mapping if c not in df.columns]
+        if missing:
+            raise KeyError(f"Columns not found in dataset: {missing}")
+
+        # Verifica che i nuovi nomi non collidano con colonne esistenti
+        # (escluse quelle che stiamo rinominando)
+        survivors = set(df.columns) - set(self.mapping.keys())
+        conflicts = [new for new in self.mapping.values() if new in survivors]
+        if conflicts:
+            raise ValueError(
+                f"Renaming would create duplicate column names: {conflicts}"
+            )
+
+        df = df.rename(columns=self.mapping)
+        record = StepRecord(
+            name=self.name,
+            params={"mapping": self.mapping},
+            metrics={"renamed_count": len(self.mapping)},
+        )
+        return dataset.with_data(df, step_record=record)
+
+=== File: ./src/macrorefine/steps/text.py ===
+
+"""Step per la manipolazione e normalizzazione del testo."""
+from __future__ import annotations
+
+import re
+import unicodedata
+from typing import Any
+
+import pandas as pd
+
+from macrorefine.dataset import Dataset
+from macrorefine.history import StepRecord
+from macrorefine.step import PipelineStep
+
+
+def normalize_text(value: Any) -> str | None:
+    """Normalizza una stringa per il matching tra dataset.
+
+    Operazioni applicate, in ordine:
+        1. apostrofi tipografici (’, ‘, `) → apostrofo ASCII (')
+        2. rimozione degli accenti (NFKD + drop dei diacritici)
+        3. lowercase
+        4. collasso degli spazi multipli + strip
+
+    Ritorna None per valori None/NaN.
+    """
+    if value is None or (isinstance(value, float) and pd.isna(value)):
+        return None
+    text = str(value)
+    text = text.replace("\u2019", "'").replace("\u2018", "'").replace("`", "'")
+    text = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode()
+    text = text.lower()
+    text = re.sub(r"\s+", " ", text).strip()
+    return text or None
+
+
+class AddNormalizedKey(PipelineStep):
+    """Aggiunge una colonna ausiliaria con il testo della source normalizzato.
+
+    Utile per preparare colonne-chiave per i join tra dataset eterogenei
+    (lowercase, no accenti, no apostrofi tipografici, spazi normalizzati).
+
+    Args:
+        source: nome della colonna sorgente.
+        target: nome della nuova colonna con il testo normalizzato.
+    """
+
+    def __init__(self, source: str, target: str) -> None:
+        super().__init__()
+        self.source = source
+        self.target = target
+
+    def apply(self, dataset: Dataset) -> Dataset:
+        df = dataset.to_pandas()
+        if self.source not in df.columns:
+            raise KeyError(f"Column not found: {self.source!r}")
+        df[self.target] = df[self.source].apply(normalize_text)
+        record = StepRecord(
+            name=self.name,
+            params={"source": self.source, "target": self.target},
+        )
+        return dataset.with_data(df, step_record=record)
+
+=== File: ./src/macrorefine/steps/rows.py ===
+
+"""Step che operano sulle righe."""
+from __future__ import annotations
+
+from macrorefine.dataset import Dataset
+from macrorefine.history import StepRecord
+from macrorefine.step import PipelineStep
+
+from typing import Callable
+
+import pandas as pd 
+
+
+class DropDuplicateRows(PipelineStep):
+    """Rimuove le righe duplicate."""
+
+    def apply(self, dataset: Dataset) -> Dataset:
+        df = dataset.to_pandas()
+        before = len(df)
+        df = df.drop_duplicates().reset_index(drop=True)
+        after = len(df)
+        record = StepRecord(
+            name=self.name,
+            metrics={"removed_count": before - after},
+        )
+        return dataset.with_data(df, step_record=record)
+    
+
+class FilterRows(PipelineStep):
+    """Filtra le righe in base a un predicato.
+
+    Args:
+        predicate: funzione che riceve il DataFrame e ritorna una Series
+            booleana. Le righe con True vengono mantenute.
+
+    Esempio:
+        FilterRows(predicate=lambda df: df["data_fine"].isna() | (df["data_fine"] == "9999-12-31"))
+    """
+
+    def __init__(self, predicate: Callable[[pd.DataFrame], pd.Series]) -> None:
+        super().__init__()
+        self.predicate = predicate
+
+    def apply(self, dataset: Dataset) -> Dataset:
+        df = dataset.to_pandas()
+        before = len(df)
+        mask = self.predicate(df)
+        df = df[mask].reset_index(drop=True)
+        after = len(df)
+        record = StepRecord(
+            name=self.name,
+            metrics={
+                "rows_before": before,
+                "rows_after": after,
+                "rows_removed": before - after,
+            },
+        )
+        return dataset.with_data(df, step_record=record)
+
+=== File: ./src/macrorefine/pipeline.py ===
+
+"""Pipeline: orchestratore di step con gestione errori configurabile."""
+from __future__ import annotations
+
+import logging
+from typing import TYPE_CHECKING, Literal
+
+from macrorefine.step import PipelineStep
+
+if TYPE_CHECKING:
+    from macrorefine.dataset import Dataset
+
+logger = logging.getLogger(__name__)
+
+OnError = Literal["interactive", "skip", "raise"]
+
+
+class Pipeline:
+    """Catena ordinata di PipelineStep da applicare a un Dataset.
+
+    Args:
+        on_error: Strategia in caso di errore in uno step:
+            - "interactive" (default): chiede all'utente cosa fare
+            - "skip": logga l'errore e continua col prossimo step
+            - "raise": rilancia l'eccezione
+    """
+
+    def __init__(self, on_error: OnError = "interactive") -> None:
+        if on_error not in ("interactive", "skip", "raise"):
+            raise ValueError(
+                f"on_error must be one of 'interactive', 'skip', 'raise'; got {on_error!r}"
+            )
+        self._steps: list[PipelineStep] = []
+        self._on_error: OnError = on_error
+
+    def add(self, step: PipelineStep) -> "Pipeline":
+        """Aggiunge uno step alla pipeline (fluent)."""
+        if not isinstance(step, PipelineStep):
+            raise TypeError(f"Expected PipelineStep, got {type(step).__name__}")
+        self._steps.append(step)
+        return self
+
+    def run(self, dataset: "Dataset") -> "Dataset":
+        """Esegue tutti gli step in sequenza, ritornando il Dataset finale."""
+        current = dataset
+        for step in self._steps:
+            try:
+                current = step.apply(current)
+            except Exception as exc:  # noqa: BLE001
+                action = self._resolve_action(step, exc)
+                if action == "abort":
+                    raise
+                elif action == "skip":
+                    logger.warning("Step %s failed and was skipped: %s", step.name, exc)
+                    continue
+        return current
+
+    # ----- Gestione errori -----
+
+    def _resolve_action(self, step: PipelineStep, exc: Exception) -> str:
+        """Decide cosa fare in base a `on_error`. Ritorna 'abort' o 'skip'."""
+        if self._on_error == "raise":
+            return "abort"
+        if self._on_error == "skip":
+            return "skip"
+        # interactive
+        return self._prompt_user(step, exc)
+
+    def _prompt_user(self, step: PipelineStep, exc: Exception) -> str:
+        """Chiede all'utente come comportarsi davanti a un errore."""
+        print(f"\n[Pipeline] Step '{step.name}' failed with error:")
+        print(f"  {type(exc).__name__}: {exc}")
+        while True:
+            answer = input("Choose action: [continue/skip/abort]: ").strip().lower()
+            if answer in ("continue", "c", "skip", "s"):
+                return "skip"
+            if answer in ("abort", "a"):
+                return "abort"
+            print("Invalid choice. Type 'continue', 'skip' or 'abort'.")
+
+    def __repr__(self) -> str:
+        names = [s.name for s in self._steps]
+        return f"Pipeline(steps={names}, on_error={self._on_error!r})"
+
+=== File: ./src/macrorefine/column_step.py ===
+
+"""ColumnStep: classe base per step che operano su colonne specifiche.
+
+Riduce il boilerplate: la sottoclasse implementa solo `transform_column`,
+mentre la classe base gestisce validazione, iterazione, history e immutabilità.
+"""
+from __future__ import annotations
+
+from abc import abstractmethod
+from typing import TYPE_CHECKING
+
+import pandas as pd
+
+from macrorefine.history import StepRecord
+from macrorefine.step import PipelineStep
+
+if TYPE_CHECKING:
+    from macrorefine.dataset import Dataset
+
+
+class ColumnStep(PipelineStep):
+    """Classe base per step che trasformano una o più colonne specifiche.
+
+    Sottoclassare e implementare `transform_column(series, column_name)`.
+    Tutto il resto (validazione delle colonne, iterazione, history record,
+    immutabilità del Dataset) è gestito automaticamente.
+
+    Esempio:
+
+        class Uppercase(ColumnStep):
+            def transform_column(self, series, column_name):
+                return series.str.upper()
+
+        pipeline.add(Uppercase(columns=["name", "city"]))
+
+    Args:
+        columns: Nome della colonna o lista di nomi di colonne su cui operare.
+    """
+
+    def __init__(self, columns: str | list[str]) -> None:
+        super().__init__()
+        if isinstance(columns, str):
+            columns = [columns]
+        self.columns: list[str] = list(columns)
+
+    @abstractmethod
+    def transform_column(
+        self, series: pd.Series, column_name: str
+    ) -> pd.Series:
+        """Trasforma una singola colonna.
+
+        Args:
+            series: La Series originale.
+            column_name: Il nome della colonna (utile per logica condizionale
+                quando lo stesso step opera su più colonne).
+
+        Returns:
+            La Series trasformata, che sostituirà l'originale.
+        """
+        ...
+
+    def apply(self, dataset: "Dataset") -> "Dataset":
+        df = dataset.to_pandas()
+
+        missing = [c for c in self.columns if c not in df.columns]
+        if missing:
+            raise KeyError(f"Columns not found in dataset: {missing}")
+
+        for col in self.columns:
+            df[col] = self.transform_column(df[col], col)
+
+        record = StepRecord(
+            name=self.name,
+            params={"columns": self.columns},
+        )
+        return dataset.with_data(df, step_record=record)
+
+=== File: ./src/macrorefine/recipe.py ===
+
+"""Recipe: pipeline pre-configurate per casi d'uso ricorrenti."""
+from __future__ import annotations
+
+from abc import ABC, abstractmethod
+from typing import TYPE_CHECKING
+
+from macrorefine.pipeline import Pipeline
+
+if TYPE_CHECKING:
+    from macrorefine.dataset import Dataset
+
+
+class Recipe(ABC):
+    """Classe base per definire pipeline ricorrenti.
+
+    Sottoclassare e implementare `build()` per dichiarare la Pipeline.
+    Esempio:
+
+        class MyRecipe(Recipe):
+            def build(self) -> Pipeline:
+                return Pipeline().add(NormalizeColumnNames()).add(DropEmptyColumns())
+
+        clean = MyRecipe().apply(dataset)
+    """
+
+    @abstractmethod
+    def build(self) -> Pipeline:
+        """Costruisce la Pipeline associata alla recipe."""
+        ...
+
+    def apply(self, dataset: "Dataset") -> "Dataset":
+        """Applica la Pipeline costruita al dataset."""
+        return self.build().run(dataset)                                        
+
+=== File: ./src/macrorefine/profiling.py ===
+
+"""Profiling: diagnostica automatica delle criticità di un Dataset."""
+from __future__ import annotations
+
+import re
+from dataclasses import dataclass, field
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from macrorefine.dataset import Dataset
+
+
+_SNAKE_CASE_RE = re.compile(r"^[a-z0-9]+(_[a-z0-9]+)*$")
+
+
+def _is_snake_case(name: str) -> bool:
+    return bool(_SNAKE_CASE_RE.match(name))
+
+
+@dataclass
+class ProfileReport:
+    """Report strutturato della diagnostica."""
+
+    n_rows: int = 0
+    n_cols: int = 0
+    non_snake_case_columns: list[str] = field(default_factory=list)
+    duplicated_column_names: list[str] = field(default_factory=list)
+    empty_columns: list[str] = field(default_factory=list)
+    high_null_columns: dict[str, float] = field(default_factory=dict)
+    duplicate_rows: int = 0
+    dtypes: dict[str, str] = field(default_factory=dict)
+
+    def __repr__(self) -> str:
+        lines = [
+            "ProfileReport",
+            "=" * 40,
+            f"Rows: {self.n_rows}   Cols: {self.n_cols}",
+            "",
+        ]
+
+        if self.non_snake_case_columns:
+            lines.append(f"⚠ Non-snake_case columns ({len(self.non_snake_case_columns)}):")
+            for c in self.non_snake_case_columns:
+                lines.append(f"    - {c!r}")
+
+        if self.duplicated_column_names:
+            lines.append(f"⚠ Duplicated column names: {self.duplicated_column_names}")
+
+        if self.empty_columns:
+            lines.append(f"⚠ Empty columns: {self.empty_columns}")
+
+        if self.high_null_columns:
+            lines.append("⚠ High-null columns (>50%):")
+            for col, ratio in self.high_null_columns.items():
+                lines.append(f"    - {col}: {ratio:.1%} null")
+
+        if self.duplicate_rows:
+            lines.append(f"⚠ Duplicate rows: {self.duplicate_rows}")
+
+        lines.append("")
+        lines.append("Dtypes:")
+        for col, dt in self.dtypes.items():
+            lines.append(f"    {col}: {dt}")
+
+        return "\n".join(lines)
+
+
+def profile(dataset: "Dataset", high_null_threshold: float = 0.5) -> ProfileReport:
+    """Calcola il ProfileReport per un Dataset.
+
+    Args:
+        dataset: Dataset da analizzare.
+        high_null_threshold: soglia (0-1) sopra la quale una colonna è
+            considerata ad alto contenuto di null.
+    """
+    df = dataset.to_pandas()
+    n_rows, n_cols = df.shape
+    cols = list(df.columns)
+
+    # Nomi non snake_case
+    non_snake = [c for c in cols if not _is_snake_case(str(c))]
+
+    # Nomi duplicati
+    seen: set[str] = set()
+    dup: list[str] = []
+    for c in cols:
+        if c in seen and c not in dup:
+            dup.append(c)
+        seen.add(c)
+
+    # Colonne vuote
+    empty = [c for c in cols if df[c].isna().all()]
+
+    # High null (esclude le completamente vuote per evitare doppia segnalazione)
+    high_null: dict[str, float] = {}
+    if n_rows > 0:
+        for c in cols:
+            if c in empty:
+                continue
+            ratio = float(df[c].isna().sum()) / n_rows
+            if ratio > high_null_threshold:
+                high_null[c] = ratio
+
+    # Righe duplicate
+    dup_rows = int(df.duplicated().sum())
+
+    # Tipi
+    dtypes = {c: str(df[c].dtype) for c in cols}
+
+    return ProfileReport(
+        n_rows=n_rows,
+        n_cols=n_cols,
+        non_snake_case_columns=non_snake,
+        duplicated_column_names=dup,
+        empty_columns=empty,
+        high_null_columns=high_null,
+        duplicate_rows=dup_rows,
+        dtypes=dtypes,
+    )
+
+=== File: ./src/macrorefine/history.py ===
+
+"""History e StepRecord: audit trail immutabile delle operazioni applicate a un Dataset."""
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+from typing import Any, Iterator
+
+
+@dataclass(frozen=True)
+class StepRecord:
+    """Record immutabile di un singolo step applicato.
+
+    Attributes:
+        name: Nome dello step (di solito il nome della classe).
+        params: Parametri con cui lo step è stato configurato.
+        metrics: Metriche calcolate durante l'esecuzione (es. righe rimosse).
+    """
+    name: str
+    params: dict[str, Any] = field(default_factory=dict)
+    metrics: dict[str, Any] = field(default_factory=dict)
+
+
+class History:
+    """Lista immutabile di StepRecord.
+
+    Ogni operazione di append ritorna una nuova History, lasciando
+    invariata l'istanza originale.
+    """
+
+    def __init__(self, records: tuple[StepRecord, ...] = ()) -> None:
+        self._records: tuple[StepRecord, ...] = tuple(records)
+
+    def append(self, record: StepRecord) -> "History":
+        """Ritorna una nuova History con il record aggiunto in coda."""
+        return History(self._records + (record,))
+
+    def __len__(self) -> int:
+        return len(self._records)
+
+    def __iter__(self) -> Iterator[StepRecord]:
+        return iter(self._records)
+
+    def __getitem__(self, index: int) -> StepRecord:
+        return self._records[index]
+
+    def __repr__(self) -> str:
+        if not self._records:
+            return "History(empty)"
+        lines = ["History:"]
+        for i, r in enumerate(self._records, 1):
+            lines.append(f"  {i}. {r.name}  params={r.params}  metrics={r.metrics}")
+        return "\n".join(lines)

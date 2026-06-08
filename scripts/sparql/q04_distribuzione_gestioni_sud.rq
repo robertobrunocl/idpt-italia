@@ -1,0 +1,23 @@
+# Q04 — Distribuzione delle 4 gestioni × province della Calabria (regione 18).
+#
+# Cosa mostra: Numero di pensioni vigenti per ognuna delle 4 gestioni INPS nelle cinque province della Calabria.
+
+PREFIX qb:    <http://purl.org/linked-data/cube#>
+PREFIX skos:  <http://www.w3.org/2004/02/skos/core#>
+PREFIX clv:   <https://w3id.org/italia/onto/CLV/>
+PREFIX idpt:  <https://robertobrunocl.github.io/idpt-italia/>
+PREFIX agidr: <https://w3id.org/italia/controlled-vocabulary/territorial-classifications/regions/>
+
+SELECT ?provincia ?gestione ?n_pensioni
+WHERE {
+  ?obs qb:dataSet idpt:cubo-pensioni-vigenti-residenza ;
+       idpt:provincia ?p ;
+       idpt:tipoGestione ?g ;
+       idpt:numeroPensioni ?n_pensioni .
+  ?p clv:situatedWithin agidr:18 ;        # Calabria
+     skos:prefLabel ?provincia .
+  ?g skos:prefLabel ?gestione .
+  FILTER(LANG(?provincia) = "it" && LANG(?gestione) = "it")
+  FILTER(?g != idpt:gestione-totale)      # escludo il totale
+}
+ORDER BY ?provincia ?gestione

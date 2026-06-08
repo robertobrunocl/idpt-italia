@@ -1,0 +1,304 @@
+@prefix idpt:    <https://robertobrunocl.github.io/idpt-italia/> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+
+# =============================================================================
+# code_lists.ttl — Code-list SKOS proprie del progetto IDPT
+#
+# 6 code-list (5 principali + 1 ausiliaria) materializzate qui per essere
+# caricate nel grafo nominato Fuseki `graph:vocabularies`.
+# Riferimento: PROGETTO_CONTESTO.md sez. 10.10.
+#
+# Pattern uniforme per ogni code-list:
+#   idpt:<scheme-name> a skos:ConceptScheme ;
+#       skos:prefLabel "..."@it ;
+#       dcterms:description "..."@it ;
+#       skos:hasTopConcept idpt:<concept-1>, idpt:<concept-2>, ... .
+#
+#   idpt:<concept-name> a skos:Concept ;
+#       skos:inScheme idpt:<scheme-name> ;
+#       skos:topConceptOf idpt:<scheme-name> ;
+#       skos:prefLabel "..."@it ;
+#       skos:notation "..." ;
+#       skos:scopeNote "..."@it .
+# =============================================================================
+
+
+# -----------------------------------------------------------------------------
+# Code-list 1 — idpt:tipi-gestione-inps (5 concetti)
+# Comparti di gestione previdenziale INPS adottati nel progetto.
+# -----------------------------------------------------------------------------
+
+idpt:tipi-gestione-inps a skos:ConceptScheme ;
+    skos:prefLabel "Tipi di gestione pensionistica INPS"@it ,
+                   "INPS pension management types"@en ;
+    dcterms:description "Classificazione dei comparti di gestione previdenziale INPS adottata nel progetto IDPT."@it ;
+    skos:hasTopConcept idpt:gestione-privati ,
+                       idpt:gestione-pubblici ,
+                       idpt:gestione-autonomi-parasub ,
+                       idpt:gestione-assistenziali ,
+                       idpt:gestione-totale .
+
+idpt:gestione-privati a skos:Concept ;
+    skos:inScheme idpt:tipi-gestione-inps ;
+    skos:topConceptOf idpt:tipi-gestione-inps ;
+    skos:prefLabel "Pensioni ai lavoratori dipendenti privati"@it ;
+    skos:altLabel "Privati"@it , "FPLD"@it ;
+    skos:notation "PRIV" ;
+    skos:scopeNote "Fondo Pensioni Lavoratori Dipendenti (FPLD) del settore privato."@it .
+
+idpt:gestione-pubblici a skos:Concept ;
+    skos:inScheme idpt:tipi-gestione-inps ;
+    skos:topConceptOf idpt:tipi-gestione-inps ;
+    skos:prefLabel "Pensioni ai lavoratori dipendenti pubblici"@it ;
+    skos:altLabel "Pubblici"@it , "GDP"@it ;
+    skos:notation "PUB" ;
+    skos:scopeNote "Gestione Dipendenti Pubblici (ex INPDAP, dal 2012 confluita in INPS)."@it .
+
+idpt:gestione-autonomi-parasub a skos:Concept ;
+    skos:inScheme idpt:tipi-gestione-inps ;
+    skos:topConceptOf idpt:tipi-gestione-inps ;
+    skos:prefLabel "Pensioni ai lavoratori autonomi e parasubordinati"@it ;
+    skos:altLabel "Autonomi/Parasub"@it ;
+    skos:notation "AUTO" ;
+    skos:scopeNote "Artigiani, commercianti, coltivatori diretti, gestione separata parasubordinati."@it .
+
+idpt:gestione-assistenziali a skos:Concept ;
+    skos:inScheme idpt:tipi-gestione-inps ;
+    skos:topConceptOf idpt:tipi-gestione-inps ;
+    skos:prefLabel "Pensioni assistenziali"@it ;
+    skos:altLabel "Assistenziali"@it ;
+    skos:notation "ASS" ;
+    skos:scopeNote "Prestazioni non contributive: invalidità civile, pensioni sociali, accompagnamento."@it .
+
+idpt:gestione-totale a skos:Concept ;
+    skos:inScheme idpt:tipi-gestione-inps ;
+    skos:topConceptOf idpt:tipi-gestione-inps ;
+    skos:prefLabel "Totale gestioni INPS"@it ;
+    skos:altLabel "Totale"@it ;
+    skos:notation "TOT" ;
+    skos:scopeNote "Aggregato delle 4 gestioni. Usato nel cubo 3 (serie storica) dove il totale è esplicito."@it .
+
+
+# -----------------------------------------------------------------------------
+# Code-list 2 — idpt:regimi-liquidazione (4 concetti)
+# Sistemi di calcolo della pensione, derivanti dalla stratificazione storica
+# delle riforme previdenziali italiane (Dini 1995, Fornero 2011).
+# -----------------------------------------------------------------------------
+
+idpt:regimi-liquidazione a skos:ConceptScheme ;
+    skos:prefLabel "Regimi di liquidazione delle pensioni"@it ;
+    dcterms:description "Sistema di calcolo della pensione, derivante dalla stratificazione storica delle riforme previdenziali italiane (Dini 1995, Fornero 2011)."@it ;
+    skos:hasTopConcept idpt:regime-retributivo ,
+                       idpt:regime-misto-dini ,
+                       idpt:regime-misto-fornero ,
+                       idpt:regime-contributivo-puro .
+
+idpt:regime-retributivo a skos:Concept ;
+    skos:inScheme idpt:regimi-liquidazione ;
+    skos:topConceptOf idpt:regimi-liquidazione ;
+    skos:prefLabel "Retributivo"@it ;
+    skos:notation "RETR" ;
+    skos:scopeNote "Pensione calcolata sulle retribuzioni di fine carriera. Sistema pre-Riforma Dini 1995, per chi aveva ≥18 anni di contribuzione al 31/12/1995."@it .
+
+idpt:regime-misto-dini a skos:Concept ;
+    skos:inScheme idpt:regimi-liquidazione ;
+    skos:topConceptOf idpt:regimi-liquidazione ;
+    skos:prefLabel "Misto Riforma Dini"@it ;
+    skos:notation "MIX-DINI" ;
+    skos:scopeNote "Sistema misto post-1995: retributivo per anzianità maturata fino al '95, contributivo per il resto. Per anzianità <18 anni al 31/12/1995."@it .
+
+idpt:regime-misto-fornero a skos:Concept ;
+    skos:inScheme idpt:regimi-liquidazione ;
+    skos:topConceptOf idpt:regimi-liquidazione ;
+    skos:prefLabel "Misto Riforma Fornero"@it ;
+    skos:notation "MIX-FORNERO" ;
+    skos:scopeNote "Sistema misto post-2011: retributivo fino al '11, contributivo per il resto. Introdotto dalla L.214/2011."@it .
+
+idpt:regime-contributivo-puro a skos:Concept ;
+    skos:inScheme idpt:regimi-liquidazione ;
+    skos:topConceptOf idpt:regimi-liquidazione ;
+    skos:prefLabel "Contributivo Puro"@it ;
+    skos:notation "CONTR" ;
+    skos:scopeNote "Sistema interamente contributivo. Per chi ha iniziato a contribuire dopo l'1/1/1996."@it .
+
+
+# -----------------------------------------------------------------------------
+# Code-list 3 — idpt:indicatori-demografici (8 concetti)
+# Indicatori derivati ISTAT, notation = sigle native (POP014, AGEINDEX, ...).
+# -----------------------------------------------------------------------------
+
+idpt:indicatori-demografici a skos:ConceptScheme ;
+    skos:prefLabel "Indicatori demografici ISTAT provinciali"@it ;
+    dcterms:description "Indicatori derivati ISTAT per popolazione e demografia, a livello provinciale (107 entità)."@it ;
+    skos:hasTopConcept idpt:ind-pop014 , idpt:ind-pop1564 , idpt:ind-pop65over ,
+                       idpt:ind-oldagedepr , idpt:ind-ageindex , idpt:ind-meanagep ,
+                       idpt:ind-birthrate , idpt:ind-lifeexp65t .
+
+idpt:ind-pop014 a skos:Concept ;
+    skos:inScheme idpt:indicatori-demografici ;
+    skos:topConceptOf idpt:indicatori-demografici ;
+    skos:prefLabel "Popolazione 0-14 anni"@it ;
+    skos:notation "POP014" ;
+    skos:scopeNote "Quota della popolazione residente 0-14 anni sul totale. Unità: %."@it .
+
+idpt:ind-pop1564 a skos:Concept ;
+    skos:inScheme idpt:indicatori-demografici ;
+    skos:topConceptOf idpt:indicatori-demografici ;
+    skos:prefLabel "Popolazione 15-64 anni"@it ;
+    skos:notation "POP1564" ;
+    skos:scopeNote "Quota della popolazione residente 15-64 anni (potenziale forza lavoro). Unità: %."@it .
+
+idpt:ind-pop65over a skos:Concept ;
+    skos:inScheme idpt:indicatori-demografici ;
+    skos:topConceptOf idpt:indicatori-demografici ;
+    skos:prefLabel "Popolazione 65+ anni"@it ;
+    skos:notation "POP65OVER" ;
+    skos:scopeNote "Quota della popolazione residente 65+ anni (anziani). Unità: %."@it .
+
+idpt:ind-oldagedepr a skos:Concept ;
+    skos:inScheme idpt:indicatori-demografici ;
+    skos:topConceptOf idpt:indicatori-demografici ;
+    skos:prefLabel "Indice di dipendenza degli anziani"@it ;
+    skos:notation "OLDAGEDEPR" ;
+    skos:scopeNote "Rapporto pop. 65+ / pop. 15-64 × 100. Unità: rapporto × 100."@it .
+
+idpt:ind-ageindex a skos:Concept ;
+    skos:inScheme idpt:indicatori-demografici ;
+    skos:topConceptOf idpt:indicatori-demografici ;
+    skos:prefLabel "Indice di vecchiaia"@it ;
+    skos:notation "AGEINDEX" ;
+    skos:scopeNote "Rapporto pop. 65+ / pop. 0-14 × 100. Unità: rapporto × 100."@it .
+
+idpt:ind-meanagep a skos:Concept ;
+    skos:inScheme idpt:indicatori-demografici ;
+    skos:topConceptOf idpt:indicatori-demografici ;
+    skos:prefLabel "Età media della popolazione"@it ;
+    skos:notation "MEANAGEP" ;
+    skos:scopeNote "Età media in anni della popolazione residente. Unità: anni."@it .
+
+idpt:ind-birthrate a skos:Concept ;
+    skos:inScheme idpt:indicatori-demografici ;
+    skos:topConceptOf idpt:indicatori-demografici ;
+    skos:prefLabel "Tasso di natalità"@it ;
+    skos:notation "BIRTHRATE" ;
+    skos:scopeNote "Nati vivi per mille abitanti. Riferimento 2025 (provvisorio). Unità: per mille."@it .
+
+idpt:ind-lifeexp65t a skos:Concept ;
+    skos:inScheme idpt:indicatori-demografici ;
+    skos:topConceptOf idpt:indicatori-demografici ;
+    skos:prefLabel "Speranza di vita a 65 anni"@it ;
+    skos:notation "LIFEEXP65T" ;
+    skos:scopeNote "Speranza di vita a 65 anni, entrambi i sessi. Riferimento 2025 (stimato). Unità: anni."@it .
+
+
+# -----------------------------------------------------------------------------
+# Code-list 4 — idpt:voci-reddito-mef (5 concetti)
+# Componenti del monte redditi da lavoro selezionate dal CSV MEF IRPEF.
+# notation = sigle MEF native (v2, v4, v5, v6, v7).
+# -----------------------------------------------------------------------------
+
+idpt:voci-reddito-mef a skos:ConceptScheme ;
+    skos:prefLabel "Voci di reddito IRPEF (MEF)"@it ;
+    dcterms:description "Componenti del monte redditi da lavoro selezionate per il denominatore della dimensione 2 IDPT (peso economico delle pensioni). Aggregabili per provincia da dichiarazioni IRPEF comunali."@it ;
+    skos:hasTopConcept idpt:voce-redd-lavoro-dipendente , idpt:voce-redd-lavoro-autonomo ,
+                       idpt:voce-redd-imprenditore-ord , idpt:voce-redd-imprenditore-sempl ,
+                       idpt:voce-redd-partecipazione .
+
+idpt:voce-redd-lavoro-dipendente a skos:Concept ;
+    skos:inScheme idpt:voci-reddito-mef ;
+    skos:topConceptOf idpt:voci-reddito-mef ;
+    skos:prefLabel "Reddito da lavoro dipendente e assimilati"@it ;
+    skos:notation "v2" ;
+    skos:scopeNote "Componente principale del monte redditi da lavoro. Fonte: dichiarazioni IRPEF MEF."@it .
+
+idpt:voce-redd-lavoro-autonomo a skos:Concept ;
+    skos:inScheme idpt:voci-reddito-mef ;
+    skos:topConceptOf idpt:voci-reddito-mef ;
+    skos:prefLabel "Reddito da lavoro autonomo"@it ;
+    skos:notation "v4" ;
+    skos:scopeNote "Reddito da lavoro autonomo (comprensivo dei valori nulli)."@it .
+
+idpt:voce-redd-imprenditore-ord a skos:Concept ;
+    skos:inScheme idpt:voci-reddito-mef ;
+    skos:topConceptOf idpt:voci-reddito-mef ;
+    skos:prefLabel "Reddito imprenditore — contabilità ordinaria"@it ;
+    skos:notation "v5" ;
+    skos:scopeNote "Reddito di spettanza dell'imprenditore in contabilità ordinaria."@it .
+
+idpt:voce-redd-imprenditore-sempl a skos:Concept ;
+    skos:inScheme idpt:voci-reddito-mef ;
+    skos:topConceptOf idpt:voci-reddito-mef ;
+    skos:prefLabel "Reddito imprenditore — contabilità semplificata"@it ;
+    skos:notation "v6" ;
+    skos:scopeNote "Reddito di spettanza dell'imprenditore in contabilità semplificata."@it .
+
+idpt:voce-redd-partecipazione a skos:Concept ;
+    skos:inScheme idpt:voci-reddito-mef ;
+    skos:topConceptOf idpt:voci-reddito-mef ;
+    skos:prefLabel "Reddito da partecipazione"@it ;
+    skos:notation "v7" ;
+    skos:scopeNote "Reddito da partecipazione (comprensivo dei valori nulli)."@it .
+
+
+# -----------------------------------------------------------------------------
+# Code-list 5 — idpt:componenti-idpt (4 concetti)
+# Dimensioni dell'Indice di Dipendenza Previdenziale Territoriale (IDPT):
+# 3 componenti elementari + 1 aggregato finale.
+# -----------------------------------------------------------------------------
+
+idpt:componenti-idpt a skos:ConceptScheme ;
+    skos:prefLabel "Componenti dell'IDPT"@it ;
+    dcterms:description "Dimensioni dell'Indice di Dipendenza Previdenziale Territoriale: 3 componenti elementari + 1 aggregato finale."@it ;
+    skos:hasTopConcept idpt:componente-pressione-demografica , idpt:componente-peso-economico ,
+                       idpt:componente-eredita-storica , idpt:idpt-aggregato .
+
+idpt:componente-pressione-demografica a skos:Concept ;
+    skos:inScheme idpt:componenti-idpt ;
+    skos:topConceptOf idpt:componenti-idpt ;
+    skos:prefLabel "Pressione demografica previdenziale"@it ;
+    skos:notation "PRESS-DEM" ;
+    skos:scopeNote "Rapporto numero pensionati / numero occupati per provincia."@it .
+
+idpt:componente-peso-economico a skos:Concept ;
+    skos:inScheme idpt:componenti-idpt ;
+    skos:topConceptOf idpt:componenti-idpt ;
+    skos:prefLabel "Peso economico delle pensioni"@it ;
+    skos:notation "PESO-ECO" ;
+    skos:scopeNote "Rapporto monte pensioni / monte redditi da lavoro per provincia."@it .
+
+idpt:componente-eredita-storica a skos:Concept ;
+    skos:inScheme idpt:componenti-idpt ;
+    skos:topConceptOf idpt:componenti-idpt ;
+    skos:prefLabel "Eredità storica delle riforme"@it ;
+    skos:notation "ERED-ST" ;
+    skos:scopeNote "Quota delle pensioni in regime retributivo (pre-1995) sul totale delle vigenti — cattura il peso del passato delle riforme."@it .
+
+idpt:idpt-aggregato a skos:Concept ;
+    skos:inScheme idpt:componenti-idpt ;
+    skos:topConceptOf idpt:componenti-idpt ;
+    skos:prefLabel "IDPT aggregato"@it ;
+    skos:notation "IDPT-AGG" ;
+    skos:scopeNote "Combinazione delle 3 componenti elementari (formula documentata nel report)."@it .
+
+
+# -----------------------------------------------------------------------------
+# Code-list ausiliaria — idpt:aree-geografiche
+# Per la dimensione territoriale dei cubi nazionali (cubo 4 decorrenza-gdp)
+# e per il dataset pensioni-all'estero (futuro).
+# -----------------------------------------------------------------------------
+
+idpt:aree-geografiche a skos:ConceptScheme ;
+    skos:prefLabel "Aree geografiche"@it ;
+    dcterms:description "Code-list ausiliaria per la dimensione territoriale dei cubi nazionali e dataset pensioni-all'estero."@it ;
+    skos:hasTopConcept idpt:area-italia .
+
+idpt:area-italia a skos:Concept ;
+    skos:inScheme idpt:aree-geografiche ;
+    skos:topConceptOf idpt:aree-geografiche ;
+    skos:prefLabel "Italia (totale nazionale)"@it ;
+    skos:notation "IT-TOT" ;
+    skos:scopeNote "Aggregato nazionale, distinto dalle 107 province AGID."@it ;
+    owl:sameAs <http://nuts.geovocab.org/id/IT> .

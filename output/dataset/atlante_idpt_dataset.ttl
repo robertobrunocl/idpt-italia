@@ -1,0 +1,123 @@
+@prefix idpt:     <https://robertobrunocl.github.io/idpt-italia/> .
+@prefix dcatapit: <http://dati.gov.it/onto/dcatapit#> .
+@prefix dcat:     <http://www.w3.org/ns/dcat#> .
+@prefix dcterms:  <http://purl.org/dc/terms/> .
+@prefix foaf:     <http://xmlns.com/foaf/0.1/> .
+@prefix vcard:    <http://www.w3.org/2006/vcard/ns#> .
+@prefix void:     <http://rdfs.org/ns/void#> .
+@prefix prov:     <http://www.w3.org/ns/prov#> .
+@prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs:     <http://www.w3.org/2000/01/rdf-schema#> .
+
+# =============================================================================
+# atlante_idpt_dataset.ttl — DCAT-AP_IT del deliverable finale del progetto.
+#
+# `idpt:atlante-idpt` è tipizzato 3 volte: come `dcatapit:Dataset` (profilo
+# italiano AGID di DCAT, standard per dati.gov.it), come `dcat:Dataset` (base
+# W3C), come `void:Dataset` (descrizione del grafo RDF).
+#
+# Materializza il blueprint della sez. 10.15 di PROGETTO_CONTESTO.md. Tutti
+# i 9 qb:DataSet del progetto sono inclusi via dcterms:hasPart. void:triples
+# = 116.633 (somma effettiva di tutti i file TTL in output/).
+#
+# Namespace `idpt:` placeholder: al deploy GitHub Pages (Fase 10) verrà
+# sostituito globalmente con `https://robertobrunocl.github.io/idpt-italia/`
+# (decisione δ+β del check-point ontologico, sez. 4).
+# =============================================================================
+
+idpt:atlante-idpt a dcatapit:Dataset , dcat:Dataset , void:Dataset ;
+    dcterms:identifier "atlante-idpt-2026" ;
+    dcterms:title       "Atlante della dipendenza previdenziale italiana"@it ,
+                        "Atlas of Italian pension dependency"@en ;
+    dcterms:description "Grafo RDF Linked Open Data che modella la dipendenza previdenziale italiana a livello provinciale al 1.1.2026, attraverso l'Indice di Dipendenza Previdenziale Territoriale (IDPT) e le sue 3 componenti elementari (pressione demografica, peso economico, eredità storica delle riforme). Aggrega dati INPS, ISTAT, MEF per le 107 province italiane, ancorati al vocabolario controllato AGID OntoPiA via URI canoniche, e linkati a DBpedia via owl:sameAs. Contiene 9 qb:DataSet primari + 1 cubo IDPT derivato in grafo nominato separato, totale 13.312 qb:Observation. Realizzato come progetto del corso Open Data Management."@it ,
+                        "Linked Open Data RDF graph modeling Italian pension dependency at the provincial level as of 2026-01-01, through the Territorial Pension Dependency Index (IDPT) and its three elementary components (demographic pressure, economic weight, historical reform legacy). Aggregates INPS, ISTAT, MEF data for 107 Italian provinces, anchored to the AGID OntoPiA controlled vocabulary via canonical URIs, and linked to DBpedia via owl:sameAs. Contains 9 primary qb:DataSet plus 1 derived IDPT cube in a separate named graph, totaling 13,312 qb:Observation."@en ;
+    dcat:theme <http://publications.europa.eu/resource/authority/data-theme/SOCI> ,
+               <http://publications.europa.eu/resource/authority/data-theme/ECON> ,
+               <http://publications.europa.eu/resource/authority/data-theme/REGI> ;
+    dcat:keyword "pensioni"@it , "previdenza"@it , "IDPT"@it , "INPS"@it ,
+                 "province italiane"@it , "Data Cube"@it , "LOD"@it , "DCAT-AP_IT"@it ,
+                 "pensions"@en , "Italian provinces"@en , "pension dependency"@en ;
+    dcterms:issued    "2026-05-29"^^xsd:date ;
+    dcterms:modified  "2026-05-29"^^xsd:date ;
+    dcterms:accrualPeriodicity <http://publications.europa.eu/resource/authority/frequency/NEVER> ;
+    dcterms:license   <https://creativecommons.org/licenses/by/4.0/> ;
+    dcterms:rights    "Dataset aggregato da fonti pubbliche con licenze CC-BY 3.0 IT (ISTAT, MEF), CC-BY 4.0 (AGID), IODL 2.0 (INPS). Riconfezionato come opera derivata con licenza CC-BY 4.0, compatibile con tutte le sorgenti. Citare la fonte e la composizione di licenze nel riuso."@it ;
+    dcterms:conformsTo <https://w3id.org/italia/data/resource/Standard/SKOS> ,
+                       <http://purl.org/linked-data/cube> ,
+                       <http://dati.gov.it/onto/dcatapit> ;
+    dcterms:language  <http://publications.europa.eu/resource/authority/language/ITA> ;
+    dcterms:publisher idpt:agent-studente ;
+    dcterms:creator   idpt:agent-studente , idpt:agent-macrorefine ;
+    dcat:contactPoint idpt:contact-point ;
+    dcat:distribution idpt:dist-atlante-ttl ,
+                      idpt:dist-atlante-jsonld ,
+                      idpt:dist-atlante-dump-zip ;
+    dcterms:hasPart   idpt:cubo-pensioni-vigenti-residenza ,
+                      idpt:cubo-pensioni-regime-sede ,
+                      idpt:cubo-pensioni-serie-storica-sede ,
+                      idpt:cubo-pensioni-decorrenza-gdp ,
+                      idpt:cubo-occupati-istat ,
+                      idpt:cubo-indicatori-demografici-istat ,
+                      idpt:cubo-redditi-mef ,
+                      idpt:cubo-idpt-computed ,
+                      idpt:cubo-plan-b-gdp-projected ;
+    dcterms:source <https://www.inps.it/osservatorio> ,
+                   <https://esplora.istat.it/> ,
+                   <https://www1.finanze.gov.it/finanze/analisi_stat/> ,
+                   <https://w3id.org/italia/controlled-vocabulary/territorial-classifications/provinces> ,
+                   <https://dbpedia.org/sparql> ;
+    void:triples "116633"^^xsd:nonNegativeInteger ;
+    void:sparqlEndpoint <https://robertobrunocl.github.io/idpt-italia/sparql> ;
+    void:exampleResource <https://w3id.org/italia/controlled-vocabulary/territorial-classifications/provinces/001> ,
+                         idpt:obs-vigenti-001-2026-PRIV ,
+                         idpt:obs-idpt-001-agg-2026 ;
+    dcat:landingPage <https://robertobrunocl.github.io/idpt-italia/> .
+
+
+# -----------------------------------------------------------------------------
+# 3 distribuzioni (Fase 10: URL verranno concretizzati al deploy GitHub Pages)
+# -----------------------------------------------------------------------------
+
+idpt:dist-atlante-ttl a dcatapit:Distribution , dcat:Distribution ;
+    dcterms:title "Atlante IDPT — distribuzione RDF/Turtle"@it ;
+    dcterms:description "Bundle aggregato di tutti i 9 qb:DataSet + vocabolari + sidecar di linking + metadata DCAT-AP_IT, serializzato come Turtle singolo file."@it ;
+    dcterms:format <http://publications.europa.eu/resource/authority/file-type/RDF_TURTLE> ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    dcat:downloadURL <https://robertobrunocl.github.io/idpt-italia/dist/atlante-idpt.ttl> ;
+    dcat:accessURL <https://robertobrunocl.github.io/idpt-italia/> ;
+    dcat:byteSize "12500000"^^xsd:nonNegativeInteger .  # stima ~12 MB
+
+idpt:dist-atlante-jsonld a dcatapit:Distribution , dcat:Distribution ;
+    dcterms:title "Atlante IDPT — distribuzione JSON-LD"@it ;
+    dcterms:description "Stesso contenuto del bundle TTL serializzato come JSON-LD."@it ;
+    dcterms:format <http://publications.europa.eu/resource/authority/file-type/JSON_LD> ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    dcat:downloadURL <https://robertobrunocl.github.io/idpt-italia/dist/atlante-idpt.jsonld> ;
+    dcat:accessURL <https://robertobrunocl.github.io/idpt-italia/> .
+
+idpt:dist-atlante-dump-zip a dcatapit:Distribution , dcat:Distribution ;
+    dcterms:title "Atlante IDPT — bundle ZIP (grafi nominati separati + sorgenti + script)"@it ;
+    dcterms:description "Archivio ZIP completo del progetto: TTL per grafo nominato Fuseki (9 + AGID + sidecar + DCAT), CSV sorgenti, codice Recipe macrorefine, script di carica Fuseki, query SPARQL di esempio."@it ;
+    dcterms:format <http://publications.europa.eu/resource/authority/file-type/ZIP> ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    dcat:downloadURL <https://robertobrunocl.github.io/idpt-italia/dist/atlante-idpt-bundle.zip> ;
+    dcat:accessURL <https://robertobrunocl.github.io/idpt-italia/> .
+
+
+# -----------------------------------------------------------------------------
+# Agent (foaf + dcatapit) e contact point (vcard)
+# -----------------------------------------------------------------------------
+
+idpt:agent-studente a foaf:Agent , dcatapit:Agent ;
+    foaf:name "Roberto Bruno"@it ;
+    dcterms:identifier "studente-corso-odm-roberto-bruno" ;
+    rdfs:comment "Studente del corso Open Data Management. Autore del progetto IDPT, responsabile della modellazione, della pipeline di trasformazione (macrorefine + step custom LOD-aware), del calcolo IDPT, delle decisioni metodologiche documentate in PROGETTO_CONTESTO.md."@it .
+
+idpt:agent-macrorefine a foaf:Agent , prov:SoftwareAgent ;
+    foaf:name "macrorefine"@it ;
+    dcterms:description "Libreria di data cleaning a pipeline sviluppata dallo studente per il corso Open Data Management. Estesa con 11 step custom LOD-aware (Parse/Aggregate/Link/Emit) per portare CSV pubblici italiani a Linked Open Data 5★."@it ;
+    rdfs:seeAlso <https://github.com/robertobrunocl/macrorefine> .
+
+idpt:contact-point a vcard:Organization , vcard:Kind , dcatapit:Organization ;
+    vcard:fn "Atlante IDPT — Roberto Bruno (Studente Corso Open Data Management)"@it ;
+    vcard:hasEmail <mailto:robertobrunocl@gmail.com> .

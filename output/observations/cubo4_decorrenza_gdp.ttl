@@ -1,0 +1,429 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix idpt: <https://robertobrunocl.github.io/idpt-italia/> .
+@prefix qb: <http://purl.org/linked-data/cube#> .
+@prefix sdmx-attribute: <http://purl.org/linked-data/sdmx/2009/attribute#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+idpt:obs-decorrenza-italia-1980 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-E> ;
+    idpt:annoDecorrenza "1980"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 38.07 ;
+    idpt:importoMedioMensile 1551.72 ;
+    idpt:numeroPensioni "28055"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-1981 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "1981"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 42.65 ;
+    idpt:importoMedioMensile 1552.13 ;
+    idpt:numeroPensioni "9981"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-1982 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "1982"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 41.95 ;
+    idpt:importoMedioMensile 1589.03 ;
+    idpt:numeroPensioni "18116"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-1983 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "1983"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 42.85 ;
+    idpt:importoMedioMensile 1449.18 ;
+    idpt:numeroPensioni "20244"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-1984 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "1984"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 43.92 ;
+    idpt:importoMedioMensile 1350.61 ;
+    idpt:numeroPensioni "16022"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-1985 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "1985"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 44.47 ;
+    idpt:importoMedioMensile 1383.52 ;
+    idpt:numeroPensioni "15014"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-1986 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "1986"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 44.74 ;
+    idpt:importoMedioMensile 1422.75 ;
+    idpt:numeroPensioni "15015"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-1987 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "1987"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 45.23 ;
+    idpt:importoMedioMensile 1471.58 ;
+    idpt:numeroPensioni "15276"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-1988 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "1988"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 45.86 ;
+    idpt:importoMedioMensile 1571.89 ;
+    idpt:numeroPensioni "20489"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-1989 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "1989"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 46.44 ;
+    idpt:importoMedioMensile 1624.01 ;
+    idpt:numeroPensioni "29843"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-1990 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "1990"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 48.05 ;
+    idpt:importoMedioMensile 1720.62 ;
+    idpt:numeroPensioni "26883"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-1991 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "1991"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 48.39 ;
+    idpt:importoMedioMensile 1685.02 ;
+    idpt:numeroPensioni "40772"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-1992 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "1992"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 49.34 ;
+    idpt:importoMedioMensile 1713.12 ;
+    idpt:numeroPensioni "55284"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-1993 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "1993"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 51.3 ;
+    idpt:importoMedioMensile 1900.74 ;
+    idpt:numeroPensioni "24053"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-1994 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "1994"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 51.22 ;
+    idpt:importoMedioMensile 1983.73 ;
+    idpt:numeroPensioni "80898"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-1995 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "1995"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 54.12 ;
+    idpt:importoMedioMensile 2166.52 ;
+    idpt:numeroPensioni "23231"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-1996 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "1996"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 54.6 ;
+    idpt:importoMedioMensile 2185.08 ;
+    idpt:numeroPensioni "59907"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-1997 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "1997"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 53.01 ;
+    idpt:importoMedioMensile 1971.37 ;
+    idpt:numeroPensioni "81473"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-1998 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "1998"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 56.33 ;
+    idpt:importoMedioMensile 2155.29 ;
+    idpt:numeroPensioni "40675"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-1999 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "1999"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 55.88 ;
+    idpt:importoMedioMensile 2145.09 ;
+    idpt:numeroPensioni "49413"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-2000 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "2000"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 56.76 ;
+    idpt:importoMedioMensile 2134.3 ;
+    idpt:numeroPensioni "48449"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-2001 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "2001"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 57.55 ;
+    idpt:importoMedioMensile 2245.09 ;
+    idpt:numeroPensioni "41161"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-2002 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "2002"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 57.79 ;
+    idpt:importoMedioMensile 2179.5 ;
+    idpt:numeroPensioni "43972"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-2003 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "2003"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 58.29 ;
+    idpt:importoMedioMensile 2244.54 ;
+    idpt:numeroPensioni "52765"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-2004 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "2004"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 58.76 ;
+    idpt:importoMedioMensile 2209.93 ;
+    idpt:numeroPensioni "53384"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-2005 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "2005"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 59.59 ;
+    idpt:importoMedioMensile 2252.39 ;
+    idpt:numeroPensioni "55531"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-2006 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "2006"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 59.38 ;
+    idpt:importoMedioMensile 2414.48 ;
+    idpt:numeroPensioni "83590"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-2007 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "2007"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 59.73 ;
+    idpt:importoMedioMensile 2464.2 ;
+    idpt:numeroPensioni "105418"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-2008 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "2008"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 60.01 ;
+    idpt:importoMedioMensile 2474.78 ;
+    idpt:numeroPensioni "77292"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-2009 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "2009"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 60.82 ;
+    idpt:importoMedioMensile 2507.12 ;
+    idpt:numeroPensioni "91585"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-2010 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "2010"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 61.04 ;
+    idpt:importoMedioMensile 2703.4 ;
+    idpt:numeroPensioni "98774"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-2011 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "2011"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 61.29 ;
+    idpt:importoMedioMensile 2540.05 ;
+    idpt:numeroPensioni "102107"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-2012 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "2012"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 61.61 ;
+    idpt:importoMedioMensile 2504.83 ;
+    idpt:numeroPensioni "95524"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-2013 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "2013"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 62.24 ;
+    idpt:importoMedioMensile 2432.81 ;
+    idpt:numeroPensioni "63824"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-2014 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "2014"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 62.84 ;
+    idpt:importoMedioMensile 2418.32 ;
+    idpt:numeroPensioni "76858"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-2015 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "2015"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 62.59 ;
+    idpt:importoMedioMensile 2479.94 ;
+    idpt:numeroPensioni "107429"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-2016 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "2016"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 62.98 ;
+    idpt:importoMedioMensile 2518.95 ;
+    idpt:numeroPensioni "92758"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-2017 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "2017"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 63.88 ;
+    idpt:importoMedioMensile 2517.58 ;
+    idpt:numeroPensioni "105547"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-2018 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "2018"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 64.33 ;
+    idpt:importoMedioMensile 2546.06 ;
+    idpt:numeroPensioni "136211"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-2019 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "2019"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 64.7 ;
+    idpt:importoMedioMensile 2454.92 ;
+    idpt:numeroPensioni "144881"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-2020 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "2020"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 65.11 ;
+    idpt:importoMedioMensile 2395.98 ;
+    idpt:numeroPensioni "159109"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-2021 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "2021"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 65.18 ;
+    idpt:importoMedioMensile 2337.75 ;
+    idpt:numeroPensioni "157347"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-2022 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "2022"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 65.71 ;
+    idpt:importoMedioMensile 2261.87 ;
+    idpt:numeroPensioni "141183"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-2023 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "2023"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 66.23 ;
+    idpt:importoMedioMensile 2238.79 ;
+    idpt:numeroPensioni "127008"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-2024 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "2024"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 66.71 ;
+    idpt:importoMedioMensile 2207.7 ;
+    idpt:numeroPensioni "125775"^^xsd:nonNegativeInteger .
+
+idpt:obs-decorrenza-italia-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoDecorrenza "2025"^^xsd:gYear ;
+    idpt:areaGeografica idpt:area-italia ;
+    idpt:etaMediaDecorrenza 66.86 ;
+    idpt:importoMedioMensile 2223.45 ;
+    idpt:numeroPensioni "113139"^^xsd:nonNegativeInteger .
+
+idpt:cubo-pensioni-decorrenza-gdp a qb:DataSet ;
+    dcterms:description "Pensioni della Gestione Dipendenti Pubblici (GDP) vigenti al 1.1.2026, distribuzione nazionale per anno di decorrenza (1981-2025 + 'anteriore al 31/12/1980' aggregato a 1980 con obsStatus=E). Tutte le categorie GDP (vecchiaia + anzianità + invalidità + superstiti). Totale nazionale: 3.171.265 pensioni. Input principale per il Plan B GDP del cubo 9 (proiezione composizione regime su province via euristica decorrenza→regime, sez. 10.6 di PROGETTO_CONTESTO.md). Fonte: INPS Osservatorio Statistico."@it ;
+    dcterms:issued "2026-05-29"^^xsd:date ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    dcterms:rights "Dati derivati da INPS (licenza IODL 2.0), riconfezionati come Linked Open Data con licenza CC-BY 4.0 (compatibile)."@it ;
+    dcterms:source <https://www.inps.it/osservatorio/pensioni-vigenti> ;
+    dcterms:title "Pensioni GDP per anno di decorrenza, Italia, 2026"@it ;
+    qb:structure idpt:dsd-pensioni-decorrenza-gdp .
+

@@ -1,0 +1,766 @@
+@prefix agidp: <https://w3id.org/italia/controlled-vocabulary/territorial-classifications/provinces/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix idpt: <https://robertobrunocl.github.io/idpt-italia/> .
+@prefix qb: <http://purl.org/linked-data/cube#> .
+@prefix sdmx-attribute: <http://purl.org/linked-data/sdmx/2009/attribute#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+idpt:obs-occupati-001-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 947.559 ;
+    idpt:provincia agidp:001 .
+
+idpt:obs-occupati-002-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 69.759 ;
+    idpt:provincia agidp:002 .
+
+idpt:obs-occupati-003-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 161.052 ;
+    idpt:provincia agidp:003 .
+
+idpt:obs-occupati-004-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 270.918 ;
+    idpt:provincia agidp:004 .
+
+idpt:obs-occupati-005-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 92.407 ;
+    idpt:provincia agidp:005 .
+
+idpt:obs-occupati-006-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 178.79 ;
+    idpt:provincia agidp:006 .
+
+idpt:obs-occupati-007-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 57.108 ;
+    idpt:provincia agidp:007 .
+
+idpt:obs-occupati-008-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 89.934 ;
+    idpt:provincia agidp:008 .
+
+idpt:obs-occupati-009-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 110.164 ;
+    idpt:provincia agidp:009 .
+
+idpt:obs-occupati-010-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 359.958 ;
+    idpt:provincia agidp:010 .
+
+idpt:obs-occupati-011-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 91.131 ;
+    idpt:provincia agidp:011 .
+
+idpt:obs-occupati-012-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 398.622 ;
+    idpt:provincia agidp:012 .
+
+idpt:obs-occupati-013-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 261.914 ;
+    idpt:provincia agidp:013 .
+
+idpt:obs-occupati-014-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 73.731 ;
+    idpt:provincia agidp:014 .
+
+idpt:obs-occupati-015-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 1568.96 ;
+    idpt:provincia agidp:015 .
+
+idpt:obs-occupati-016-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 494.647 ;
+    idpt:provincia agidp:016 .
+
+idpt:obs-occupati-017-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 562.624 ;
+    idpt:provincia agidp:017 .
+
+idpt:obs-occupati-018-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 241.88 ;
+    idpt:provincia agidp:018 .
+
+idpt:obs-occupati-019-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 154.081 ;
+    idpt:provincia agidp:019 .
+
+idpt:obs-occupati-020-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 184.083 ;
+    idpt:provincia agidp:020 .
+
+idpt:obs-occupati-021-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 260.897 ;
+    idpt:provincia agidp:021 .
+
+idpt:obs-occupati-022-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 254.023 ;
+    idpt:provincia agidp:022 .
+
+idpt:obs-occupati-023-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 421.819 ;
+    idpt:provincia agidp:023 .
+
+idpt:obs-occupati-024-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 384.655 ;
+    idpt:provincia agidp:024 .
+
+idpt:obs-occupati-025-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 87.933 ;
+    idpt:provincia agidp:025 .
+
+idpt:obs-occupati-026-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 396.12 ;
+    idpt:provincia agidp:026 .
+
+idpt:obs-occupati-027-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 377.662 ;
+    idpt:provincia agidp:027 .
+
+idpt:obs-occupati-028-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 437.135 ;
+    idpt:provincia agidp:028 .
+
+idpt:obs-occupati-029-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 96.245 ;
+    idpt:provincia agidp:029 .
+
+idpt:obs-occupati-030-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 231.698 ;
+    idpt:provincia agidp:030 .
+
+idpt:obs-occupati-031-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 61.504 ;
+    idpt:provincia agidp:031 .
+
+idpt:obs-occupati-032-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 100.951 ;
+    idpt:provincia agidp:032 .
+
+idpt:obs-occupati-033-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 134.4 ;
+    idpt:provincia agidp:033 .
+
+idpt:obs-occupati-034-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 214.457 ;
+    idpt:provincia agidp:034 .
+
+idpt:obs-occupati-035-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 243.668 ;
+    idpt:provincia agidp:035 .
+
+idpt:obs-occupati-036-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 322.318 ;
+    idpt:provincia agidp:036 .
+
+idpt:obs-occupati-037-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 493.788 ;
+    idpt:provincia agidp:037 .
+
+idpt:obs-occupati-038-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 155.524 ;
+    idpt:provincia agidp:038 .
+
+idpt:obs-occupati-039-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 171.897 ;
+    idpt:provincia agidp:039 .
+
+idpt:obs-occupati-040-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 180.18 ;
+    idpt:provincia agidp:040 .
+
+idpt:obs-occupati-041-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 156.339 ;
+    idpt:provincia agidp:041 .
+
+idpt:obs-occupati-042-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 199.862 ;
+    idpt:provincia agidp:042 .
+
+idpt:obs-occupati-043-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 133.84 ;
+    idpt:provincia agidp:043 .
+
+idpt:obs-occupati-044-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 90.907 ;
+    idpt:provincia agidp:044 .
+
+idpt:obs-occupati-045-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 78.442 ;
+    idpt:provincia agidp:045 .
+
+idpt:obs-occupati-046-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 166.65 ;
+    idpt:provincia agidp:046 .
+
+idpt:obs-occupati-047-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 126.702 ;
+    idpt:provincia agidp:047 .
+
+idpt:obs-occupati-048-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 469.829 ;
+    idpt:provincia agidp:048 .
+
+idpt:obs-occupati-049-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 142.524 ;
+    idpt:provincia agidp:049 .
+
+idpt:obs-occupati-050-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 190.952 ;
+    idpt:provincia agidp:050 .
+
+idpt:obs-occupati-051-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 150.755 ;
+    idpt:provincia agidp:051 .
+
+idpt:obs-occupati-052-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 119.219 ;
+    idpt:provincia agidp:052 .
+
+idpt:obs-occupati-053-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 100.016 ;
+    idpt:provincia agidp:053 .
+
+idpt:obs-occupati-054-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 284.891 ;
+    idpt:provincia agidp:054 .
+
+idpt:obs-occupati-055-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 92.897 ;
+    idpt:provincia agidp:055 .
+
+idpt:obs-occupati-056-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 125.874 ;
+    idpt:provincia agidp:056 .
+
+idpt:obs-occupati-057-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 59.024 ;
+    idpt:provincia agidp:057 .
+
+idpt:obs-occupati-058-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 1852.476 ;
+    idpt:provincia agidp:058 .
+
+idpt:obs-occupati-059-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 216.861 ;
+    idpt:provincia agidp:059 .
+
+idpt:obs-occupati-060-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 175.975 ;
+    idpt:provincia agidp:060 .
+
+idpt:obs-occupati-061-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 279.148 ;
+    idpt:provincia agidp:061 .
+
+idpt:obs-occupati-062-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 86.707 ;
+    idpt:provincia agidp:062 .
+
+idpt:obs-occupati-063-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 881.254 ;
+    idpt:provincia agidp:063 .
+
+idpt:obs-occupati-064-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 150.117 ;
+    idpt:provincia agidp:064 .
+
+idpt:obs-occupati-065-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 369.454 ;
+    idpt:provincia agidp:065 .
+
+idpt:obs-occupati-066-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 120.776 ;
+    idpt:provincia agidp:066 .
+
+idpt:obs-occupati-067-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 118.631 ;
+    idpt:provincia agidp:067 .
+
+idpt:obs-occupati-068-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 127.738 ;
+    idpt:provincia agidp:068 .
+
+idpt:obs-occupati-069-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 145.128 ;
+    idpt:provincia agidp:069 .
+
+idpt:obs-occupati-070-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 77.997 ;
+    idpt:provincia agidp:070 .
+
+idpt:obs-occupati-071-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 194.782 ;
+    idpt:provincia agidp:071 .
+
+idpt:obs-occupati-072-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 457.468 ;
+    idpt:provincia agidp:072 .
+
+idpt:obs-occupati-073-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 141.476 ;
+    idpt:provincia agidp:073 .
+
+idpt:obs-occupati-074-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 129.037 ;
+    idpt:provincia agidp:074 .
+
+idpt:obs-occupati-075-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 265.401 ;
+    idpt:provincia agidp:075 .
+
+idpt:obs-occupati-076-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 128.661 ;
+    idpt:provincia agidp:076 .
+
+idpt:obs-occupati-077-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 71.179 ;
+    idpt:provincia agidp:077 .
+
+idpt:obs-occupati-078-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 210.357 ;
+    idpt:provincia agidp:078 .
+
+idpt:obs-occupati-079-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 111.752 ;
+    idpt:provincia agidp:079 .
+
+idpt:obs-occupati-080-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 141.741 ;
+    idpt:provincia agidp:080 .
+
+idpt:obs-occupati-081-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 130.509 ;
+    idpt:provincia agidp:081 .
+
+idpt:obs-occupati-082-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 343.117 ;
+    idpt:provincia agidp:082 .
+
+idpt:obs-occupati-083-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 187.765 ;
+    idpt:provincia agidp:083 .
+
+idpt:obs-occupati-084-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 124.023 ;
+    idpt:provincia agidp:084 .
+
+idpt:obs-occupati-085-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 72.443 ;
+    idpt:provincia agidp:085 .
+
+idpt:obs-occupati-086-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 47.493 ;
+    idpt:provincia agidp:086 .
+
+idpt:obs-occupati-087-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 339.226 ;
+    idpt:provincia agidp:087 .
+
+idpt:obs-occupati-088-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 120.889 ;
+    idpt:provincia agidp:088 .
+
+idpt:obs-occupati-089-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 124.008 ;
+    idpt:provincia agidp:089 .
+
+idpt:obs-occupati-090-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 174.021 ;
+    idpt:provincia agidp:090 .
+
+idpt:obs-occupati-091-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 74.025 ;
+    idpt:provincia agidp:091 .
+
+idpt:obs-occupati-092-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 178.32 ;
+    idpt:provincia agidp:092 .
+
+idpt:obs-occupati-093-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 133.437 ;
+    idpt:provincia agidp:093 .
+
+idpt:obs-occupati-094-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 29.402 ;
+    idpt:provincia agidp:094 .
+
+idpt:obs-occupati-095-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 52.498 ;
+    idpt:provincia agidp:095 .
+
+idpt:obs-occupati-096-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 72.825 ;
+    idpt:provincia agidp:096 .
+
+idpt:obs-occupati-097-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 138.902 ;
+    idpt:provincia agidp:097 .
+
+idpt:obs-occupati-098-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 100.836 ;
+    idpt:provincia agidp:098 .
+
+idpt:obs-occupati-099-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 156.358 ;
+    idpt:provincia agidp:099 .
+
+idpt:obs-occupati-100-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 123.342 ;
+    idpt:provincia agidp:100 .
+
+idpt:obs-occupati-101-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 47.373 ;
+    idpt:provincia agidp:101 .
+
+idpt:obs-occupati-102-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 50.457 ;
+    idpt:provincia agidp:102 .
+
+idpt:obs-occupati-103-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 69.305 ;
+    idpt:provincia agidp:103 .
+
+idpt:obs-occupati-108-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 386.518 ;
+    idpt:provincia agidp:108 .
+
+idpt:obs-occupati-109-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 70.243 ;
+    idpt:provincia agidp:109 .
+
+idpt:obs-occupati-110-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 112.15 ;
+    idpt:provincia agidp:110 .
+
+idpt:obs-occupati-111-2025 a qb:Observation ;
+    qb:dataSet idpt:cubo-occupati-istat ;
+    sdmx-attribute:obsStatus <http://purl.org/linked-data/sdmx/2009/code#obsStatus-A> ;
+    idpt:annoRiferimento "2025"^^xsd:gYear ;
+    idpt:numeroOccupati 118.712 ;
+    idpt:provincia agidp:111 .
+
+idpt:cubo-occupati-istat a qb:DataSet ;
+    dcterms:description "Occupati totali (entrambi i sessi, 15-89 anni), media annua 2025, per le 107 province italiane. Fonte: ISTAT, Rilevazione Forze di Lavoro (RFL). Valori in migliaia di persone."@it ;
+    dcterms:issued "2026-05-29"^^xsd:date ;
+    dcterms:license <https://creativecommons.org/licenses/by/3.0/it/> ;
+    dcterms:rights "Dati derivati da ISTAT (licenza CC-BY 3.0 IT), riconfezionati in formato Linked Open Data."@it ;
+    dcterms:source <https://esplora.istat.it/> ;
+    dcterms:title "Occupati ISTAT per provincia, media annua 2025"@it ;
+    qb:structure idpt:dsd-occupati-istat ;
+    sdmx-attribute:unitMeasure "migliaia di persone"@it .
+

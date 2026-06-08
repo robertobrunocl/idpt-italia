@@ -1,0 +1,38 @@
+# venv
+.venv/
+macrorefine/.venv/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.pytest_cache/
+
+# Fuseki — binario esterno e database TDB2 (rigenerabili)
+tools/
+fuseki-data/
+run/
+
+# Bundle distribuzione finale (rigenerato da scripts/build_dist.sh)
+output/dist/atlante-idpt-bundle.zip
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# File di lavoro privati (NON pubblicare su GitHub)
+PROGETTO_CONTESTO.md
+PREPARAZIONE_PRESENTAZIONE_SPARQL.md
+REPORT_BOZZA_V1.md
+PROMPT_CHECKPOINT_ONTOLOGICO.md
+PROMPT_FASE_IMPLEMENTAZIONE.md
+PROMPT_REPORT_REDAZIONE.md
+
+# Backup file da sed
+*.bak

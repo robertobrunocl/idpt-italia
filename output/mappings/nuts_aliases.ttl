@@ -1,0 +1,74 @@
+@prefix owl:     <http://www.w3.org/2002/07/owl#> .
+@prefix skos:    <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+@prefix nuts:    <http://nuts.geovocab.org/id/> .
+@prefix agidp:   <https://w3id.org/italia/controlled-vocabulary/territorial-classifications/provinces/> .
+@prefix idpt:    <https://robertobrunocl.github.io/idpt-italia/> .
+
+# =============================================================================
+# nuts_aliases.ttl — sidecar di riconciliazione fra codici REF_AREA usati dai
+# CSV ISTAT (cubi Forze di Lavoro + Indicatori Demografici) e le URI AGID
+# delle province italiane.
+#
+# Pianificato in Fase 2 (sez. 10.13 di PROGETTO_CONTESTO.md) e anticipato in
+# Fase 1 perché serve come input dello step LinkProvinceToAGID_byNUTS.
+#
+# Contiene 6 asserzioni:
+# - 2 alias owl:sameAs per le PA Trento-Bolzano (NUTS-2 ISTAT ↔ NUTS-3 AGID)
+# - 4 alias skos:exactMatch per i fake-NUTS proprietari ISTAT (IT108-IT111)
+#   per le 4 province senza NUTS-3 Eurostat ufficiale (Monza-Brianza, Fermo,
+#   BAT, Sud Sardegna)
+# =============================================================================
+
+idpt:nuts-aliases-graph a dcterms:Standard ;
+    dcterms:title "Alias NUTS per CSV ISTAT ↔ vocabolario AGID province"@it ;
+    dcterms:description "Riconciliazioni semantiche fra codici REF_AREA usati dai CSV ISTAT e le URI AGID delle province. Caricato come sidecar accanto a data/provinces.ttl per abilitare il linking via NUTS nel grafo IDPT."@it ;
+    dcterms:created "2026-05-27"^^xsd:date ;
+    dcterms:source <https://w3id.org/italia/controlled-vocabulary/territorial-classifications/provinces> ,
+                   <https://esplora.istat.it/> ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    rdfs:comment "I 2 alias owl:sameAs esprimono identità geografica delle Province Autonome (la regione NUTS-2 coincide con la provincia NUTS-3 perché ha un solo elemento). I 4 skos:exactMatch esprimono equivalenza concettuale fra identificatori istituzionali diversi (codice proprietario ISTAT vs URI canonica AGID) — pattern più cauto di owl:sameAs, perché un fake-NUTS proprietario non è 'lo stesso individuo' di una provincia, ma identifica concettualmente lo stesso territorio."@it .
+
+# -----------------------------------------------------------------------------
+# Alias 1 — PA Bolzano (ITD10 AGID ↔ ITD1 ISTAT-RFL)
+# Le PA italiane sono regioni NUTS-2 con un solo elemento (province NUTS-3),
+# quindi geograficamente coincidenti. Asserzione semanticamente onesta.
+# -----------------------------------------------------------------------------
+nuts:ITD1 owl:sameAs nuts:ITD10 ;
+    rdfs:comment "PA Bolzano: NUTS-3 ITD10 = NUTS-2 ITD1. Equivalenza valida solo per le 2 PA italiane (regioni NUTS-2 con singleton NUTS-3). Necessaria per riconciliare il cubo ISTAT RFL (occupati, NUTS-2) col TTL AGID (NUTS-3)."@it .
+
+nuts:ITD10 owl:sameAs nuts:ITD1 .   # simmetria esplicita per facilitare le query
+
+# -----------------------------------------------------------------------------
+# Alias 2 — PA Trento (ITD20 AGID ↔ ITD2 ISTAT-RFL)
+# -----------------------------------------------------------------------------
+nuts:ITD2 owl:sameAs nuts:ITD20 ;
+    rdfs:comment "PA Trento: NUTS-3 ITD20 = NUTS-2 ITD2. Stesso pattern di Bolzano."@it .
+
+nuts:ITD20 owl:sameAs nuts:ITD2 .   # simmetria esplicita
+
+# -----------------------------------------------------------------------------
+# Alias 3 — fake-NUTS ISTAT per le 4 province senza NUTS-3 Eurostat ufficiale.
+# Usiamo skos:exactMatch (NON owl:sameAs) perché un codice REF_AREA proprietario
+# ISTAT non è "lo stesso individuo" di una provincia AGID — è un identificatore
+# istituzionalmente diverso che si riferisce concettualmente allo stesso
+# territorio. Pattern uniforme per i 4 casi.
+# -----------------------------------------------------------------------------
+
+nuts:IT108 skos:exactMatch agidp:108 ;
+    rdfs:comment "Codice REF_AREA proprietario ISTAT per la provincia di Monza e della Brianza (sigla MB). Provincia istituita nel 2009, non ha NUTS-3 Eurostat ufficiale."@it ;
+    dcterms:source <https://esplora.istat.it/> .
+
+nuts:IT109 skos:exactMatch agidp:109 ;
+    rdfs:comment "Codice REF_AREA proprietario ISTAT per la provincia di Fermo (sigla FM). Provincia istituita nel 2009, non ha NUTS-3 Eurostat ufficiale."@it ;
+    dcterms:source <https://esplora.istat.it/> .
+
+nuts:IT110 skos:exactMatch agidp:110 ;
+    rdfs:comment "Codice REF_AREA proprietario ISTAT per la provincia di Barletta-Andria-Trani (sigla BT). Provincia istituita nel 2009, non ha NUTS-3 Eurostat ufficiale."@it ;
+    dcterms:source <https://esplora.istat.it/> .
+
+nuts:IT111 skos:exactMatch agidp:111 ;
+    rdfs:comment "Codice REF_AREA proprietario ISTAT per la provincia di Sud Sardegna (sigla SU). Provincia istituita nel 2016 dalla riforma sarda; non ha NUTS-3 Eurostat ufficiale (i NUTS storici ITG27/ITG28/ITG2A/ITG2B/ITG2C sono pre-2016)."@it ;
+    dcterms:source <https://esplora.istat.it/> .

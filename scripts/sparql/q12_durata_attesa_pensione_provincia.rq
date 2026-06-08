@@ -1,0 +1,39 @@
+# Q12 — Durata attesa stimata di una pensione di vecchiaia, provincia per
+# provincia, basata su LIFEEXP65T ISTAT 2025 e sull'età media alla decorrenza
+# GDP nazionale del decennio 2020-2025.
+#
+# Cosa mostra: Durata media attesa di una pensione di vecchiaia per ognuna delle 107 province italiane.
+
+PREFIX qb:    <http://purl.org/linked-data/cube#>
+PREFIX skos:  <http://www.w3.org/2004/02/skos/core#>
+PREFIX clv:   <https://w3id.org/italia/onto/CLV/>
+PREFIX idpt:  <https://robertobrunocl.github.io/idpt-italia/>
+PREFIX xsd:   <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?sigla ?provincia ?lifeexp65 ?eta_decorrenza_2020s ?durata_attesa_pensione
+WHERE {
+  # ------ LIFEEXP65T provincia per provincia (cubo 6, riferimento 2025) ------
+  ?obs_l qb:dataSet idpt:cubo-indicatori-demografici-istat ;
+         idpt:provincia ?p ;
+         idpt:indicatoreDemografico idpt:ind-lifeexp65t ;
+         idpt:valoreIndicatore ?lifeexp65 .
+  ?p clv:acronym    ?sigla ;
+     skos:prefLabel ?provincia .
+  FILTER(LANG(?provincia) = "it")
+
+  # ------ Subquery: età media nazionale alla decorrenza GDP, decennio 2020-2025 ------
+  {
+    SELECT (xsd:decimal(SUM(?eta * ?n)) / SUM(?n) AS ?eta_decorrenza_2020s)
+    WHERE {
+      ?obs_d qb:dataSet idpt:cubo-pensioni-decorrenza-gdp ;
+             idpt:annoDecorrenza ?anno ;
+             idpt:etaMediaDecorrenza ?eta ;
+             idpt:numeroPensioni ?n .
+      FILTER(xsd:integer(STR(?anno)) >= 2020)
+    }
+  }
+
+  # ------ Stima durata attesa ------
+  BIND(?lifeexp65 + 65 - ?eta_decorrenza_2020s AS ?durata_attesa_pensione)
+}
+ORDER BY DESC(?durata_attesa_pensione)

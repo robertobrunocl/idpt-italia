@@ -1,0 +1,562 @@
+@prefix agidp: <https://w3id.org/italia/controlled-vocabulary/territorial-classifications/provinces/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix idpt: <https://robertobrunocl.github.io/idpt-italia/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+idpt:inps-to-agid-graph a dcterms:Standard ;
+    dcterms:description "Riconciliazione fra nomi INPS (CSV vigenti residenza + regime sede + serie storica) e URI AGID delle province italiane. Contiene: (a) skos:altLabel @it-x-inps con le forme nominali del CSV INPS vigenti residenza, (b) 106 istanze idpt:SedeINPS con prefLabel + notation + correspondsTo o aggregatesProvince verso le province AGID."@it ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    dcterms:source <https://www.inps.it/osservatorio> ;
+    dcterms:title "Sidecar linking INPS ↔ AGID province + sedi"@it .
+
+idpt:sede-inps-agrigento a idpt:SedeINPS ;
+    skos:notation "INPS-AGRIGENT" ;
+    skos:prefLabel "AGRIGENTO"@it ;
+    idpt:correspondsToProvinceAGID agidp:084 .
+
+idpt:sede-inps-alessandria a idpt:SedeINPS ;
+    skos:notation "INPS-ALESSAND" ;
+    skos:prefLabel "ALESSANDRIA"@it ;
+    idpt:correspondsToProvinceAGID agidp:006 .
+
+idpt:sede-inps-ancona a idpt:SedeINPS ;
+    skos:notation "INPS-ANCONA" ;
+    skos:prefLabel "ANCONA"@it ;
+    idpt:correspondsToProvinceAGID agidp:042 .
+
+idpt:sede-inps-aosta a idpt:SedeINPS ;
+    skos:notation "INPS-AOSTA" ;
+    skos:prefLabel "AOSTA"@it ;
+    idpt:correspondsToProvinceAGID agidp:007 .
+
+idpt:sede-inps-arezzo a idpt:SedeINPS ;
+    skos:notation "INPS-AREZZO" ;
+    skos:prefLabel "AREZZO"@it ;
+    idpt:correspondsToProvinceAGID agidp:051 .
+
+idpt:sede-inps-ascoli-piceno a idpt:SedeINPS ;
+    skos:notation "INPS-ASCOLI-P" ;
+    skos:prefLabel "ASCOLI PICENO"@it ;
+    idpt:correspondsToProvinceAGID agidp:044 .
+
+idpt:sede-inps-asti a idpt:SedeINPS ;
+    skos:notation "INPS-ASTI" ;
+    skos:prefLabel "ASTI"@it ;
+    idpt:correspondsToProvinceAGID agidp:005 .
+
+idpt:sede-inps-avellino a idpt:SedeINPS ;
+    skos:notation "INPS-AVELLINO" ;
+    skos:prefLabel "AVELLINO"@it ;
+    idpt:correspondsToProvinceAGID agidp:064 .
+
+idpt:sede-inps-bari a idpt:SedeINPS ;
+    skos:notation "INPS-BARI" ;
+    skos:prefLabel "BARI"@it ;
+    idpt:correspondsToProvinceAGID agidp:072 .
+
+idpt:sede-inps-barletta-andria-trani a idpt:SedeINPS ;
+    skos:notation "INPS-BARLETTA" ;
+    skos:prefLabel "BARLETTA -ANDRIA-TRANI"@it ;
+    idpt:correspondsToProvinceAGID agidp:110 .
+
+idpt:sede-inps-belluno a idpt:SedeINPS ;
+    skos:notation "INPS-BELLUNO" ;
+    skos:prefLabel "BELLUNO"@it ;
+    idpt:correspondsToProvinceAGID agidp:025 .
+
+idpt:sede-inps-benevento a idpt:SedeINPS ;
+    skos:notation "INPS-BENEVENT" ;
+    skos:prefLabel "BENEVENTO"@it ;
+    idpt:correspondsToProvinceAGID agidp:062 .
+
+idpt:sede-inps-bergamo a idpt:SedeINPS ;
+    skos:notation "INPS-BERGAMO" ;
+    skos:prefLabel "BERGAMO"@it ;
+    idpt:correspondsToProvinceAGID agidp:016 .
+
+idpt:sede-inps-biella a idpt:SedeINPS ;
+    skos:notation "INPS-BIELLA" ;
+    skos:prefLabel "BIELLA"@it ;
+    idpt:correspondsToProvinceAGID agidp:096 .
+
+idpt:sede-inps-bologna a idpt:SedeINPS ;
+    skos:notation "INPS-BOLOGNA" ;
+    skos:prefLabel "BOLOGNA"@it ;
+    idpt:correspondsToProvinceAGID agidp:037 .
+
+idpt:sede-inps-bolzano a idpt:SedeINPS ;
+    skos:notation "INPS-BOLZANO" ;
+    skos:prefLabel "BOLZANO"@it ;
+    idpt:correspondsToProvinceAGID agidp:021 .
+
+idpt:sede-inps-brescia a idpt:SedeINPS ;
+    skos:notation "INPS-BRESCIA" ;
+    skos:prefLabel "BRESCIA"@it ;
+    idpt:correspondsToProvinceAGID agidp:017 .
+
+idpt:sede-inps-brindisi a idpt:SedeINPS ;
+    skos:notation "INPS-BRINDISI" ;
+    skos:prefLabel "BRINDISI"@it ;
+    idpt:correspondsToProvinceAGID agidp:074 .
+
+idpt:sede-inps-cagliari-e-sud-sardegna a idpt:SedeINPS ;
+    rdfs:comment "Sede INPS aggregata di Cagliari e Sud Sardegna. Mappa 1-a-N verso 2 province AGID."@it ;
+    skos:notation "INPS-CA-SU" ;
+    skos:prefLabel "CAGLIARI E SUD SARDEGNA"@it ;
+    idpt:aggregatesProvince agidp:092,
+        agidp:111 .
+
+idpt:sede-inps-caltanissetta a idpt:SedeINPS ;
+    skos:notation "INPS-CALTANIS" ;
+    skos:prefLabel "CALTANISSETTA"@it ;
+    idpt:correspondsToProvinceAGID agidp:085 .
+
+idpt:sede-inps-campobasso a idpt:SedeINPS ;
+    skos:notation "INPS-CAMPOBAS" ;
+    skos:prefLabel "CAMPOBASSO"@it ;
+    idpt:correspondsToProvinceAGID agidp:070 .
+
+idpt:sede-inps-caserta a idpt:SedeINPS ;
+    skos:notation "INPS-CASERTA" ;
+    skos:prefLabel "CASERTA"@it ;
+    idpt:correspondsToProvinceAGID agidp:061 .
+
+idpt:sede-inps-catania a idpt:SedeINPS ;
+    skos:notation "INPS-CATANIA" ;
+    skos:prefLabel "CATANIA"@it ;
+    idpt:correspondsToProvinceAGID agidp:087 .
+
+idpt:sede-inps-catanzaro a idpt:SedeINPS ;
+    skos:notation "INPS-CATANZAR" ;
+    skos:prefLabel "CATANZARO"@it ;
+    idpt:correspondsToProvinceAGID agidp:079 .
+
+idpt:sede-inps-chieti a idpt:SedeINPS ;
+    skos:notation "INPS-CHIETI" ;
+    skos:prefLabel "CHIETI"@it ;
+    idpt:correspondsToProvinceAGID agidp:069 .
+
+idpt:sede-inps-como a idpt:SedeINPS ;
+    skos:notation "INPS-COMO" ;
+    skos:prefLabel "COMO"@it ;
+    idpt:correspondsToProvinceAGID agidp:013 .
+
+idpt:sede-inps-cosenza a idpt:SedeINPS ;
+    skos:notation "INPS-COSENZA" ;
+    skos:prefLabel "COSENZA"@it ;
+    idpt:correspondsToProvinceAGID agidp:078 .
+
+idpt:sede-inps-cremona a idpt:SedeINPS ;
+    skos:notation "INPS-CREMONA" ;
+    skos:prefLabel "CREMONA"@it ;
+    idpt:correspondsToProvinceAGID agidp:019 .
+
+idpt:sede-inps-crotone a idpt:SedeINPS ;
+    skos:notation "INPS-CROTONE" ;
+    skos:prefLabel "CROTONE"@it ;
+    idpt:correspondsToProvinceAGID agidp:101 .
+
+idpt:sede-inps-cuneo a idpt:SedeINPS ;
+    skos:notation "INPS-CUNEO" ;
+    skos:prefLabel "CUNEO"@it ;
+    idpt:correspondsToProvinceAGID agidp:004 .
+
+idpt:sede-inps-enna a idpt:SedeINPS ;
+    skos:notation "INPS-ENNA" ;
+    skos:prefLabel "ENNA"@it ;
+    idpt:correspondsToProvinceAGID agidp:086 .
+
+idpt:sede-inps-fermo a idpt:SedeINPS ;
+    skos:notation "INPS-FERMO" ;
+    skos:prefLabel "FERMO"@it ;
+    idpt:correspondsToProvinceAGID agidp:109 .
+
+idpt:sede-inps-ferrara a idpt:SedeINPS ;
+    skos:notation "INPS-FERRARA" ;
+    skos:prefLabel "FERRARA"@it ;
+    idpt:correspondsToProvinceAGID agidp:038 .
+
+idpt:sede-inps-firenze a idpt:SedeINPS ;
+    skos:notation "INPS-FIRENZE" ;
+    skos:prefLabel "FIRENZE"@it ;
+    idpt:correspondsToProvinceAGID agidp:048 .
+
+idpt:sede-inps-foggia a idpt:SedeINPS ;
+    skos:notation "INPS-FOGGIA" ;
+    skos:prefLabel "FOGGIA"@it ;
+    idpt:correspondsToProvinceAGID agidp:071 .
+
+idpt:sede-inps-forli a idpt:SedeINPS ;
+    skos:notation "INPS-FORLI" ;
+    skos:prefLabel "FORLI"@it ;
+    idpt:correspondsToProvinceAGID agidp:040 .
+
+idpt:sede-inps-frosinone a idpt:SedeINPS ;
+    skos:notation "INPS-FROSINON" ;
+    skos:prefLabel "FROSINONE"@it ;
+    idpt:correspondsToProvinceAGID agidp:060 .
+
+idpt:sede-inps-genova a idpt:SedeINPS ;
+    skos:notation "INPS-GENOVA" ;
+    skos:prefLabel "GENOVA"@it ;
+    idpt:correspondsToProvinceAGID agidp:010 .
+
+idpt:sede-inps-gorizia a idpt:SedeINPS ;
+    skos:notation "INPS-GORIZIA" ;
+    skos:prefLabel "GORIZIA"@it ;
+    idpt:correspondsToProvinceAGID agidp:031 .
+
+idpt:sede-inps-grosseto a idpt:SedeINPS ;
+    skos:notation "INPS-GROSSETO" ;
+    skos:prefLabel "GROSSETO"@it ;
+    idpt:correspondsToProvinceAGID agidp:053 .
+
+idpt:sede-inps-imperia a idpt:SedeINPS ;
+    skos:notation "INPS-IMPERIA" ;
+    skos:prefLabel "IMPERIA"@it ;
+    idpt:correspondsToProvinceAGID agidp:008 .
+
+idpt:sede-inps-isernia a idpt:SedeINPS ;
+    skos:notation "INPS-ISERNIA" ;
+    skos:prefLabel "ISERNIA"@it ;
+    idpt:correspondsToProvinceAGID agidp:094 .
+
+idpt:sede-inps-l-aquila a idpt:SedeINPS ;
+    skos:notation "INPS-L-AQUILA" ;
+    skos:prefLabel "L'AQUILA"@it ;
+    idpt:correspondsToProvinceAGID agidp:066 .
+
+idpt:sede-inps-la-spezia a idpt:SedeINPS ;
+    skos:notation "INPS-LA-SPEZI" ;
+    skos:prefLabel "LA SPEZIA"@it ;
+    idpt:correspondsToProvinceAGID agidp:011 .
+
+idpt:sede-inps-latina a idpt:SedeINPS ;
+    skos:notation "INPS-LATINA" ;
+    skos:prefLabel "LATINA"@it ;
+    idpt:correspondsToProvinceAGID agidp:059 .
+
+idpt:sede-inps-lecce a idpt:SedeINPS ;
+    skos:notation "INPS-LECCE" ;
+    skos:prefLabel "LECCE"@it ;
+    idpt:correspondsToProvinceAGID agidp:075 .
+
+idpt:sede-inps-lecco a idpt:SedeINPS ;
+    skos:notation "INPS-LECCO" ;
+    skos:prefLabel "LECCO"@it ;
+    idpt:correspondsToProvinceAGID agidp:097 .
+
+idpt:sede-inps-livorno a idpt:SedeINPS ;
+    skos:notation "INPS-LIVORNO" ;
+    skos:prefLabel "LIVORNO"@it ;
+    idpt:correspondsToProvinceAGID agidp:049 .
+
+idpt:sede-inps-lodi a idpt:SedeINPS ;
+    skos:notation "INPS-LODI" ;
+    skos:prefLabel "LODI"@it ;
+    idpt:correspondsToProvinceAGID agidp:098 .
+
+idpt:sede-inps-lucca a idpt:SedeINPS ;
+    skos:notation "INPS-LUCCA" ;
+    skos:prefLabel "LUCCA"@it ;
+    idpt:correspondsToProvinceAGID agidp:046 .
+
+idpt:sede-inps-macerata a idpt:SedeINPS ;
+    skos:notation "INPS-MACERATA" ;
+    skos:prefLabel "MACERATA"@it ;
+    idpt:correspondsToProvinceAGID agidp:043 .
+
+idpt:sede-inps-mantova a idpt:SedeINPS ;
+    skos:notation "INPS-MANTOVA" ;
+    skos:prefLabel "MANTOVA"@it ;
+    idpt:correspondsToProvinceAGID agidp:020 .
+
+idpt:sede-inps-massa-carrara a idpt:SedeINPS ;
+    skos:notation "INPS-MASSA-CA" ;
+    skos:prefLabel "MASSA CARRARA"@it ;
+    idpt:correspondsToProvinceAGID agidp:045 .
+
+idpt:sede-inps-matera a idpt:SedeINPS ;
+    skos:notation "INPS-MATERA" ;
+    skos:prefLabel "MATERA"@it ;
+    idpt:correspondsToProvinceAGID agidp:077 .
+
+idpt:sede-inps-messina a idpt:SedeINPS ;
+    skos:notation "INPS-MESSINA" ;
+    skos:prefLabel "MESSINA"@it ;
+    idpt:correspondsToProvinceAGID agidp:083 .
+
+idpt:sede-inps-milano a idpt:SedeINPS ;
+    skos:notation "INPS-MILANO" ;
+    skos:prefLabel "MILANO"@it ;
+    idpt:correspondsToProvinceAGID agidp:015 .
+
+idpt:sede-inps-modena a idpt:SedeINPS ;
+    skos:notation "INPS-MODENA" ;
+    skos:prefLabel "MODENA"@it ;
+    idpt:correspondsToProvinceAGID agidp:036 .
+
+idpt:sede-inps-monza-e-della-brianza a idpt:SedeINPS ;
+    skos:notation "INPS-MONZA-E-" ;
+    skos:prefLabel "MONZA E DELLA BRIANZA"@it ;
+    idpt:correspondsToProvinceAGID agidp:108 .
+
+idpt:sede-inps-napoli a idpt:SedeINPS ;
+    skos:notation "INPS-NAPOLI" ;
+    skos:prefLabel "NAPOLI"@it ;
+    idpt:correspondsToProvinceAGID agidp:063 .
+
+idpt:sede-inps-novara a idpt:SedeINPS ;
+    skos:notation "INPS-NOVARA" ;
+    skos:prefLabel "NOVARA"@it ;
+    idpt:correspondsToProvinceAGID agidp:003 .
+
+idpt:sede-inps-nuoro a idpt:SedeINPS ;
+    skos:notation "INPS-NUORO" ;
+    skos:prefLabel "NUORO"@it ;
+    idpt:correspondsToProvinceAGID agidp:091 .
+
+idpt:sede-inps-oristano a idpt:SedeINPS ;
+    skos:notation "INPS-ORISTANO" ;
+    skos:prefLabel "ORISTANO"@it ;
+    idpt:correspondsToProvinceAGID agidp:095 .
+
+idpt:sede-inps-padova a idpt:SedeINPS ;
+    skos:notation "INPS-PADOVA" ;
+    skos:prefLabel "PADOVA"@it ;
+    idpt:correspondsToProvinceAGID agidp:028 .
+
+idpt:sede-inps-palermo a idpt:SedeINPS ;
+    skos:notation "INPS-PALERMO" ;
+    skos:prefLabel "PALERMO"@it ;
+    idpt:correspondsToProvinceAGID agidp:082 .
+
+idpt:sede-inps-parma a idpt:SedeINPS ;
+    skos:notation "INPS-PARMA" ;
+    skos:prefLabel "PARMA"@it ;
+    idpt:correspondsToProvinceAGID agidp:034 .
+
+idpt:sede-inps-pavia a idpt:SedeINPS ;
+    skos:notation "INPS-PAVIA" ;
+    skos:prefLabel "PAVIA"@it ;
+    idpt:correspondsToProvinceAGID agidp:018 .
+
+idpt:sede-inps-perugia a idpt:SedeINPS ;
+    skos:notation "INPS-PERUGIA" ;
+    skos:prefLabel "PERUGIA"@it ;
+    idpt:correspondsToProvinceAGID agidp:054 .
+
+idpt:sede-inps-pesaro-urbino a idpt:SedeINPS ;
+    skos:notation "INPS-PESARO-U" ;
+    skos:prefLabel "PESARO -URBINO"@it ;
+    idpt:correspondsToProvinceAGID agidp:041 .
+
+idpt:sede-inps-pescara a idpt:SedeINPS ;
+    skos:notation "INPS-PESCARA" ;
+    skos:prefLabel "PESCARA"@it ;
+    idpt:correspondsToProvinceAGID agidp:068 .
+
+idpt:sede-inps-piacenza a idpt:SedeINPS ;
+    skos:notation "INPS-PIACENZA" ;
+    skos:prefLabel "PIACENZA"@it ;
+    idpt:correspondsToProvinceAGID agidp:033 .
+
+idpt:sede-inps-pisa a idpt:SedeINPS ;
+    skos:notation "INPS-PISA" ;
+    skos:prefLabel "PISA"@it ;
+    idpt:correspondsToProvinceAGID agidp:050 .
+
+idpt:sede-inps-pistoia a idpt:SedeINPS ;
+    skos:notation "INPS-PISTOIA" ;
+    skos:prefLabel "PISTOIA"@it ;
+    idpt:correspondsToProvinceAGID agidp:047 .
+
+idpt:sede-inps-pordenone a idpt:SedeINPS ;
+    skos:notation "INPS-PORDENON" ;
+    skos:prefLabel "PORDENONE"@it ;
+    idpt:correspondsToProvinceAGID agidp:093 .
+
+idpt:sede-inps-potenza a idpt:SedeINPS ;
+    skos:notation "INPS-POTENZA" ;
+    skos:prefLabel "POTENZA"@it ;
+    idpt:correspondsToProvinceAGID agidp:076 .
+
+idpt:sede-inps-prato a idpt:SedeINPS ;
+    skos:notation "INPS-PRATO" ;
+    skos:prefLabel "PRATO"@it ;
+    idpt:correspondsToProvinceAGID agidp:100 .
+
+idpt:sede-inps-ragusa a idpt:SedeINPS ;
+    skos:notation "INPS-RAGUSA" ;
+    skos:prefLabel "RAGUSA"@it ;
+    idpt:correspondsToProvinceAGID agidp:088 .
+
+idpt:sede-inps-ravenna a idpt:SedeINPS ;
+    skos:notation "INPS-RAVENNA" ;
+    skos:prefLabel "RAVENNA"@it ;
+    idpt:correspondsToProvinceAGID agidp:039 .
+
+idpt:sede-inps-reggio-calabria a idpt:SedeINPS ;
+    skos:notation "INPS-REGGIO-C" ;
+    skos:prefLabel "REGGIO CALABRIA"@it ;
+    idpt:correspondsToProvinceAGID agidp:080 .
+
+idpt:sede-inps-reggio-emilia a idpt:SedeINPS ;
+    skos:notation "INPS-REGGIO-E" ;
+    skos:prefLabel "REGGIO EMILIA"@it ;
+    idpt:correspondsToProvinceAGID agidp:035 .
+
+idpt:sede-inps-rieti a idpt:SedeINPS ;
+    skos:notation "INPS-RIETI" ;
+    skos:prefLabel "RIETI"@it ;
+    idpt:correspondsToProvinceAGID agidp:057 .
+
+idpt:sede-inps-rimini a idpt:SedeINPS ;
+    skos:notation "INPS-RIMINI" ;
+    skos:prefLabel "RIMINI"@it ;
+    idpt:correspondsToProvinceAGID agidp:099 .
+
+idpt:sede-inps-roma a idpt:SedeINPS ;
+    skos:notation "INPS-ROMA" ;
+    skos:prefLabel "ROMA"@it ;
+    idpt:correspondsToProvinceAGID agidp:058 .
+
+idpt:sede-inps-rovigo a idpt:SedeINPS ;
+    skos:notation "INPS-ROVIGO" ;
+    skos:prefLabel "ROVIGO"@it ;
+    idpt:correspondsToProvinceAGID agidp:029 .
+
+idpt:sede-inps-salerno a idpt:SedeINPS ;
+    skos:notation "INPS-SALERNO" ;
+    skos:prefLabel "SALERNO"@it ;
+    idpt:correspondsToProvinceAGID agidp:065 .
+
+idpt:sede-inps-sassari a idpt:SedeINPS ;
+    skos:notation "INPS-SASSARI" ;
+    skos:prefLabel "SASSARI"@it ;
+    idpt:correspondsToProvinceAGID agidp:090 .
+
+idpt:sede-inps-savona a idpt:SedeINPS ;
+    skos:notation "INPS-SAVONA" ;
+    skos:prefLabel "SAVONA"@it ;
+    idpt:correspondsToProvinceAGID agidp:009 .
+
+idpt:sede-inps-siena a idpt:SedeINPS ;
+    skos:notation "INPS-SIENA" ;
+    skos:prefLabel "SIENA"@it ;
+    idpt:correspondsToProvinceAGID agidp:052 .
+
+idpt:sede-inps-siracusa a idpt:SedeINPS ;
+    skos:notation "INPS-SIRACUSA" ;
+    skos:prefLabel "SIRACUSA"@it ;
+    idpt:correspondsToProvinceAGID agidp:089 .
+
+idpt:sede-inps-sondrio a idpt:SedeINPS ;
+    skos:notation "INPS-SONDRIO" ;
+    skos:prefLabel "SONDRIO"@it ;
+    idpt:correspondsToProvinceAGID agidp:014 .
+
+idpt:sede-inps-taranto a idpt:SedeINPS ;
+    skos:notation "INPS-TARANTO" ;
+    skos:prefLabel "TARANTO"@it ;
+    idpt:correspondsToProvinceAGID agidp:073 .
+
+idpt:sede-inps-teramo a idpt:SedeINPS ;
+    skos:notation "INPS-TERAMO" ;
+    skos:prefLabel "TERAMO"@it ;
+    idpt:correspondsToProvinceAGID agidp:067 .
+
+idpt:sede-inps-terni a idpt:SedeINPS ;
+    skos:notation "INPS-TERNI" ;
+    skos:prefLabel "TERNI"@it ;
+    idpt:correspondsToProvinceAGID agidp:055 .
+
+idpt:sede-inps-torino a idpt:SedeINPS ;
+    skos:notation "INPS-TORINO" ;
+    skos:prefLabel "TORINO"@it ;
+    idpt:correspondsToProvinceAGID agidp:001 .
+
+idpt:sede-inps-trapani a idpt:SedeINPS ;
+    skos:notation "INPS-TRAPANI" ;
+    skos:prefLabel "TRAPANI"@it ;
+    idpt:correspondsToProvinceAGID agidp:081 .
+
+idpt:sede-inps-trento a idpt:SedeINPS ;
+    skos:notation "INPS-TRENTO" ;
+    skos:prefLabel "TRENTO"@it ;
+    idpt:correspondsToProvinceAGID agidp:022 .
+
+idpt:sede-inps-treviso a idpt:SedeINPS ;
+    skos:notation "INPS-TREVISO" ;
+    skos:prefLabel "TREVISO"@it ;
+    idpt:correspondsToProvinceAGID agidp:026 .
+
+idpt:sede-inps-trieste a idpt:SedeINPS ;
+    skos:notation "INPS-TRIESTE" ;
+    skos:prefLabel "TRIESTE"@it ;
+    idpt:correspondsToProvinceAGID agidp:032 .
+
+idpt:sede-inps-udine a idpt:SedeINPS ;
+    skos:notation "INPS-UDINE" ;
+    skos:prefLabel "UDINE"@it ;
+    idpt:correspondsToProvinceAGID agidp:030 .
+
+idpt:sede-inps-varese a idpt:SedeINPS ;
+    skos:notation "INPS-VARESE" ;
+    skos:prefLabel "VARESE"@it ;
+    idpt:correspondsToProvinceAGID agidp:012 .
+
+idpt:sede-inps-venezia a idpt:SedeINPS ;
+    skos:notation "INPS-VENEZIA" ;
+    skos:prefLabel "VENEZIA"@it ;
+    idpt:correspondsToProvinceAGID agidp:027 .
+
+idpt:sede-inps-verbania a idpt:SedeINPS ;
+    skos:notation "INPS-VERBANIA" ;
+    skos:prefLabel "VERBANIA"@it ;
+    idpt:correspondsToProvinceAGID agidp:103 .
+
+idpt:sede-inps-vercelli a idpt:SedeINPS ;
+    skos:notation "INPS-VERCELLI" ;
+    skos:prefLabel "VERCELLI"@it ;
+    idpt:correspondsToProvinceAGID agidp:002 .
+
+idpt:sede-inps-verona a idpt:SedeINPS ;
+    skos:notation "INPS-VERONA" ;
+    skos:prefLabel "VERONA"@it ;
+    idpt:correspondsToProvinceAGID agidp:023 .
+
+idpt:sede-inps-vibo-valentia a idpt:SedeINPS ;
+    skos:notation "INPS-VIBO-VAL" ;
+    skos:prefLabel "VIBO VALENTIA"@it ;
+    idpt:correspondsToProvinceAGID agidp:102 .
+
+idpt:sede-inps-vicenza a idpt:SedeINPS ;
+    skos:notation "INPS-VICENZA" ;
+    skos:prefLabel "VICENZA"@it ;
+    idpt:correspondsToProvinceAGID agidp:024 .
+
+idpt:sede-inps-viterbo a idpt:SedeINPS ;
+    skos:notation "INPS-VITERBO" ;
+    skos:prefLabel "VITERBO"@it ;
+    idpt:correspondsToProvinceAGID agidp:056 .
+
+agidp:007 skos:altLabel "Aosta"@it-x-inps .
+
+agidp:021 skos:altLabel "Provincia Autonoma di Bolzano/Bozen"@it-x-inps .
+
+agidp:022 skos:altLabel "Provincia Autonoma di Trento"@it-x-inps .
+
+agidp:035 skos:altLabel "Reggio Emilia"@it-x-inps .
+
+agidp:040 skos:altLabel "Forli' -Cesena"@it-x-inps .
+
+agidp:045 skos:altLabel "Massa -Carrara"@it-x-inps .
+
+agidp:080 skos:altLabel "Reggio Calabria"@it-x-inps .
+
+agidp:103 skos:altLabel "Verbano -Cusio-Ossola"@it-x-inps .
+
+agidp:110 skos:altLabel "Barletta -Andria-Trani"@it-x-inps .
+

@@ -1,0 +1,127 @@
+{
+  "saved_at": "2026-05-04T09:36:16.593704+00:00",
+  "data_file": "rifiuti_arricchito.csv",
+  "rows": 391,
+  "cols": 13,
+  "columns": [
+    "n",
+    "comune",
+    "provincia",
+    "popolazione",
+    "s_r_r_di_competenza",
+    "r_i_ton",
+    "r_d_ton",
+    "r_t_ton",
+    "r_d",
+    "r_c_ton",
+    "extra_d_m_2016_ton",
+    "sigla_automobilistica",
+    "id_comune"
+  ],
+  "steps": [
+    {
+      "name": "NormalizeColumnNames",
+      "params": {},
+      "metrics": {
+        "renamed_count": 11,
+        "renamed": {
+          "N.": "n",
+          "COMUNE": "comune",
+          "PROVINCIA": "provincia",
+          "POPOLAZIONE": "popolazione",
+          "S.R.R. di COMPETENZA": "s_r_r_di_competenza",
+          "R.I. (ton)": "r_i_ton",
+          "R.D. (ton)": "r_d_ton",
+          "R.T. (ton)": "r_t_ton",
+          "% R.D.": "r_d",
+          "R.C. (ton)": "r_c_ton",
+          "EXTRA D.M. 2016 (ton)": "extra_d_m_2016_ton"
+        }
+      }
+    },
+    {
+      "name": "ParseItalianNumbers",
+      "params": {},
+      "metrics": {
+        "parsed_columns": [
+          "n",
+          "popolazione",
+          "r_i_ton",
+          "r_d_ton",
+          "r_t_ton",
+          "r_d",
+          "r_c_ton",
+          "extra_d_m_2016_ton"
+        ]
+      }
+    },
+    {
+      "name": "AddNormalizedKey",
+      "params": {
+        "source": "provincia",
+        "target": "_provincia_key"
+      },
+      "metrics": {}
+    },
+    {
+      "name": "AddNormalizedKey",
+      "params": {
+        "source": "comune",
+        "target": "_comune_key"
+      },
+      "metrics": {}
+    },
+    {
+      "name": "LeftJoinEnrich",
+      "params": {
+        "left_on": [
+          "_provincia_key"
+        ],
+        "right_on": [
+          "_provincia_key"
+        ],
+        "columns": [
+          "codice_provincia",
+          "sigla_automobilistica"
+        ]
+      },
+      "metrics": {
+        "matched": 391,
+        "unmatched": 0
+      }
+    },
+    {
+      "name": "LeftJoinEnrich",
+      "params": {
+        "left_on": [
+          "_comune_key",
+          "codice_provincia"
+        ],
+        "right_on": [
+          "_comune_key",
+          "codice_provincia"
+        ],
+        "columns": [
+          "id_comune"
+        ]
+      },
+      "metrics": {
+        "matched": 391,
+        "unmatched": 0
+      }
+    },
+    {
+      "name": "DropColumns",
+      "params": {
+        "columns": [
+          "_comune_key",
+          "_provincia_key",
+          "codice_provincia"
+        ]
+      },
+      "metrics": {
+        "dropped_count": 3
+      }
+    }
+  ]
+}

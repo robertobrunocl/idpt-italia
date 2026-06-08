@@ -1,0 +1,226 @@
+@prefix agidp: <https://w3id.org/italia/controlled-vocabulary/territorial-classifications/provinces/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://robertobrunocl.github.io/idpt-italia/agid-to-dbpedia-graph> a dcterms:Standard ;
+    dcterms:created "2026-05-28"^^xsd:date ;
+    dcterms:description "107 triple owl:sameAs fra province AGID e risorse DBpedia, ottenute via query SPARQL su https://dbpedia.org/sparql + reconciliation manuale per anomalie nominali (Reggio C/E, città metropolitane, PA, Sud Sardegna, BAT/Fermo/Monza-Brianza)."@it ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    dcterms:source <https://dbpedia.org/sparql> ;
+    dcterms:title "Sidecar linking province AGID → DBpedia"@it .
+
+agidp:001 owl:sameAs <http://dbpedia.org/resource/Metropolitan_City_of_Turin> .
+
+agidp:002 owl:sameAs <http://dbpedia.org/resource/Province_of_Vercelli> .
+
+agidp:003 owl:sameAs <http://dbpedia.org/resource/Province_of_Novara> .
+
+agidp:004 owl:sameAs <http://dbpedia.org/resource/Province_of_Cuneo> .
+
+agidp:005 owl:sameAs <http://dbpedia.org/resource/Province_of_Asti> .
+
+agidp:006 owl:sameAs <http://dbpedia.org/resource/Province_of_Alessandria> .
+
+agidp:007 owl:sameAs <http://dbpedia.org/resource/Aosta_Valley> .
+
+agidp:008 owl:sameAs <http://dbpedia.org/resource/Province_of_Imperia> .
+
+agidp:009 owl:sameAs <http://dbpedia.org/resource/Province_of_Savona> .
+
+agidp:010 owl:sameAs <http://dbpedia.org/resource/Metropolitan_City_of_Genoa> .
+
+agidp:011 owl:sameAs <http://dbpedia.org/resource/Province_of_La_Spezia> .
+
+agidp:012 owl:sameAs <http://dbpedia.org/resource/Province_of_Varese> .
+
+agidp:013 owl:sameAs <http://dbpedia.org/resource/Province_of_Como> .
+
+agidp:014 owl:sameAs <http://dbpedia.org/resource/Province_of_Sondrio> .
+
+agidp:015 owl:sameAs <http://dbpedia.org/resource/Metropolitan_City_of_Milan> .
+
+agidp:016 owl:sameAs <http://dbpedia.org/resource/Province_of_Bergamo> .
+
+agidp:017 owl:sameAs <http://dbpedia.org/resource/Province_of_Brescia> .
+
+agidp:018 owl:sameAs <http://dbpedia.org/resource/Province_of_Pavia> .
+
+agidp:019 owl:sameAs <http://dbpedia.org/resource/Province_of_Cremona> .
+
+agidp:020 owl:sameAs <http://dbpedia.org/resource/Province_of_Mantua> .
+
+agidp:021 owl:sameAs <http://dbpedia.org/resource/Province_of_Bolzano> .
+
+agidp:022 owl:sameAs <http://dbpedia.org/resource/Province_of_Trento> .
+
+agidp:023 owl:sameAs <http://dbpedia.org/resource/Province_of_Verona> .
+
+agidp:024 owl:sameAs <http://dbpedia.org/resource/Province_of_Vicenza> .
+
+agidp:025 owl:sameAs <http://dbpedia.org/resource/Province_of_Belluno> .
+
+agidp:026 owl:sameAs <http://dbpedia.org/resource/Province_of_Treviso> .
+
+agidp:027 owl:sameAs <http://dbpedia.org/resource/Metropolitan_City_of_Venice> .
+
+agidp:028 owl:sameAs <http://dbpedia.org/resource/Province_of_Padua> .
+
+agidp:029 owl:sameAs <http://dbpedia.org/resource/Province_of_Rovigo> .
+
+agidp:030 owl:sameAs <http://dbpedia.org/resource/Province_of_Udine> .
+
+agidp:031 owl:sameAs <http://dbpedia.org/resource/Province_of_Gorizia> .
+
+agidp:032 owl:sameAs <http://dbpedia.org/resource/Province_of_Trieste> .
+
+agidp:033 owl:sameAs <http://dbpedia.org/resource/Province_of_Piacenza> .
+
+agidp:034 owl:sameAs <http://dbpedia.org/resource/Province_of_Parma> .
+
+agidp:035 owl:sameAs <http://dbpedia.org/resource/Province_of_Reggio_Emilia> .
+
+agidp:036 owl:sameAs <http://dbpedia.org/resource/Province_of_Modena> .
+
+agidp:037 owl:sameAs <http://dbpedia.org/resource/Metropolitan_City_of_Bologna> .
+
+agidp:038 owl:sameAs <http://dbpedia.org/resource/Province_of_Ferrara> .
+
+agidp:039 owl:sameAs <http://dbpedia.org/resource/Province_of_Ravenna> .
+
+agidp:040 owl:sameAs <http://dbpedia.org/resource/Province_of_Forl%C3%AC-Cesena> .
+
+agidp:041 owl:sameAs <http://dbpedia.org/resource/Province_of_Pesaro_and_Urbino> .
+
+agidp:042 owl:sameAs <http://dbpedia.org/resource/Province_of_Ancona> .
+
+agidp:043 owl:sameAs <http://dbpedia.org/resource/Province_of_Macerata> .
+
+agidp:044 owl:sameAs <http://dbpedia.org/resource/Province_of_Ascoli_Piceno> .
+
+agidp:045 owl:sameAs <http://dbpedia.org/resource/Province_of_Massa_and_Carrara> .
+
+agidp:046 owl:sameAs <http://dbpedia.org/resource/Province_of_Lucca> .
+
+agidp:047 owl:sameAs <http://dbpedia.org/resource/Province_of_Pistoia> .
+
+agidp:048 owl:sameAs <http://dbpedia.org/resource/Metropolitan_City_of_Florence> .
+
+agidp:049 owl:sameAs <http://dbpedia.org/resource/Province_of_Livorno> .
+
+agidp:050 owl:sameAs <http://dbpedia.org/resource/Province_of_Pisa> .
+
+agidp:051 owl:sameAs <http://dbpedia.org/resource/Province_of_Arezzo> .
+
+agidp:052 owl:sameAs <http://dbpedia.org/resource/Province_of_Siena> .
+
+agidp:053 owl:sameAs <http://dbpedia.org/resource/Province_of_Grosseto> .
+
+agidp:054 owl:sameAs <http://dbpedia.org/resource/Province_of_Perugia> .
+
+agidp:055 owl:sameAs <http://dbpedia.org/resource/Province_of_Terni> .
+
+agidp:056 owl:sameAs <http://dbpedia.org/resource/Province_of_Viterbo> .
+
+agidp:057 owl:sameAs <http://dbpedia.org/resource/Province_of_Rieti> .
+
+agidp:058 owl:sameAs <http://dbpedia.org/resource/Metropolitan_City_of_Rome_Capital> .
+
+agidp:059 owl:sameAs <http://dbpedia.org/resource/Province_of_Latina> .
+
+agidp:060 owl:sameAs <http://dbpedia.org/resource/Province_of_Frosinone> .
+
+agidp:061 owl:sameAs <http://dbpedia.org/resource/Province_of_Caserta> .
+
+agidp:062 owl:sameAs <http://dbpedia.org/resource/Province_of_Benevento> .
+
+agidp:063 owl:sameAs <http://dbpedia.org/resource/Metropolitan_City_of_Naples> .
+
+agidp:064 owl:sameAs <http://dbpedia.org/resource/Province_of_Avellino> .
+
+agidp:065 owl:sameAs <http://dbpedia.org/resource/Province_of_Salerno> .
+
+agidp:066 owl:sameAs <http://dbpedia.org/resource/Province_of_L'Aquila> .
+
+agidp:067 owl:sameAs <http://dbpedia.org/resource/Province_of_Teramo> .
+
+agidp:068 owl:sameAs <http://dbpedia.org/resource/Province_of_Pescara> .
+
+agidp:069 owl:sameAs <http://dbpedia.org/resource/Province_of_Chieti> .
+
+agidp:070 owl:sameAs <http://dbpedia.org/resource/Province_of_Campobasso> .
+
+agidp:071 owl:sameAs <http://dbpedia.org/resource/Province_of_Foggia> .
+
+agidp:072 owl:sameAs <http://dbpedia.org/resource/Metropolitan_City_of_Bari> .
+
+agidp:073 owl:sameAs <http://dbpedia.org/resource/Province_of_Taranto> .
+
+agidp:074 owl:sameAs <http://dbpedia.org/resource/Province_of_Brindisi> .
+
+agidp:075 owl:sameAs <http://dbpedia.org/resource/Province_of_Lecce> .
+
+agidp:076 owl:sameAs <http://dbpedia.org/resource/Province_of_Potenza> .
+
+agidp:077 owl:sameAs <http://dbpedia.org/resource/Province_of_Matera> .
+
+agidp:078 owl:sameAs <http://dbpedia.org/resource/Province_of_Cosenza> .
+
+agidp:079 owl:sameAs <http://dbpedia.org/resource/Province_of_Catanzaro> .
+
+agidp:080 owl:sameAs <http://dbpedia.org/resource/Metropolitan_City_of_Reggio_Calabria> .
+
+agidp:081 owl:sameAs <http://dbpedia.org/resource/Province_of_Trapani> .
+
+agidp:082 owl:sameAs <http://dbpedia.org/resource/Metropolitan_City_of_Palermo> .
+
+agidp:083 owl:sameAs <http://dbpedia.org/resource/Metropolitan_City_of_Messina> .
+
+agidp:084 owl:sameAs <http://dbpedia.org/resource/Province_of_Agrigento> .
+
+agidp:085 owl:sameAs <http://dbpedia.org/resource/Province_of_Caltanissetta> .
+
+agidp:086 owl:sameAs <http://dbpedia.org/resource/Province_of_Enna> .
+
+agidp:087 owl:sameAs <http://dbpedia.org/resource/Metropolitan_City_of_Catania> .
+
+agidp:088 owl:sameAs <http://dbpedia.org/resource/Province_of_Ragusa> .
+
+agidp:089 owl:sameAs <http://dbpedia.org/resource/Province_of_Syracuse> .
+
+agidp:090 owl:sameAs <http://dbpedia.org/resource/Province_of_Sassari> .
+
+agidp:091 owl:sameAs <http://dbpedia.org/resource/Province_of_Nuoro> .
+
+agidp:092 owl:sameAs <http://dbpedia.org/resource/Metropolitan_City_of_Cagliari> .
+
+agidp:093 owl:sameAs <http://dbpedia.org/resource/Province_of_Pordenone> .
+
+agidp:094 owl:sameAs <http://dbpedia.org/resource/Province_of_Isernia> .
+
+agidp:095 owl:sameAs <http://dbpedia.org/resource/Province_of_Oristano> .
+
+agidp:096 owl:sameAs <http://dbpedia.org/resource/Province_of_Biella> .
+
+agidp:097 owl:sameAs <http://dbpedia.org/resource/Province_of_Lecco> .
+
+agidp:098 owl:sameAs <http://dbpedia.org/resource/Province_of_Lodi> .
+
+agidp:099 owl:sameAs <http://dbpedia.org/resource/Province_of_Rimini> .
+
+agidp:100 owl:sameAs <http://dbpedia.org/resource/Province_of_Prato> .
+
+agidp:101 owl:sameAs <http://dbpedia.org/resource/Province_of_Crotone> .
+
+agidp:102 owl:sameAs <http://dbpedia.org/resource/Province_of_Vibo_Valentia> .
+
+agidp:103 owl:sameAs <http://dbpedia.org/resource/Province_of_Verbano-Cusio-Ossola> .
+
+agidp:108 owl:sameAs <http://dbpedia.org/resource/Province_of_Monza_and_Brianza> .
+
+agidp:109 owl:sameAs <http://dbpedia.org/resource/Province_of_Fermo> .
+
+agidp:110 owl:sameAs <http://dbpedia.org/resource/Province_of_Barletta-Andria-Trani> .
+
+agidp:111 owl:sameAs <http://dbpedia.org/resource/Province_of_South_Sardinia> .
+
