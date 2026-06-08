@@ -628,35 +628,35 @@
 </table>
 <p>A questi 13 step custom si aggiunge <strong>un singolo script standalone</strong>, <code>scripts/generate_agid_to_dbpedia.py</code>, che gestisce il linking esterno verso DBpedia: una query SPARQL remota (<code>https://dbpedia.org/sparql</code>) per estrarre tutte le province italiane, un match esatto su <code>prefLabel</code> normalizzata seguito da reconciliation manuale con 25 override hardcoded (14 città metropolitane "Metropolitan City of …" + 11 anomalie nominali tipo "Reggio nell'Emilia" ↔ "Reggio Emilia"), un'emissione finale di 107 triple <code>owl:sameAs</code> nel sidecar <code>output/mappings/agid_to_dbpedia.ttl</code>. Lo script è tenuto separato dagli step macrorefine perché ha bisogno di rete esterna e quindi va eseguito una volta in locale con un risultato versionato su git, mentre la pipeline macrorefine è offline e riproducibile.</p>
 <h3 id="33-le-anomalie-tecniche-risolte">3.3 Le anomalie tecniche risolte</h3>
-<p>Questa sotto-sezione racconta come ciascuna anomalia citata nella sez. 2 è stata risolta a livello di codice, in ordine di apparizione nei CSV.</p>
+<p>Questa sotto-sezione racconta come ciascuna anomalia citata nella sez. 2 è stata risolta a livello di codice.</p>
 <details class="block">
   <summary><strong>Numeri in formato italiano (4 CSV INPS)</strong></summary>
-  <div class="block-content"><p>I CSV dell'Osservatorio statistico INPS adottano la convenzione italiana — punto come separatore delle migliaia e virgola come separatore decimale (<code>1.234,56</code>), con celle vuote marcate <code>-</code>. Lo step <code>ParseItalianNumbers</code> è implementato come <code>ColumnStep</code> (applicato cella per cella su una lista di colonne specificate): regex <code>^[\d.,\s\-]+$</code> per identificare i numeri, rimozione dei punti di migliaia, sostituzione della virgola decimale con punto, conversione a <code>float</code>, mappatura della sentinella <code>-</code> a <code>NaN</code>. La scelta di non usare <code>pandas.to_numeric</code> con <code>decimal=","</code> è motivata: il default <code>pandas</code> non gestisce la sentinella <code>-</code> (che diventerebbe parsing error), e soprattutto non distingue il <code>-</code> "valore soppresso per privacy" (semanticamente diverso da <code>NaN</code> di valore mancante) da un eventuale errore di import. Con uno step custom abbiamo il pieno controllo: la sentinella <code>-</code> viene tracciata nelle metriche <code>StepRecord</code> come <code>count_suppressed</code>, riportata nel sidecar <code>*.history.json</code>, e successivamente mappata a <code>obsStatus=M</code> (Missing) o a osservazione omessa nelle Recipe finali.</p></div>
+  <div class="block-content"><p>I CSV INPS usano <code>1.234,56</code> (punto migliaia, virgola decimali) e <code>-</code> per celle soppresse per privacy. Lo step <code>ParseItalianNumbers</code> (regex <code>^[\d.,\s\-]+$</code>, rimozione punti di migliaia, sostituzione virgola → punto, conversione a float, mappatura <code>-</code> → <code>NaN</code>) sostituisce <code>pandas.to_numeric(decimal=",")</code>, che non distinguerebbe il <code>-</code> "soppresso per privacy" (semanticamente diverso da NaN di valore mancante) da un errore di import. La sentinella <code>-</code> viene tracciata nelle metriche <code>StepRecord</code> come <code>count_suppressed</code> e successivamente mappata a <code>obsStatus=M</code> (Missing).</p></div>
 </details>
 
 <details class="block">
   <summary><strong>Template OLAP sporco (CSV INPS)</strong></summary>
-  <div class="block-content"><p>I CSV esportati dal cubo OLAP INPS contengono righe non tabellari nell'header e nel footer (titolo del cubo, descrizione dei filtri impostati, fonte, data di estrazione) e righe di totale alla fine. <code>pandas.read_csv</code> su questi file applica un'inferenza automatica delle colonne che fallisce — durante lo sviluppo della Recipe del cubo 1 abbiamo verificato che <code>pandas</code> perde 28 righe su un CSV INPS sporco senza apparente errore. La lettura è stata quindi affidata al modulo standard <code>csv.reader</code> con scansione esplicita: salta le righe iniziali finché non incontra l'header tabellare atteso (rilevato via match su un nome colonna noto), legge le righe successive finché non incontra la riga "Totale" (che viene scartata), filtra esplicitamente le 7 righe di aggregati continentali (<code>Europa</code>, <code>Asia</code>, <code>Africa</code>, <code>America Settentrionale</code>, <code>America Centrale</code>, <code>America Meridionale</code>, <code>Oceania</code>) che sono fuori dal perimetro IDPT (pensioni con residenza italiana).</p></div>
+  <div class="block-content"><p>I CSV INPS contengono righe non tabellari nell'header (titolo cubo, filtri, fonte, timestamp) e righe di totale finali. <code>pandas.read_csv</code> perde silenziosamente 28 righe — verificato. La lettura passa al modulo <code>csv.reader</code> con scansione esplicita: salta le righe iniziali finché non incontra l'header tabellare atteso, scarta la riga "Totale" finale, filtra le 7 righe di aggregati continentali (Europa, Asia, …, Oceania) che sono fuori dal perimetro IDPT (pensioni con residenza italiana).</p></div>
 </details>
 
 <details class="block">
   <summary><strong>Quoting CSV non standard (CSV ISTAT)</strong></summary>
-  <div class="block-content"><p>I CSV esportati dal databrowser <code>esploradati.istat.it</code> adottano un quoting non standard: l'apice singolo come <code>quotechar</code> invece del doppio apice. La motivazione tecnica è la presenza nei nomi di provincia di apostrofi (<code>Valle d'Aosta</code>, <code>Reggio nell'Emilia</code>) che con doppio quote dovrebbero essere raddoppiati ma che ISTAT preferisce gestire con un quoting alternativo. Il default di <code>pandas.read_csv</code> (<code>quotechar='"'</code>) interpreta i campi come stringhe non quotate e li spezza alla prima virgola interna; passare <code>quotechar="'"</code> a <code>pandas</code> produce un errore di parser perché alcune righe contengono apici singoli non quotati (per gli accenti tipografici). La soluzione adottata è un helper <code>read_istat_csv()</code> basato su <code>csv.reader</code> stdlib con <code>quotechar="'"</code> esplicito, riutilizzato dalle Recipe dei cubi 5 e 6.</p></div>
+  <div class="block-content"><p>ISTAT usa l'apice singolo come <code>quotechar</code> per gestire gli apostrofi nei nomi di provincia (<code>Valle d'Aosta</code>, <code>Reggio nell'Emilia</code>). Il default di <code>pandas.read_csv</code> (<code>quotechar='"'</code>) spezza i campi alla prima virgola interna; passare <code>quotechar="'"</code> a <code>pandas</code> fa errore perché alcune righe contengono apici non quotati per gli accenti. La soluzione è un helper <code>read_istat_csv()</code> su <code>csv.reader</code> stdlib con <code>quotechar="'"</code> esplicito, riusato dalle Recipe dei cubi 5 e 6.</p></div>
 </details>
 
 <details class="block">
   <summary><strong>NA-bug pandas su CSV MEF</strong></summary>
-  <div class="block-content"><p>Quando <code>pandas.read_csv</code> incontra un valore stringa <code>NA</code> su una colonna <code>Sigla Provincia</code>, lo converte di default a <code>numpy.nan</code> perché <code>NA</code> è uno dei valori di default <code>na_values</code>. <strong>Conseguenza</strong>: i 92 comuni della provincia di Napoli (sigla = <code>NA</code>) perdono il loro identificatore territoriale subito dopo la lettura del CSV, e l'aggregazione per provincia produce un cluster spurio "comuni senza provincia". Il fix è una riga di codice — <code>pandas.read_csv(path, keep_default_na=False)</code> — ma è esattamente il tipo di bug silenzioso che si annida nelle pipeline open data se la convenzione di nomenclatura territoriale non è verificata empiricamente. Il MEF distribuisce inoltre <strong>una riga sentinella</strong> con <code>Codice Istat=0</code>, <code>Sigla=0</code>, <code>Regione=Mancante/errata</code> come placeholder per dichiarazioni con territorio non assegnato: viene filtrata esplicitamente dalla Recipe del cubo 7 prima dell'aggregazione <code>Sigla Provincia</code> → URI AGID.</p></div>
+  <div class="block-content"><p><code>pandas.read_csv</code> converte di default <code>NA</code> (sigla di Napoli) in <code>numpy.nan</code>, perdendo l'identificatore territoriale dei 92 comuni napoletani: l'aggregazione per provincia produce un cluster "comuni senza provincia". Fix di una riga: <code>keep_default_na=False</code>. Il MEF distribuisce inoltre <strong>una riga sentinella</strong> con <code>Codice Istat=0</code> / <code>Sigla=0</code> / <code>Regione=Mancante/errata</code>, filtrata esplicitamente dalla Recipe del cubo 7 prima dell'aggregazione.</p></div>
 </details>
 
 <details class="block">
   <summary><strong>Aggregazione retroattiva delle ex-province sarde</strong></summary>
-  <div class="block-content"><p>Il CSV INPS della serie storica [3] mostra una discontinuità territoriale: dal 2005 al 2011 sono presenti righe per le 4 ex-province sarde (Olbia-Tempio, Carbonia-Iglesias, Medio Campidano, Ogliastra), dal 2012 al 2026 quelle righe scompaiono e i loro valori sono assorbiti dalle sedi INPS attuali (Sassari, Cagliari-e-Sud-Sardegna, Nuoro). Per evitare due policy diverse fra snapshot 2026 e serie storica, lo step <code>AggregateSardiniaProvinces</code> lavora in due modalità: in modalità <strong>snapshot</strong> (cubo 1) aggrega le 3 ex-province che compaiono nel CSV 2026 (Carbonia-Iglesias e Medio Campidano → Sud Sardegna 111, Olbia-Tempio → Sassari 090, Ogliastra → Nuoro 091) preservando il totale al singolo intero; in modalità <strong>mark serie storica</strong> (cubo 3) ricostruisce le 84 osservazioni 2005-2011 sulle 3 sedi attuali e le marca con <code>obsStatus=E</code> (Estimated) + <code>prov:wasDerivedFrom</code> esplicito nella tabella di output, per il successivo passaggio RDF. Le somme su conteggi sono dirette, le medie sugli importi sono pesate sul numero di pensioni (<code>weight_pairs</code>) per non distorcere gli aggregati.</p></div>
+  <div class="block-content"><p>La serie storica INPS mostra una discontinuità: 4 ex-province sarde (Olbia-Tempio, Carbonia-Iglesias, Medio Campidano, Ogliastra) presenti dal 2005 al 2011, scomparse dal 2012 e assorbite dalle 3 sedi INPS attuali. Lo step <code>AggregateSardiniaProvinces</code> lavora in due modalità: <strong>snapshot</strong> (cubo 1) aggrega 8 ex-province → 5 attuali preservando i totali al singolo intero; <strong>mark serie storica</strong> (cubo 3) ricostruisce le 84 osservazioni 2005-2011 sulle 3 sedi attuali e le marca con <code>obsStatus=E</code> + <code>prov:wasDerivedFrom</code>. Somme su conteggi dirette, medie su importi pesate sul numero di pensioni per non distorcere gli aggregati.</p></div>
 </details>
 
 <details class="block">
   <summary><strong>Aggregazione 7.897 comuni MEF → 107 province</strong></summary>
-  <div class="block-content"><p>Lo step <code>AggregateMEFRedditiByProvincia</code> esegue un <code>groupby('Sigla Provincia').sum()</code> sulle 10 colonne di interesse (5 voci × 2 misure: <code>Frequenza</code> + <code>Ammontare in euro</code>), seguito da un unpivot wide→long che ribalta le 5 voci <code>v2/v4/v5/v6/v7</code> da colonne a righe della code-list <code>idpt:voci-reddito-mef</code>. Il match Sigla → URI AGID avviene poi tramite <code>LinkProvinceToAGID_bySigla</code>, che usa <code>clv:acronym</code> come chiave esatta — zero ambiguità perché ogni sigla a 2 lettere è univoca nel vocabolario AGID. Il risultato sono 535 righe (107 province × 5 voci) pronte per l'emissione <code>qb:Observation</code> del cubo 7.</p></div>
+  <div class="block-content"><p><code>AggregateMEFRedditiByProvincia</code> fa <code>groupby('Sigla Provincia').sum()</code> sulle 10 colonne di interesse (5 voci × 2 misure) + unpivot wide→long che ribalta <code>v2/v4/v5/v6/v7</code> da colonne a righe della code-list <code>idpt:voci-reddito-mef</code>. Il match Sigla → URI AGID via <code>LinkProvinceToAGID_bySigla</code> usa <code>clv:acronym</code> come chiave esatta (sigla a 2 lettere univoca nel vocabolario AGID). Risultato: 535 righe (107 × 5 voci) pronte per l'emissione <code>qb:Observation</code>.</p></div>
 </details>
 
 <details class="block">
@@ -1038,19 +1038,18 @@ idpt:dsd-pensioni-vigenti-residenza a qb:DataStructureDefinition ;
 </code></pre>
 <p>L'emissione di tutte e 13.312 le <code>qb:Observation</code> è realizzata dal quattordicesimo step custom di macrorefine — <code>EmitQbObservations</code> in <code>macrorefine/src/macrorefine/steps/lod/emit.py</code>, brevemente già citato nella sez. 3.2 — che è lo step "ponte" fra elaborazione tabellare e trasformazione RDF. Lo step prende in input il <code>Dataset</code> finale di una Recipe (con colonne <code>provincia_uri</code>, <code>tipo_gestione_uri</code>, <code>anno</code>, eventuali misure, eventuale <code>_status</code>, eventuale <code>_derived_from</code>) e genera un file Turtle conforme alla DSD del cubo, completo di tutte le <code>qb:Observation</code> con URI a pattern, valori tipati, <code>obsStatus</code>, <code>prov:wasDerivedFrom</code> dove pertinenti. Lo step è parametrizzato e ha attraversato cinque revisioni durante le Fasi 4–6 (<code>obs_status_column</code> e <code>prov_derived_from_column</code> aggiunti per il pattern obs derivata, <code>measure_type_column</code> e <code>value_column</code> aggiunti per lo stile B, supporto a dimensioni con literal tipato <code>(uri, xsd_datatype)</code> aggiunto per <code>xsd:gYear</code>).</p>
 <h3 id="45-il-pattern-osservazione-derivata-uniforme">4.5 Il pattern "osservazione derivata" uniforme</h3>
-<p>Il principio adottato dalla modellazione è che ogni misura del grafo che <em>non</em> è un dato primario letto dal CSV sorgente, ma una stima o un'aggregazione del progetto, deve essere etichettata <strong>in modo uniforme</strong> come tale. Il pattern è composto da una coppia di asserzioni:</p>
+<p>Ogni misura del grafo che <em>non</em> è un dato primario letto dal CSV sorgente, ma una stima o un'aggregazione del progetto, è etichettata <strong>in modo uniforme</strong> con una coppia di asserzioni:</p>
 <ul>
 <li><code>sdmx-attribute:obsStatus sdmx-code:obsStatus-E</code> (Estimated)</li>
 <li><code>prov:wasDerivedFrom &lt;obs-origine-1&gt; , &lt;obs-origine-2&gt; , ...</code> (una o più sorgenti)</li>
 </ul>
-<p>Il pattern uniforme è applicato in <strong>4 punti del grafo</strong>:</p>
+<p>Il pattern è applicato in <strong>4 punti del grafo</strong>:</p>
 <table>
 <thead>
 <tr>
 <th>#</th>
 <th>Caso</th>
 <th>Cubo</th>
-<th>Origini</th>
 <th style="text-align: right;"># obs marcate</th>
 </tr>
 </thead>
@@ -1059,64 +1058,59 @@ idpt:dsd-pensioni-vigenti-residenza a qb:DataStructureDefinition ;
 <td>1</td>
 <td>Aggregazione retroattiva Sardegna 2005–2011</td>
 <td>3</td>
-<td>obs sede sarda + obs ex-provincia stessa fascia anno</td>
 <td style="text-align: right;">84</td>
 </tr>
 <tr>
 <td>2</td>
 <td>Importo annuo ricostruito (<code>n × media × 13</code>)</td>
 <td>2, 3</td>
-<td>obs <code>numeroPensioni</code> + obs <code>importoMedioMensile</code> stessa cella</td>
 <td style="text-align: right;">3.459</td>
 </tr>
 <tr>
 <td>3</td>
-<td>Plan B GDP proiettato</td>
+<td>Plan B GDP proiettato sulle 107 province</td>
 <td>9</td>
-<td>obs cubo 1 gestione=Pubblici + DataSet cubo 4</td>
 <td style="text-align: right;">428</td>
 </tr>
 <tr>
 <td>4</td>
 <td>IDPT computed</td>
 <td>8</td>
-<td>obs primarie usate nel calcolo della componente</td>
 <td style="text-align: right;">428</td>
 </tr>
 <tr>
 <td></td>
 <td></td>
-<td></td>
-<td><strong>Totale obs estimate</strong></td>
+<td><strong>Totale</strong></td>
 <td style="text-align: right;"><strong>4.399</strong></td>
 </tr>
 </tbody>
 </table>
-<p>Esempio dell'osservazione del Plan B GDP per Torino, regime retributivo:</p>
+<p>Esempio dell'osservazione Plan B GDP per Torino, regime retributivo:</p>
 <pre><code class="language-turtle">idpt:obs-plan-b-001-2026-retributivo a qb:Observation ;
     qb:dataSet idpt:cubo-plan-b-gdp-projected ;
-    idpt:provincia &lt;https://w3id.org/italia/controlled-vocabulary/territorial-classifications/provinces/001&gt; ;
+    idpt:provincia &lt;.../provinces/001&gt; ;
     idpt:annoRiferimento &quot;2026&quot;^^xsd:gYear ;
     idpt:regimeLiquidazione idpt:regime-retributivo ;
     idpt:numeroPensioni &quot;4900&quot;^^xsd:nonNegativeInteger ;
     sdmx-attribute:obsStatus sdmx-code:obsStatus-E ;
     prov:wasDerivedFrom
-        idpt:obs-vigenti-001-2026-pubblici ,         # 35.000 GDP Torino totali (cubo 1)
-        idpt:cubo-pensioni-decorrenza-gdp ;          # 14% retributivo nazionale (cubo 4)
-    rdfs:comment &quot;Stima: 35.000 (GDP Torino) × 14% (retributivo nazionale) = 4.900 pensioni.&quot;@it .
+        idpt:obs-vigenti-001-2026-pubblici ,   # 35.000 GDP Torino totali (cubo 1)
+        idpt:cubo-pensioni-decorrenza-gdp ;    # 14% retributivo nazionale (cubo 4)
+    rdfs:comment &quot;Stima: 35.000 × 14% = 4.900 pensioni.&quot;@it .
 </code></pre>
-<p>Il vantaggio della scelta è duplice. Innanzitutto, una <strong>singola query SPARQL</strong> recupera tutte le 4.399 osservazioni stimate del grafo, ovunque si trovino, qualunque sia il loro tipo:</p>
+<p>Il vantaggio del pattern è doppio. Una <strong>singola query SPARQL</strong> recupera tutte le 4.399 osservazioni stimate del grafo, qualunque sia il loro tipo:</p>
 <pre><code class="language-sparql">SELECT ?obs ?cubo WHERE {
   ?obs a qb:Observation ; qb:dataSet ?cubo ;
        sdmx-attribute:obsStatus sdmx-code:obsStatus-E .
 }
 </code></pre>
-<p>E secondo, una query parallela mostra la <strong>catena transitiva</strong> di derivazione di qualsiasi osservazione stimata, fino alle sue origini primarie:</p>
+<p>Una query parallela mostra la <strong>catena transitiva</strong> di derivazione, fino alle origini primarie, grazie all'operatore SPARQL <code>+</code> (uno o più passi sulla stessa property):</p>
 <pre><code class="language-sparql">SELECT ?origine WHERE {
   idpt:obs-plan-b-001-2026-retributivo prov:wasDerivedFrom+ ?origine .
 }
 </code></pre>
-<p>L'operatore SPARQL <code>+</code> (uno o più passi) segue la catena transitivamente; per le osservazioni dell'IDPT computed che derivano dal Plan B che a sua volta deriva dal cubo 1, una sola query mostra la quadrupla origine. È il pattern di <strong>lineage auditabile</strong> che giustifica l'uso minimale di PROV-O senza dover ricostruire una macchina della provenance da zero. Vale la pena ricordare che la materia prima di tutto questo esisteva già a livello tabellare nei sidecar <code>*.history.json</code> di macrorefine (sez. 3.6): la transizione "tabellare → RDF" è stata progettata in modo che ogni catena di derivazione che era tracciata nelle History venisse materializzata come <code>prov:wasDerivedFrom</code> nel grafo. Le due rappresentazioni sono ortogonali ma coerenti.</p>
+<p>Per le osservazioni dell'IDPT computed (cubo 8), che derivano dal Plan B che a sua volta deriva dal cubo 1, la stessa query mostra la quadrupla origine. È il pattern di <strong>lineage auditabile</strong> che giustifica l'uso minimale di PROV-O senza dover ricostruire una macchina della provenance da zero. La materia prima delle catene di derivazione esisteva già a livello tabellare nei sidecar <code>*.history.json</code> di macrorefine (sez. 3.6): la transizione tabellare → RDF è stata progettata perché ogni catena tracciata nelle History venisse materializzata come <code>prov:wasDerivedFrom</code> nel grafo.</p>
 <h3 id="46-interlinking-i-tre-sidecar-ttl">4.6 Interlinking — i tre sidecar TTL</h3>
 <p>Il linking interno (fra dati e ancore semantiche del grafo IDPT) e il linking esterno (verso il LOD Cloud) sono materializzati in tre sidecar TTL caricati nel <code>graph:linking</code> di Fuseki. Sono distinti dai cubi statistici perché sono asserzioni di equivalenza e di identità, non osservazioni statistiche.</p>
 <p><strong><code>output/mappings/nuts_aliases.ttl</code></strong> — 6 asserzioni. Le 2 sono <code>owl:sameAs</code> semantici locali per le PA Trentino-Alto Adige, che riconciliano il cubo ISTAT-RFL (occupati, NUTS-2) con il cubo ISTAT-Demo (indicatori, NUTS-3) come dichiarato nella sez. 2.2: <code>ITD10 owl:sameAs ITD1</code> e <code>ITD20 owl:sameAs ITD2</code>, con <code>rdfs:comment</code> che dichiara esplicitamente la natura locale dell'equivalenza ("valida solo per le PA dove regione NUTS-2 coincide con provincia NUTS-3"). Le altre 4 sono <code>skos:exactMatch</code> per i fake-NUTS ISTAT proprietari (<code>IT108</code>/<code>IT109</code>/<code>IT110</code>/<code>IT111</code> per Monza-Brianza, Fermo, BAT, Sud Sardegna — le 4 province moderne senza NUTS-3 Eurostat ufficiale, anch'esse anticipate in sez. 2.2). La scelta di <code>skos:exactMatch</code> invece di <code>owl:sameAs</code> per i fake-NUTS è metodologicamente cauta: <code>IT108</code> non è "lo stesso oggetto" di Monza-Brianza nel senso identitario forte, è un identificatore concettualmente equivalente prodotto da un sistema diverso (ISTAT vs Eurostat).</p>
@@ -1141,31 +1135,67 @@ idpt:sede-inps-torino a idpt:SedeINPS ;
 </code></pre>
 <p>Cinque "punti di identità" sulla stessa entità: la URI canonica AGID (ancora primaria), il codice NUTS Eurostat (linking europeo), la risorsa DBpedia (linking LOD globale, transitivo verso Wikidata e oltre), la label INPS originale preservata, l'identificatore della sede INPS che la gestisce amministrativamente. Pattern <strong>LOD 5★ pieno</strong> sulla scala di Berners-Lee.</p>
 <h3 id="47-il-cubo-8-idpt-computed-il-cuore-narrativo">4.7 Il cubo 8 IDPT computed — il cuore narrativo</h3>
-<p>Il cubo 8 è ciò che il progetto produce di originale: l'<strong>Indice di Dipendenza Previdenziale Territoriale</strong> materializzato come <code>qb:DataSet</code> in un grafo nominato separato <code>graph:idpt-computed</code>. La materializzazione (preferita all'alternativa "vista on-the-fly via SPARQL puro") è la scelta giusta per la pratica LOD: il deliverable RDF deve contenere il risultato della ricerca, non lasciarlo a una query da rieseguire ogni volta.</p>
-<p>Le tre dimensioni dell'IDPT (sez. 1 del report — Abstract) sono calcolate per ogni provincia secondo formule esplicite:</p>
+<p>Il cubo 8 è ciò che il progetto produce di originale: l'<strong>Indice di Dipendenza Previdenziale Territoriale</strong> materializzato come <code>qb:DataSet</code> in un grafo nominato separato <code>graph:idpt-computed</code>. La scelta di <em>materializzare</em> l'indice invece di lasciarlo a una vista SPARQL on-the-fly è la scelta giusta per la pratica LOD: il deliverable RDF deve contenere il risultato della ricerca, non rieseguirlo a ogni interrogazione.</p>
+<p><strong>Formule delle tre componenti</strong>, calcolate per ogni provincia:</p>
 <ul>
-<li><strong>D1 — Pressione demografica previdenziale</strong> = pensionati_totale (cubo 1) / (occupati_migliaia (cubo 5) × 1000). Range grezzo sulle 107 province: 0.59 (Bolzano) – 1.48 (Reggio di Calabria).</li>
-<li><strong>D2 — Peso economico delle pensioni</strong> = monte_pensioni_€ (cubo 1, somma dei <code>importoAnnuoComplessivo</code> per provincia × 10⁶) / monte_redditi_da_lavoro_€ (cubo 7, somma di <code>v2 + v4 + v5 + v6 + v7</code> per provincia). Range grezzo: 0.33 – 0.77.</li>
-<li><strong>D3 — Eredità storica delle riforme</strong> = pensioni_in_regime_retributivo (cubo 2 + cubo 9 per la quota Pubblici stimata via Plan B) / pensioni_totali_con_regime (cubo 2 esteso a Pubblici dal cubo 9). Range grezzo: 0.42 – 1.37 (il valore &gt; 1 di alcune province non sarde con <code>agidp:092</code> Cagliari e <code>agidp:111</code> Sud Sardegna è effetto della decisione "Sardegna 1:N" discussa sotto).</li>
+<li><strong>D1 — Pressione demografica</strong> = pensionati totale (cubo 1) / occupati (cubo 5). Range grezzo: 0,59 (Bolzano) – 1,48 (Reggio di Calabria).</li>
+<li><strong>D2 — Peso economico</strong> = monte pensioni € (cubo 1) / monte redditi da lavoro € (cubo 7, somma di v2+v4+v5+v6+v7). Range: 0,33 – 0,77.</li>
+<li><strong>D3 — Eredità storica</strong> = pensioni in regime retributivo (cubo 2 + Plan B GDP del cubo 9 per i Pubblici stimati) / pensioni totali con regime. Range: 0,42 – 1,37.</li>
 </ul>
-<p>Le tre dimensioni grezze sono poi <strong>normalizzate min-max</strong> sui 107 valori della stessa componente: per ognuna, <code>(x − min) / (max − min)</code> produce un valore in [0,1] dove 0 è la provincia con il valore minimo e 1 è la provincia con il valore massimo. Le tre componenti normalizzate sono poi <strong>aggregate via media aritmetica</strong> in un valore IDPT finale anch'esso in [0,1]:</p>
+<p>Le tre componenti grezze sono poi <strong>normalizzate min-max</strong> sui 107 valori della stessa componente — <code>(x − min) / (max − min)</code> produce un valore in [0,1] — e <strong>aggregate via media aritmetica</strong>:</p>
 <p><code>IDPT(provincia) = (D1_normalizzato + D2_normalizzato + D3_normalizzato) / 3</code></p>
-<p>Le 428 osservazioni del cubo 8 (107 province × 4 concetti — le 3 componenti più l'aggregato) portano tutte <code>obsStatus=E</code> (sono derivate per costruzione) e <code>prov:wasDerivedFrom</code> esplicito verso le osservazioni dei cubi primari usate nel calcolo. Decisione metodologica delicata sul caso Sardegna: D3 viene calcolata sulla sede INPS "Cagliari e Sud Sardegna" (sede aggregata) ma deve essere attribuita a <em>due</em> province AGID separate (<code>092</code> Cagliari e <code>111</code> Sud Sardegna). La decisione adottata (Opzione a del Blocco F) è di <strong>replicare l'intero valore della sede aggregata su entrambe le province AGID</strong> — sceltà semantica preferita rispetto a una divisione arbitraria 50/50 perché non abbiamo dati su come la composizione regime varia fra le due province; la replica è documentata nei <code>prov:wasDerivedFrom</code> delle osservazioni interessate, quindi auditabile.</p>
-<p>Il risultato sostantivo è un <strong>divario Nord/Sud nettissimo</strong>, con un rapporto di circa 20× fra le province più dipendenti e quelle meno dipendenti dal sistema pensionistico:</p>
-<p><strong>Top 5 IDPT</strong> (più dipendenti): Reggio di Calabria 0.675, Taranto 0.651, Catanzaro 0.627, Oristano 0.580, Nuoro 0.552.
-<strong>Bottom 5 IDPT</strong> (meno dipendenti): Bolzano/Bozen 0.034, Milano 0.100, Trento 0.104, Prato 0.121, Padova 0.141.</p>
-<p>La narrativa è solida: due province alpine autonome con economia dinamica e demografia ancora giovane (Bolzano, Trento) all'estremo basso; due metropoli del triangolo industriale (Milano, Padova) e una città di distretto tessile (Prato) accanto a loro; all'estremo alto cinque province meridionali — quattro calabresi/pugliesi e una sarda — dove la combinazione di bassa occupazione, demografia anziana, ed eredità retributiva del periodo pre-Dini produce un livello di dipendenza dal sistema pensionistico nettamente più alto. La lettura cartografica viene approfondita nella sez. 5.</p>
+<p>Le 428 osservazioni del cubo 8 (107 province × 3 componenti + 1 aggregato) portano tutte <code>obsStatus=E</code> e <code>prov:wasDerivedFrom</code> esplicito verso le osservazioni primarie. Sul caso Sardegna: D3 è calcolata sulla sede INPS aggregata "Cagliari e Sud Sardegna" e attribuita per <strong>replica integrale</strong> alle due province AGID <code>092</code> Cagliari e <code>111</code> Sud Sardegna — scelta preferita alla divisione 50/50 arbitraria, in assenza di dati sulla composizione regime per ognuna delle due. La replica resta documentata nei <code>prov:wasDerivedFrom</code>, quindi auditabile.</p>
+<p><strong>Risultato sostantivo</strong>: divario Nord/Sud nettissimo, rapporto di circa 20× fra estremi.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Top 5 (più dipendenti)</th>
+<th>Bottom 5 (meno dipendenti)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Reggio di Calabria 0,675</td>
+<td>Bolzano/Bozen 0,034</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Taranto 0,651</td>
+<td>Milano 0,100</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Catanzaro 0,627</td>
+<td>Trento 0,104</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Oristano 0,580</td>
+<td>Prato 0,121</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Nuoro 0,552</td>
+<td>Padova 0,141</td>
+</tr>
+</tbody>
+</table>
+<p>La narrativa è leggibile a colpo d'occhio: due PA alpine con economia dinamica e demografia giovane (Bolzano, Trento), due metropoli del triangolo industriale (Milano, Padova) e un distretto tessile (Prato) all'estremo basso; cinque province meridionali — quattro calabro-pugliesi e una sarda — dove bassa occupazione, demografia anziana ed eredità retributiva pre-Dini si sommano in cima alla classifica. La lettura cartografica completa è nella sez. 5.</p>
 <h3 id="48-dcat-ap_it-del-deliverable-finale">4.8 DCAT-AP_IT del deliverable finale</h3>
 <p>Il deliverable del progetto è impacchettato come <code>dcatapit:Dataset</code> in <code>output/dataset/atlante_idpt_dataset.ttl</code>, con triple-typing (<code>dcatapit:Dataset</code> + <code>dcat:Dataset</code> + <code>void:Dataset</code>) per ottenere sia la conformità al profilo italiano AGID (<code>dcatapit:</code>) sia la compatibilità con DCAT puro (<code>dcat:</code>) sia la dichiarazione minimale delle caratteristiche tecniche del grafo (<code>void:</code>). I 9 <code>qb:DataSet</code> interni sono collegati al dataset di packaging via <code>dcterms:hasPart</code>, in modo che il consumer del DCAT possa navigare al cubo specifico di interesse senza dover decostruire il bundle.</p>
 <p>I metadati del <code>dcatapit:Dataset</code> includono: titolo bilingue IT/EN, descrizione, 3 temi EuroVoc (SOCI = Affari sociali, ECON = Economia, REGI = Regioni), 11 keyword bilingue, licenza CC-BY 4.0, <code>dcterms:rights</code> esplicativo della composizione delle 5 licenze sorgente (IODL 2.0 INPS + CC-BY 3.0 IT ISTAT + CC-BY 3.0 MEF + CC-BY 4.0 AGID, ricompilato sotto CC-BY 4.0 — vedi sez. 2.5), <code>dcterms:conformsTo</code> verso SKOS, qb e dcatapit (triplice conformità), pubblicatore Roberto Bruno come <code>foaf:Agent + dcatapit:Agent</code>, contact point vCard con email. Sono dichiarate <strong>3 distribuzioni</strong>: il bundle TTL aggregato (<code>atlante-idpt.ttl</code>), la versione JSON-LD (<code>atlante-idpt.jsonld</code>), e un bundle ZIP con i sorgenti separati per chi vuole i singoli cubi distinti. La componente VoID minimale espone <code>void:triples</code> (calcolato sui file emessi: 116.633 triple al momento dell'emissione finale), <code>void:sparqlEndpoint</code> (URL placeholder verso il Fuseki di pubblicazione), e tre <code>void:exampleResource</code> (la URI di Torino in AGID, una <code>qb:Observation</code> esemplare, l'IDPT computed di Torino).</p>
 <p>Il file passa <strong>14/14 check SPARQL</strong> di validazione (<code>scripts/validate_dataset.py</code>): conformità DCAT-AP_IT, presenza di tutti i metadati obbligatori, integrità delle relazioni <code>dcterms:hasPart</code> verso i 9 cubi, validità delle URI delle distribuzioni, presenza dei due agenti (publisher, creator), presenza del contact point.</p>
 <h3 id="49-il-caso-di-studio-negativo-rdf-di-facciata-del-mef">4.9 Il caso di studio negativo: "RDF di facciata" del MEF</h3>
-<p>Il file <code>data/mef_redditi_irpef_comune_2024_v1.rdf</code> distribuito dal MEF a fianco del CSV (sez. 2.3) è la cartina al tornasole di cosa <em>non</em> è il Linked Open Data. Lo conserviamo in repository non come fonte di dati — usiamo il CSV per il cubo 7 — ma come <strong>caso di studio negativo</strong> che fa risaltare per contrasto il lavoro di modellazione fatto altrove nel progetto. L'anatomia del file mostra cinque problemi cumulativi.</p>
-<p><strong>Namespace placeholder mai sostituito</strong>: la dichiarazione XML del file è <code>xmlns:s="http://www1.finanze.gov.it/fakeurl#"</code>. Sì, "fakeurl" è letteralmente scritto nel namespace. Vale a dire che ogni asserzione del file ha come predicato un'URI che inizia con la stringa "fakeurl" — un dettaglio inequivocabile che il file non è stato pubblicato con la cura del LOD ma è il risultato di un export automatico da un template mai personalizzato.</p>
-<p><strong>Variabili anonime senza URI semantiche</strong>: i predicati del file sono <code>s:v1</code>, <code>s:v2</code>, ..., <code>s:v22</code> — numeri ordinali invece di concetti. Chi legge l'RDF deve aprire una documentazione esterna per scoprire che <code>v2</code> significa "Reddito da lavoro dipendente". Nel nostro grafo, in netto contrasto, la stessa informazione vive come <code>idpt:voce-redd-lavoro-dipendente</code> (URI semantica) con <code>skos:notation "v2"</code> (preserviamo la sigla nativa del MEF come notazione) — <code>v2</code> è preservato come riconoscibilità, ma l'URI canonica è <code>voce-redd-lavoro-dipendente</code> per consumo machine-readable.</p>
-<p><strong>Modellazione "wide" senza Data Cube</strong>: ogni record è una <code>&lt;s:riga&gt;</code> con tutti gli attributi compressi come property dirette. Zero <code>qb:Observation</code>, zero <code>qb:DataStructureDefinition</code>, zero pattern di cubo. È esattamente il pattern anti-LOD documentato in W3C come anti-pattern (un singolo nodo "tutto-contenente" è opaco a query strutturate). Nel nostro grafo la stessa informazione è modellata come 535 <code>qb:Observation</code> distinte, con dimensioni interrogabili separatamente via SPARQL.</p>
-<p><strong>Zero linking, zero ancore semantiche</strong>: il file contiene zero occorrenze di SKOS, zero di qb, zero di DCAT, zero di <code>owl:sameAs</code>, zero di vocabolari AGID, zero di classificazioni ISTAT. Le sigle delle province sono stringhe libere, non collegate al vocabolario controllato che è pubblicato dalla stessa PA italiana. Non c'è un solo "ponte" semantico verso il resto del LOD Cloud.</p>
-<p><strong>Data malformata</strong>: il file dichiara <code>&lt;s:aggiornato&gt;2026-23-04&lt;/s:aggiornato&gt;</code>. Mese 23. Formato non ISO 8601. Per un file che si presenta come 5★ — il MEF lo dichiara esplicitamente nella sua pagina open data ("statistiche distribuzioni esportabili in PDF, Excel, CSV e in 5-star RDF format") — la data malformata è il sigillo della distanza fra dichiarato e implementato.</p>
+<p>Il file <code>data/mef_redditi_irpef_comune_2024_v1.rdf</code>, distribuito dal MEF a fianco del CSV (sez. 2.3), è la cartina al tornasole di cosa <em>non</em> è il Linked Open Data. Lo conserviamo come <strong>caso di studio negativo</strong> che fa risaltare per contrasto il lavoro di modellazione fatto altrove nel progetto. L'anatomia del file mostra cinque problemi cumulativi:</p>
+<ul>
+<li><strong>Namespace placeholder mai sostituito</strong>: la dichiarazione XML è <code>xmlns:s="http://www1.finanze.gov.it/fakeurl#"</code>. Sì, "fakeurl" è letteralmente scritto nel namespace — segno di un export automatico da template mai personalizzato.</li>
+<li><strong>Variabili anonime senza URI semantiche</strong>: i predicati sono <code>s:v1</code>, <code>s:v2</code>, …, <code>s:v22</code> — numeri ordinali invece di concetti. Chi legge l'RDF deve aprire una documentazione esterna per sapere che <code>v2</code> significa "Reddito da lavoro dipendente". Nel nostro grafo la stessa informazione vive come <code>idpt:voce-redd-lavoro-dipendente</code> con <code>skos:notation "v2"</code> per preservare la sigla nativa.</li>
+<li><strong>Modellazione "wide" senza Data Cube</strong>: ogni record è una <code>&lt;s:riga&gt;</code> con tutti gli attributi compressi come property dirette. Zero <code>qb:Observation</code>, zero DSD, zero pattern di cubo. Anti-pattern conclamato — il singolo nodo "tutto-contenente" è opaco a query strutturate. Nel nostro grafo la stessa informazione è modellata come 535 <code>qb:Observation</code> interrogabili separatamente via SPARQL.</li>
+<li><strong>Zero linking, zero ancore semantiche</strong>: zero occorrenze di SKOS, qb, DCAT, <code>owl:sameAs</code>, vocabolari AGID, classificazioni ISTAT. Le sigle delle province sono stringhe libere, non collegate al vocabolario controllato pubblicato dalla stessa PA italiana.</li>
+<li><strong>Data malformata</strong>: <code>&lt;s:aggiornato&gt;2026-23-04&lt;/s:aggiornato&gt;</code> — mese 23, formato non ISO 8601. Per un file che il MEF dichiara esplicitamente come "5-star RDF format" è il sigillo della distanza fra dichiarato e implementato.</li>
+</ul>
 <p>Il caso MEF è in netto contrasto con il TTL AGID delle province (<code>data/provinces.ttl</code>, sez. 2.4), pubblicato dalla stessa Pubblica Amministrazione italiana ma con cura LOD-grade: vocabolario SKOS canonico, ontologia CLV ufficiale italiana, <code>owl:sameAs</code> nativi verso NUTS Eurostat (116 link), URI canoniche risolvibili via <code>w3id.org</code>, licenza esplicita CC-BY 4.0 dichiarata come <code>dct:license</code> nel file stesso. Stessa fonte di rilascio (la PA italiana), due esempi opposti di pratica LOD. L'insegnamento che il contrasto consegna è che il giudizio sostantivo sul LOD non si fa sulla compliance formale (il file ha estensione <code>.rdf</code>, valida sintatticamente, viene servito con MIME type corretto, è conforme alla grammatica RDF/XML), ma sulla <strong>onestà semantica</strong> (riusa vocabolari standard? espone URI significative? è interrogabile come parte del Web di dati? è connesso al LOD Cloud globale?). Per usare la scala di Berners-Lee, il file MEF è ★★★ vestite da ★★★★★: ha la forma esteriore del LOD 5★ ma il contenuto di un dump XML di una tabella.</p>
 <hr />
 <h2 id="5-visualizzazione-e-interrogazione">5. Visualizzazione e interrogazione</h2>
