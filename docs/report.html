@@ -218,7 +218,7 @@
 <li><a href="#1-abstract">1. Abstract</a><ul>
 <li><a href="#domanda-di-ricerca">Domanda di ricerca</a></li>
 <li><a href="#lindice-idpt">L'indice IDPT</a></li>
-<li><a href="#cosa-ho-costruito">Cosa ho costruito</a></li>
+<li><a href="#il-deliverable-in-cifre">Il deliverable in cifre</a></li>
 <li><a href="#risultato-sostantivo">Risultato sostantivo</a></li>
 <li><a href="#metodologia">Metodologia</a></li>
 </ul>
@@ -303,7 +303,7 @@
 <li><strong>D3 — Eredità storica delle riforme</strong>: % pensioni in regime retributivo pre-Riforma Dini 1995 sul totale. Misura il "peso del passato" delle stratificazioni normative.</li>
 </ul>
 <p>Le tre componenti grezze sono <strong>normalizzate min-max</strong> sulle 107 province e <strong>aggregate via media aritmetica</strong> in un valore IDPT in [0,1]. La scelta della media aritmetica (anziché pesata) è metodologica: dichiara "le tre dimensioni contano uguale" senza introdurre pesi soggettivi, e poiché i tre componenti normalizzati sono materializzati separatamente nel grafo, un consumer SPARQL può rifare l'aggregato con pesi diversi se preferisce. La normalizzazione min-max è la trasformazione più trasparente; la sua sensibilità agli outlier (Reggio Calabria in alto, Bolzano in basso) è dichiarata fra i limiti.</p>
-<h3 id="cosa-ho-costruito">Cosa ho costruito</h3>
+<h3 id="il-deliverable-in-cifre">Il deliverable in cifre</h3>
 <table>
 <thead>
 <tr>
@@ -401,14 +401,8 @@
 <li><strong>2 vocabolari controllati AGID</strong> in Turtle (province + regioni).</li>
 </ul>
 <p>Per ciascuna fonte la sezione dichiara URL canonico, parametri di estrazione, licenza ufficiale, composizione e ruolo nell'IDPT.</p>
-<p>Tre osservazioni di contesto utili a inquadrare l'acquisizione:</p>
-<ul>
-<li><strong>INPS</strong> distribuisce i suoi dati come <strong>cubi OLAP JavaScript client-side</strong>: non c'è un URL diretto al CSV finale, l'utente imposta manualmente filtri/righe/colonne/statistiche. Per riproducibilità, questi parametri sono dichiarati alla stregua di un URL canonico.</li>
-<li><strong>ISTAT</strong> ha deprecato <code>dati.istat.it</code>, sostituito dal databrowser <code>esploradati.istat.it</code>. Il formato è SDMX-like ma adotta un <strong>quoting CSV non standard</strong> (apice singolo come <code>quotechar</code> per gestire gli apostrofi nei nomi propri) che rompe <code>pandas.read_csv</code> e richiede <code>csv.reader</code> stdlib.</li>
-<li><strong>MEF</strong> affianca al CSV affidabile delle dichiarazioni IRPEF un file RDF/XML sostanzialmente vuoto di modellazione semantica — il <strong>case study negativo</strong> discusso in sez. 4.9 con il framing "RDF di facciata".</li>
-</ul>
 <h3 id="21-inps">2.1 INPS</h3>
-<p>Le quattro estrazioni INPS derivano tutte dall'<strong>Osservatorio statistico</strong> (area pensioni vigenti + decorrenza), licenza comune <strong>IODL 2.0</strong> (<a href="https://www.dati.gov.it/iodl/2.0/">Italian Open Data Licence v2.0</a> — <a href="https://www.inps.it/it/it/dati-e-bilanci/open-data.html">INPS Open Data</a>).</p>
+<p>Le quattro estrazioni INPS derivano tutte dall'<strong>Osservatorio statistico</strong> (area pensioni vigenti + decorrenza), licenza comune <strong>IODL 2.0</strong> (<a href="https://www.dati.gov.it/iodl/2.0/">Italian Open Data Licence v2.0</a> — <a href="https://www.inps.it/it/it/dati-e-bilanci/open-data.html">INPS Open Data</a>). L'INPS distribuisce questi dati come <strong>cubi OLAP JavaScript client-side</strong>: non esiste un URL diretto al CSV finale, l'utente imposta manualmente filtri, righe, colonne e statistiche. Per riproducibilità, i parametri di estrazione sono perciò dichiarati per ciascun dataset alla stregua di un URL canonico.</p>
 <details class="block dataset-block">
   <summary><strong>[1] Pensioni vigenti per provincia di residenza, 2026</strong></summary>
   <div class="block-content">
@@ -684,7 +678,7 @@
 <h2 id="3-elaborazione-dei-dataset">3. Elaborazione dei dataset</h2>
 <p>Prima di poter trasformare i dati in RDF e modellarli ontologicamente — che è materia della sez. 4 — è stato necessario portare le nove fonti tabellari della sez. 2 a una rappresentazione <em>coerente, pulita e armonizzata</em> a livello di tabella. In questa sezione "elaborazione" significa esattamente questo: data cleaning, normalizzazione, aggregazione, unpivot, stima delle misure soppresse o non pubblicate. Le anomalie tecniche che la sez. 2 ha citato in chiusura di ogni scheda dataset — formato italiano dei numeri, quoting non standard, soppressioni per privacy, asimmetrie territoriali, ex-province sarde, fake-NUTS, bug <code>pandas</code>, sentinelle MEF — vengono qui risolte una alla volta, dichiarando per ognuna il pattern algoritmico adottato. La distinzione metodologica fra <strong>elaborazione</strong> (qui) e <strong>trasformazione semantica</strong> (sez. 4) attraversa l'intera architettura del progetto: tutto il lavoro tabellare è chiuso prima che venga emessa la prima tripla RDF.</p>
 <h3 id="31-macrorefine-motore-e-architettura-della-pipeline">3.1 macrorefine: motore e architettura della pipeline</h3>
-<p>L'elaborazione è stata realizzata interamente con <strong>macrorefine</strong>, libreria Python di data cleaning a pipeline sviluppata appositamente per il progetto. macrorefine ha un'architettura concettualmente semplice ma rigorosa: un <code>Dataset</code> <em>immutabile</em> che incapsula un DataFrame <code>pandas</code>, una <code>Pipeline</code> <em>fluente</em> che concatena <code>Step</code> componibili, una <code>Recipe</code> riusabile che è una fabbrica di pipeline parametrizzate per uno specifico CSV sorgente. Ogni <code>Step</code> produce un nuovo <code>Dataset</code> (mai mutazione in-place) e registra un <code>StepRecord(name, params, metrics)</code> in una <code>History</code> che viene serializzata come sidecar <code>*.history.json</code> accanto al CSV pulito. Il sidecar contiene, per ogni esecuzione: nome dello step, parametri passati, timestamp UTC, metriche di output (es. righe lette / righe scritte / righe scartate, conteggio di match riusciti contro vocabolari esterni, totali preservati nelle aggregazioni). Questo audit trail strutturato è precisamente la "materia prima" che la sez. 4 trasformerà in lineage PROV-O minimale del grafo RDF.</p>
+<p>L'elaborazione è stata realizzata interamente con <strong>macrorefine</strong>, libreria Python di data cleaning a pipeline sviluppata appositamente per il progetto. macrorefine ha un'architettura concettualmente semplice ma rigorosa: un <code>Dataset</code> <em>immutabile</em> che incapsula un DataFrame <code>pandas</code>, una <code>Pipeline</code> <em>fluente</em> che concatena <code>Step</code> componibili, una <code>Recipe</code> riusabile che è una fabbrica di pipeline parametrizzate per uno specifico CSV sorgente. Ogni <code>Step</code> produce un nuovo <code>Dataset</code> (mai mutazione in-place) e registra un <code>StepRecord(name, params, metrics)</code> in una <code>History</code> immutabile associata al <code>Dataset</code>: di ogni step restano tracciati nome, parametri passati e metriche di output (es. righe lette / righe scritte / righe scartate, conteggio di match riusciti contro vocabolari esterni, totali preservati nelle aggregazioni). Questo audit trail strutturato è la "materia prima" che la sez. 4 trasformerà in lineage PROV-O minimale del grafo RDF.</p>
 <p>Sono stati pertanto sviluppati <strong>13 step custom LOD-aware</strong> organizzati nel sottomodulo <code>macrorefine/src/macrorefine/steps/lod/</code>.</p>
 <h3 id="32-inventario-dei-13-step-custom-lod-aware">3.2 Inventario dei 13 step custom LOD-aware</h3>
 <p>Gli step sono raggruppati per famiglia funzionale in cinque file Python: <code>parse.py</code>, <code>link.py</code>, <code>aggregate.py</code>, <code>enrich.py</code>, <code>estimate.py</code>, <code>project.py</code>. La tabella seguente fornisce per ognuno la famiglia, il file di residenza e il problema che risolve. Un quattordicesimo step, <code>EmitQbObservations</code> in <code>emit.py</code>, è di pertinenza della trasformazione semantica e viene presentato nella sez. 4.</p>
@@ -813,107 +807,9 @@
 
 <details class="block">
   <summary><strong>Riconciliazione nominale INPS → AGID</strong></summary>
-  <div class="block-content"><p>Il <code>LinkProvinceToAGID_byName</code> risolve il caso più delicato: i CSV INPS portano i nomi delle province in italiano, talora in maiuscolo, con varianti tipografiche storiche e abbreviazioni che non corrispondono allo <code>skos:prefLabel@it</code> del vocabolario AGID. La pipeline interna è a quattro stadi: (1) normalizzazione (lowercase, NFKD con drop dei combining accent, fix spazi attorno ai trattini, collasso whitespace multipli); (2) match diretto sul nome AGID normalizzato; (3) dizionario manuale <code>SETTLED_ALIASES</code> per le anomalie strutturali documentate. 
-Le 13 anomalie nominali strutturali del confronto INPS vs AGID, materializzate come entry del dizionario, sono:</p></div>
+  <div class="block-content"><p>Il <code>LinkProvinceToAGID_byName</code> risolve il caso più delicato: i CSV INPS portano i nomi delle province in italiano, talora in maiuscolo, con varianti tipografiche storiche e abbreviazioni che non corrispondono allo <code>skos:prefLabel@it</code> del vocabolario AGID. La pipeline interna è a quattro stadi: (1) normalizzazione (lowercase, NFKD con drop dei combining accent, fix degli spazi attorno ai trattini, collasso del whitespace multiplo); (2) match diretto sul nome AGID normalizzato; (3) dizionario manuale <code>SETTLED_ALIASES</code> che risolve le tredici anomalie tipografiche strutturali ricorrenti nei CSV — nomi in maiuscolo, apostrofi e spazi spurî attorno ai trattini, denominazioni estese delle due PA, e varianti come <code>Reggio Calabria</code> → <code>Reggio di Calabria</code> o <code>Pesaro -Urbino</code> (trattino) → <code>Pesaro e Urbino</code> (congiunzione AGID); (4) fallback fuzzy via <code>rapidfuzz</code> (soglia 90) per gli eventuali residui. Le metriche <code>StepRecord</code> distinguono <code>matched_via_direct</code>, <code>matched_via_alias</code> e <code>matched_via_fuzzy</code> per l'audit a posteriori.</p></div>
 </details>
 
-<table>
-<thead>
-<tr>
-<th>Nome INPS originale (CSV)</th>
-<th>Nome AGID (<code>skos:prefLabel@it</code>)</th>
-<th>Codice ISTAT</th>
-<th>Origine</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>Aosta</code></td>
-<td>Valle d'Aosta/Vallée d'Aoste</td>
-<td>007</td>
-<td>residenza</td>
-</tr>
-<tr>
-<td><code>Barletta -Andria-Trani</code></td>
-<td>Barletta-Andria-Trani</td>
-<td>110</td>
-<td>residenza (fix spazio)</td>
-</tr>
-<tr>
-<td><code>Forli' -Cesena</code></td>
-<td>Forlì-Cesena</td>
-<td>040</td>
-<td>residenza (fix accento + spazio)</td>
-</tr>
-<tr>
-<td><code>Massa -Carrara</code></td>
-<td>Massa-Carrara</td>
-<td>045</td>
-<td>residenza (fix spazio)</td>
-</tr>
-<tr>
-<td><code>Provincia Autonoma di Bolzano/Bozen</code></td>
-<td>Bolzano/Bozen</td>
-<td>021</td>
-<td>residenza</td>
-</tr>
-<tr>
-<td><code>Provincia Autonoma di Trento</code></td>
-<td>Trento</td>
-<td>022</td>
-<td>residenza</td>
-</tr>
-<tr>
-<td><code>Reggio Calabria</code></td>
-<td>Reggio di Calabria</td>
-<td>080</td>
-<td>residenza</td>
-</tr>
-<tr>
-<td><code>Reggio Emilia</code></td>
-<td>Reggio nell'Emilia</td>
-<td>035</td>
-<td>residenza</td>
-</tr>
-<tr>
-<td><code>Verbano -Cusio-Ossola</code></td>
-<td>Verbano-Cusio-Ossola</td>
-<td>103</td>
-<td>residenza (fix spazio)</td>
-</tr>
-<tr>
-<td><code>VERBANIA</code></td>
-<td>Verbano-Cusio-Ossola</td>
-<td>103</td>
-<td>regime sede / serie storica (maiuscolo)</td>
-</tr>
-<tr>
-<td><code>FORLI</code></td>
-<td>Forlì-Cesena</td>
-<td>040</td>
-<td>regime sede / serie storica (maiuscolo, senza accento)</td>
-</tr>
-<tr>
-<td><code>BOLZANO</code></td>
-<td>Bolzano/Bozen</td>
-<td>021</td>
-<td>regime sede / serie storica (maiuscolo)</td>
-</tr>
-<tr>
-<td><code>TRENTO</code></td>
-<td>Trento</td>
-<td>022</td>
-<td>regime sede / serie storica (maiuscolo)</td>
-</tr>
-<tr>
-<td><code>PESARO -URBINO</code></td>
-<td>Pesaro e Urbino</td>
-<td>041</td>
-<td>regime sede (variante <code>-</code> vs <code>e</code>, scoperta in Fase 1 blocco 3)</td>
-</tr>
-</tbody>
-</table>
-<p>L'ultima riga della tabella è una scoperta sopravvenuta durante lo sviluppo che vale la pena raccontare: il vocabolario AGID modella "Pesaro e Urbino" con il connettore congiuntivo (" e "), mentre il cubo INPS regime di liquidazione usa l'abbreviazione con trattino. La pipeline di normalizzazione li rende rispettivamente <code>pesaro e urbino</code> e <code>pesaro-urbino</code>, mismatch a livello di stringa risolto solo aggiungendo l'entry esplicita al dizionario. Le metriche <code>StepRecord</code> distinguono <code>matched_via_direct</code>, <code>matched_via_alias</code>, <code>matched_via_fuzzy</code> per l'audit a posteriori.</p>
 <details class="block">
   <summary><strong>Stima dell'importo annuo soppresso (cubi 2 e 3)</strong></summary>
   <div class="block-content"><p>Il cubo OLAP INPS sopprime la statistica <code>Importo complessivo annuo</code> per privacy quando si scende a granularità provincia × regime (cubo 2) o sede × anno (cubo 3); abbiamo già menzionato il problema nella sez. 2. Lo step <code>EstimateAnnualAmount</code> ricostruisce l'importo come <code>numero_pensioni × importo_medio_mensile × 13</code> (12 mensilità più tredicesima), aggiunge una colonna <code>_status="estimated"</code>, e popola una colonna <code>_derived_from</code> con la coppia delle due osservazioni primarie da cui la stima è derivata (necessaria per emettere <code>prov:wasDerivedFrom</code> nella sez. 4). Il moltiplicatore 13 è una convenzione INPS pubblica per le pensioni annue; il pattern di derivazione esplicita preserva la separazione semantica fra dato primario e stima.</p></div>
@@ -921,7 +817,16 @@ Le 13 anomalie nominali strutturali del confronto INPS vs AGID, materializzate c
 
 <details class="block">
   <summary><strong>Plan B GDP — la trasformazione più articolata</strong></summary>
-  <div class="block-content"><p>Lo step <code>ProjectGDPRegimeComposition</code> realizza in due fasi quanto descritto nella sez. 2.1 sul dataset [4]. Fase 1: legge il CSV decorrenza GDP nazionale (46 righe da "anteriore al 31/12/1980" al 2025), applica l'euristica anno-di-decorrenza → regime di liquidazione e produce 4 percentuali nazionali di composizione regime GDP. Le soglie dell'euristica sono calibrate sulle due grandi riforme previdenziali italiane: chi è andato in pensione prima del 1996 è interamente in regime retributivo puro (sistema pre-Riforma Dini 1995); chi è andato in pensione fra il 1996 e il 2011 è in regime misto-Dini (retributivo per l'anzianità maturata fino al 1995, contributivo per il resto); chi è andato in pensione dal 2012 in poi è in regime misto-Fornero (retributivo fino al 2011, contributivo per il resto) o, raramente, contributivo puro (per chi ha iniziato a contribuire dopo il 1996, caso ancora rarissimo nel 2026 perché l'età pensionabile non è stata ancora raggiunta). Sul CSV reale, queste percentuali si attestano a 13,85% Retributivo + 34,23% Misto-Dini + 51,92% Misto-Fornero + 0% Contributivo-puro (la quota Contributivo-puro è praticamente assente perché chi è entrato nel mondo del lavoro dopo l'1/1/1996 non è ancora arrivato all'età pensionabile nel 2026). Fase 2: legge via SPARQL il cubo 1 già emesso, estrae per ogni provincia il numero di pensioni <code>gestione-pubblici</code>, moltiplica per le 4 percentuali nazionali, produce 428 osservazioni stimate (107 province × 4 regimi). Il totale per provincia è preservato al singolo intero; il totale nazionale sommato sulle 107 province (3.159.266) differisce di esattamente <strong>11.991 pensioni</strong> dal totale GDP del cubo 4 (3.171.257) — differenza interamente giustificata dalle pensioni Pubblici residenti all'estero (Europa 7.833 + Asia 381 + Africa 1.941 + America Settentrionale 745 + America Centrale 300 + America Meridionale 607 + Oceania 184 = 11.991), che il cubo 1 esclude per coerenza con la decisione "pensioni estere fuori dall'IDPT". Validazione esatta al singolo intero, ricostruzione riproducibile, e onestà metodologica: la differenza è dichiarata, non nascosta.</p></div>
+  <div class="block-content"><p>Lo step <code>ProjectGDPRegimeComposition</code> colma in due fasi il vuoto descritto nella sez. 2.1 a proposito del dataset [4]: l'INPS non pubblica la composizione per regime delle pensioni dei dipendenti pubblici (GDP) a livello provinciale, e il Plan B la ricostruisce stimando la composizione nazionale e proiettandola sulle 107 quote provinciali.</p>
+<p><em>Fase 1 — composizione regime nazionale.</em> Lo step legge il CSV di decorrenza GDP nazionale (46 righe, da "anteriore al 31/12/1980" al 2025) e applica un'euristica anno-di-decorrenza → regime di liquidazione, le cui soglie sono calibrate sulle due grandi riforme previdenziali italiane:</p>
+<ul>
+<li>decorrenza <strong>prima del 1996</strong> → <strong>retributivo puro</strong> (sistema pre-Riforma Dini 1995);</li>
+<li>decorrenza <strong>1996–2011</strong> → <strong>misto-Dini</strong> (retributivo per l'anzianità maturata fino al 1995, contributivo per il resto);</li>
+<li>decorrenza <strong>dal 2012</strong> → <strong>misto-Fornero</strong> (retributivo fino al 2011, contributivo per il resto) o, raramente, <strong>contributivo puro</strong> (riservato a chi ha iniziato a contribuire dopo il 1996 — caso quasi assente nel 2026 perché tali coorti non hanno ancora raggiunto l'età pensionabile).</li>
+</ul>
+<p>Sul CSV reale le quote nazionali risultano <strong>13,85% retributivo, 34,23% misto-Dini, 51,92% misto-Fornero, 0% contributivo puro</strong>.</p>
+<p><em>Fase 2 — proiezione provinciale.</em> Lo step legge via SPARQL il cubo 1 già emesso, estrae per ogni provincia il numero di pensioni <code>gestione-pubblici</code>, lo moltiplica per le quattro percentuali nazionali e genera <strong>428 osservazioni stimate</strong> (107 province × 4 regimi), con il totale provinciale preservato al singolo intero.</p>
+<p><em>Validazione.</em> Il totale nazionale ricomposto sulle 107 province (3.159.266) differisce di esattamente <strong>11.991 pensioni</strong> dal totale GDP del cubo 4 (3.171.257). Lo scarto è interamente spiegato dalle pensioni dei dipendenti pubblici residenti all'estero — Europa 7.833, Asia 381, Africa 1.941, America Settentrionale 745, America Centrale 300, America Meridionale 607, Oceania 184 (totale 11.991) — che il cubo 1 esclude per coerenza con la decisione "pensioni estere fuori dall'IDPT". La differenza è quindi riconciliata al singolo intero e dichiarata, non nascosta.</p></div>
 </details>
 
 <h3 id="34-le-quattro-recipe-a-pipeline-lineare-cubi-1-5-6-7">3.4 Le quattro Recipe a pipeline lineare — cubi 1, 5, 6, 7</h3>
@@ -938,7 +843,7 @@ Le 13 anomalie nominali strutturali del confronto INPS vs AGID, materializzate c
 <p><strong>Cubo 3 (serie storica sedi INPS)</strong> — <code>scripts/recipes/cubo3_serie_storica_sede.py</code>. Stile B qb anch'esso, ma su 29 anni invece che 4 regimi. Pipeline: csv.reader stdlib per template OLAP sporco → <code>ParseItalianNumbers</code> → <code>UnpivotINPSSerieStorica</code> (29 anni × 3 measureType, scarto delle righe <code>-</code> per BAT, Fermo, Monza pre-2009 — <code>obsStatus=M</code> Missing implicito tramite omissione di osservazione) → <code>AggregateSardiniaProvinces</code> in modalità <code>mark_serie_storica</code> (84 osservazioni 2005-2011 sulle 3 sedi sarde compositive marcate <code>obsStatus=E</code>) → <code>EstimateAnnualAmount</code> per l'importo annuo ricostruito → <code>LinkSedeINPS</code>. Output: 9.105 osservazioni totali — 5.986 status=A primarie + 3.035 status=E importo annuo stimato + 84 status=E aggregazione Sardegna retroattiva — coperte da una sola DSD coerente.</p>
 <h3 id="36-audit-trail-e-validazione-tabellare">3.6 Audit trail e validazione tabellare</h3>
 <p>L'intera elaborazione è coperta da <strong>172 unit test pytest</strong> (<code>macrorefine/tests/</code>) che esercitano gli step custom su micro-fixture rappresentative e da test di integrazione end-to-end sui CSV reali del progetto. Le verifiche di integrazione sono particolarmente rilevanti per la riproducibilità: per il cubo 1 viene controllato che la pipeline porti 110 → 107 entità territoriali dopo l'aggregazione sarda e che 107/107 vengano risolte da <code>LinkProvinceToAGID_byName</code>; per il cubo 7 che 7.897 comuni MEF vengano aggregati su 107 province con preservazione esatta delle 5 voci di reddito; per il cubo 9 che la conservazione dei totali GDP per provincia mostri <code>max diff = 0</code> rispetto al cubo 1 in input.</p>
-<p>I sidecar <code>*.history.json</code> prodotti accanto a ogni CSV pulito registrano, oltre al tracciamento step-per-step già descritto, l'identità del CSV di input (path + hash SHA256), il commit hash di macrorefine al momento dell'esecuzione, l'identità dell'agente (<code>Roberto Bruno</code> come <code>prov:Agent</code> configurato nelle Recipe) e i timestamp UTC di inizio e fine pipeline. Sono questi metadati, esistenti già a livello tabellare grazie alla scelta architetturale di macrorefine, che la sez. 4 monterà come triple PROV-O minimali nel grafo RDF (<code>prov:wasDerivedFrom</code> su ogni osservazione stimata + <code>dcterms:source</code> sui <code>qb:DataSet</code>). La distinzione "audit trail tabellare" (qui) vs "lineage semantico" (sez. 4) è meno una distinzione di sostanza che di livello di astrazione: gli stessi metadati di provenance esistono a entrambi i livelli, con il livello RDF che li espone come triple interrogabili via SPARQL.</p>
+<p>Accanto ai test, la <code>History</code> immutabile che macrorefine associa a ogni <code>Dataset</code> conserva il tracciamento step-per-step dell'intera pipeline — nome, parametri e metriche di ciascuna trasformazione applicata. È questo audit trail strutturato, disponibile a livello tabellare grazie alla scelta architetturale di macrorefine, che la sez. 4 rifonde nelle triple PROV-O minimali del grafo RDF (<code>prov:wasDerivedFrom</code> su ogni osservazione stimata + <code>dcterms:source</code> sui <code>qb:DataSet</code>). La distinzione "audit trail tabellare" (qui) vs "lineage semantico" (sez. 4) è meno una distinzione di sostanza che di livello di astrazione: la stessa provenance esiste a entrambi i livelli, con il livello RDF che la espone come triple interrogabili via SPARQL.</p>
 <p>Le 172 verifiche tabellari sono solo il primo livello di validazione del progetto. Sopra di loro, nella sez. 4, troveranno posto i 33 check SPARQL post-emissione (10 sui vocabolari + 9 sui cubi + 14 sul DCAT-AP_IT del deliverable), che validano la conformità del grafo RDF rispetto al modello ontologico atteso. Le due famiglie di test sono complementari e ortogonali: i test tabellari verificano che la pipeline produca le tabelle corrette; i test SPARQL verificano che il grafo emesso dalle tabelle sia conforme allo schema ontologico atteso.</p>
 <hr />
 <h2 id="4-trasformazione-dei-dataset-modellazione-ontologica-e-rdf">4. Trasformazione dei dataset — modellazione ontologica e RDF</h2>
@@ -972,7 +877,7 @@ Le 13 anomalie nominali strutturali del confronto INPS vs AGID, materializzate c
 <p>Nel nostro progetto: tutti e tre sul <code>dcatapit:Dataset</code> finale e sui 9 <code>qb:DataSet</code> interni, in modo che ogni cubo sia autoesplicativo e citabile anche fuori dal deliverable. L'autore del progetto è dichiarato come <code>foaf:Agent + dcatapit:Agent</code> con vCard.</p>
 <h4 id="tier-4-tattico-minimale">Tier 4 — Tattico minimale</h4>
 <p><strong>PROV-O</strong> (<code>prov:</code> = <code>http://www.w3.org/ns/prov#</code>). Raccomandazione W3C del 2013 per provenance e lineage in RDF. Concetti chiave: <code>prov:Entity</code>, <code>prov:Activity</code>, <code>prov:Agent</code>, <code>prov:wasDerivedFrom</code>, <code>prov:wasGeneratedBy</code>, <code>prov:wasAssociatedWith</code>.</p>
-<p>Nel nostro progetto: uso <strong>minimale e tattico</strong> — solo <code>prov:wasDerivedFrom</code> sulle 4.399 osservazioni stimate. La provenance completa (Activity, Agent strutturato) vive già nei sidecar <code>*.history.json</code> di macrorefine (sez. 3.6), convertibili in PROV-O completo come upgrade post-progetto. Costo: una sola property. Beneficio: una singola query SPARQL con <code>prov:wasDerivedFrom+</code> (operatore transitivo) recupera la catena di derivazione completa fino alle osservazioni primarie — vedi 4.5.</p>
+<p>Nel nostro progetto: uso <strong>minimale e tattico</strong> — solo <code>prov:wasDerivedFrom</code> sulle 4.399 osservazioni stimate. La provenance completa (Activity, Agent strutturato) resta fuori scope: l'infrastruttura <code>History</code>/<code>StepRecord</code> di macrorefine (sez. 3.6) traccia già i metadati di pipeline a livello tabellare, convertibili in PROV-O completo come upgrade post-progetto. Costo: una sola property. Beneficio: una singola query SPARQL con <code>prov:wasDerivedFrom+</code> (operatore transitivo) recupera la catena di derivazione completa fino alle osservazioni primarie — vedi 4.5.</p>
 <p><strong><code>owl:sameAs</code></strong> — una singola property dell'ontologia OWL. Afferma che due entità sono identiche anche se vivono in dataset diversi: è lo standard di fatto per il linking esterno nel LOD Cloud.</p>
 <p>Nel nostro progetto: 107 <code>owl:sameAs</code> AGID → DBpedia come contributo originale (sidecar <code>agid_to_dbpedia.ttl</code>, vedi 4.6), più 2 alias <code>owl:sameAs</code> nel sidecar <code>nuts_aliases.ttl</code> per riconciliare le PA del Trentino-Alto Adige (NUTS-2 <code>ITD1</code>↔NUTS-3 <code>ITD10</code>, idem <code>ITD2</code>↔<code>ITD20</code>). Il resto degli <code>owl:sameAs</code> NUTS — verso <code>nuts.geovocab.org</code> — arriva pre-cotto dal TTL AGID nativo (116 link totali, incluse 9 revisioni NUTS storiche).</p>
 <h4 id="vocabolari-valutati-e-scartati">Vocabolari valutati e scartati</h4>
@@ -1264,7 +1169,7 @@ idpt:dsd-pensioni-vigenti-residenza a qb:DataStructureDefinition ;
   idpt:obs-plan-b-001-2026-retributivo prov:wasDerivedFrom+ ?origine .
 }
 </code></pre>
-<p>Per le osservazioni dell'IDPT computed (cubo 8), che derivano dal Plan B che a sua volta deriva dal cubo 1, la stessa query mostra la quadrupla origine. È il pattern di <strong>lineage auditabile</strong> che giustifica l'uso minimale di PROV-O senza dover ricostruire una macchina della provenance da zero. La materia prima delle catene di derivazione esisteva già a livello tabellare nei sidecar <code>*.history.json</code> di macrorefine (sez. 3.6): la transizione tabellare → RDF è stata progettata perché ogni catena tracciata nelle History venisse materializzata come <code>prov:wasDerivedFrom</code> nel grafo.</p>
+<p>Per le osservazioni dell'IDPT computed (cubo 8), che derivano dal Plan B che a sua volta deriva dal cubo 1, la stessa query mostra la quadrupla origine. È il pattern di <strong>lineage auditabile</strong> che giustifica l'uso minimale di PROV-O senza dover ricostruire una macchina della provenance da zero. La materia prima delle catene di derivazione esisteva già a livello tabellare nell'audit trail <code>History</code> di macrorefine (sez. 3.6): la transizione tabellare → RDF è stata progettata perché ogni catena tracciata negli <code>StepRecord</code> venisse materializzata come <code>prov:wasDerivedFrom</code> nel grafo.</p>
 <h3 id="46-interlinking-i-tre-sidecar-ttl">4.6 Interlinking — i tre sidecar TTL</h3>
 <p>Il linking interno (fra dati e ancore semantiche del grafo IDPT) e il linking esterno (verso il LOD Cloud) sono materializzati in tre sidecar TTL caricati nel <code>graph:linking</code> di Fuseki. Sono distinti dai cubi statistici perché sono asserzioni di equivalenza e di identità, non osservazioni statistiche.</p>
 <p><strong><code>output/mappings/nuts_aliases.ttl</code></strong> — 6 asserzioni. Le 2 sono <code>owl:sameAs</code> semantici locali per le PA Trentino-Alto Adige, che riconciliano il cubo ISTAT-RFL (occupati, NUTS-2) con il cubo ISTAT-Demo (indicatori, NUTS-3) come dichiarato nella sez. 2.2: <code>ITD10 owl:sameAs ITD1</code> e <code>ITD20 owl:sameAs ITD2</code>, con <code>rdfs:comment</code> che dichiara esplicitamente la natura locale dell'equivalenza ("valida solo per le PA dove regione NUTS-2 coincide con provincia NUTS-3"). Le altre 4 sono <code>skos:exactMatch</code> per i fake-NUTS ISTAT proprietari (<code>IT108</code>/<code>IT109</code>/<code>IT110</code>/<code>IT111</code> per Monza-Brianza, Fermo, BAT, Sud Sardegna — le 4 province moderne senza NUTS-3 Eurostat ufficiale, anch'esse anticipate in sez. 2.2). La scelta di <code>skos:exactMatch</code> invece di <code>owl:sameAs</code> per i fake-NUTS è metodologicamente cauta: <code>IT108</code> non è "lo stesso oggetto" di Monza-Brianza nel senso identitario forte, è un identificatore concettualmente equivalente prodotto da un sistema diverso (ISTAT vs Eurostat).</p>
@@ -1674,7 +1579,7 @@ ORDER BY DESC(?durata_attesa_pensione)
 <p><strong>Plan B GDP — euristica decorrenza→regime</strong>. La stima della composizione regime delle pensioni della Gestione Dipendenti Pubblici è derivata via un'euristica calibrata sulla normativa (Riforma Dini 1995, Riforma Fornero 2011) ma mai validata su microdati amministrativi INPS (che non sono pubblici). Un'eventuale collaborazione con INPS-DC Statistica permetterebbe di verificare l'accuratezza dell'euristica e di sostituirla con dati primari.</p>
 <p><strong>Sardegna 1:N nella D3</strong>. La decisione di replicare l'intero valore della sede aggregata Cagliari-e-Sud-Sardegna sulle due province AGID Cagliari (092) e Sud Sardegna (111) è un'approssimazione esplicita (sez. 4.7). Una stima migliore richiederebbe disaggregare la sede aggregata sulle due province con qualche criterio proxy (es. popolazione 65+ residente in ciascuna). La decisione attuale è quella più trasparente in attesa di un dato di disaggregazione disponibile.</p>
 <p><strong>Disallineamento temporale MEF 2024 vs INPS 2026</strong>. I redditi MEF si riferiscono al 2024 (dichiarati nel 2024 per l'anno di imposta 2023), gli snapshot INPS al 1.1.2026, gli occupati ISTAT al 2025. Il disallineamento di 1–3 anni introduce un rumore secondario nel calcolo di D2 ma non altera il segnale Nord/Sud principale.</p>
-<p><strong>PROV-O minimale</strong>. La provenance del grafo usa solo <code>prov:wasDerivedFrom</code>. Una valorizzazione completa del lineage richiederebbe la serializzazione dei sidecar <code>*.history.json</code> di macrorefine come <code>prov:Activity</code> + <code>prov:Agent</code> + <code>prov:wasGeneratedBy</code> + <code>prov:wasAssociatedWith</code> strutturati — upgrade tecnicamente immediato (i dati esistono già nelle history) ma non realizzato per parsimonia di scope.</p>
+<p><strong>PROV-O minimale</strong>. La provenance del grafo usa solo <code>prov:wasDerivedFrom</code>. Una valorizzazione completa del lineage richiederebbe di serializzare l'audit trail <code>History</code> di macrorefine come <code>prov:Activity</code> + <code>prov:Agent</code> + <code>prov:wasGeneratedBy</code> + <code>prov:wasAssociatedWith</code> strutturati — upgrade contenuto (i metadati di pipeline sono già tracciati negli <code>StepRecord</code>) ma non realizzato per parsimonia di scope.</p>
 <p>Le <strong>prospettive di sviluppo</strong> che il lavoro apre sono varie. Una <strong>animazione storica dell'IDPT</strong> (su anni e indice ricalcolato) sarebbe il completamento naturale della visualizzazione. Un <strong>confronto cross-paese via Eurostat NUTS-3</strong> è praticabile poiché tutti i nostri 107 codici NUTS sono già linkati nel grafo via <code>owl:sameAs</code>: rifacendo lo stesso lavoro su Spagna, Francia, Germania (paesi con strutture pensionistiche comparabili) si potrebbero costruire IDPT comparabili a livello europeo. Una <strong>registrazione del dataset su <code>dati.gov.it</code></strong> chiuderebbe il cerchio della pubblicazione conforme alla PA italiana. L'<strong>upgrade del namespace a <code>w3id.org</code></strong> darebbe stabilità a 10+ anni alle URI canoniche del progetto. Un <strong>endpoint SPARQL pubblico stabile</strong> trasformerebbe il deliverable da repo statico a servizio interrogabile in modo persistente. Nessuno di questi è un blocco al risultato attuale, ma ognuno alza il valore del lavoro come infrastruttura riusabile da altri ricercatori.</p>
 <hr />
 <h2 id="6-licenza-del-deliverable-e-compatibilita-con-le-sorgenti">6. Licenza del deliverable e compatibilità con le sorgenti</h2>
