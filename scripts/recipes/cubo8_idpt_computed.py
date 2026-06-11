@@ -8,7 +8,7 @@ L'IDPT ha 3 componenti elementari + 1 aggregato per ognuna delle 107
 province italiane × 1 anno (2026) = **428 obs**.
 
 Formule (decisioni Fase 6 Roberto):
-- D1 pressione demografica  = pensionati_totale / occupati × 1000
+- D1 pressione demografica  = pensioni_vigenti / occupati × 1000
 - D2 peso economico         = monte_pensioni (€) / monte_redditi_da_lavoro (€)
 - D3 eredità storica        = (pensioni_retributivo_cubo2 + cubo9) / totale_pensioni_con_regime
 - Normalizzazione: min-max sui 107 valori per ogni componente
@@ -40,6 +40,19 @@ from macrorefine import Dataset  # noqa: E402
 from macrorefine.steps.lod import EmitQbObservations  # noqa: E402
 
 import idpt_vocab as V  # noqa: E402
+
+def _q(template: str) -> str:
+    # Sostituisce il namespace idpt placeholder con quello attuale di V.IDPT_NS.
+    # Permette di tenere i template SPARQL leggibili (con namespace placeholder
+    # `https://example.org/idpt/`) ma di eseguirli correttamente anche dopo che
+    # `scripts/finalize_namespace.py` ha aggiornato V.IDPT_NS al deploy GitHub
+    # Pages. Senza questa funzione le query non troverebbero nulla nei TTL
+    # emessi dopo il rename del namespace.
+    return template.replace(
+        "PREFIX idpt: <https://example.org/idpt/>",
+        f"PREFIX idpt: <{V.IDPT_NS}>",
+    )
+
 
 
 OUTPUT_TTL = PROJECT_ROOT / "output" / "computed" / "cubo8_idpt_computed.ttl"
@@ -79,8 +92,8 @@ def _compute_raw_components(g) -> pd.DataFrame:
         DataFrame con 107 righe e colonne: codice_istat, uri_agid, d1, d2, d3,
         prov_uris_d1, prov_uris_d2, prov_uris_d3 (liste di URI obs sorgenti).
     """
-    # ---- D1: pensionati TOTALE / occupati × 1000 ----
-    rows_d1 = list(g.query("""
+    # ---- D1: pensioni vigenti TOTALI / occupati × 1000 ----
+    rows_d1 = list(g.query(_q("""
     PREFIX qb: <http://purl.org/linked-data/cube#>
     PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
     PREFIX idpt: <https://example.org/idpt/>
@@ -94,7 +107,7 @@ def _compute_raw_components(g) -> pd.DataFrame:
                idpt:numeroOccupati ?n_occ_k .
       ?p skos:notation ?istat .
     }
-    """))
+    """)))
     df = pd.DataFrame([
         {
             "istat":      str(r[0]),
@@ -114,7 +127,7 @@ def _compute_raw_components(g) -> pd.DataFrame:
     monte_pens_df = pd.DataFrame([
         {"istat": str(r[0]), "uri_agid": str(r[1]), "obs_pens_ann": str(r[2]),
          "monte_pens_mln": float(r[3])}
-        for r in g.query("""
+        for r in g.query(_q("""
         PREFIX qb: <http://purl.org/linked-data/cube#>
         PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
         PREFIX idpt: <https://example.org/idpt/>
@@ -125,13 +138,13 @@ def _compute_raw_components(g) -> pd.DataFrame:
                idpt:importoAnnuoComplessivo ?monte_pens_mln .
           ?p skos:notation ?istat .
         }
-        """)
+        """))
     ])
 
     # Per il monte redditi: somma 5 voci v2/v4/v5/v6/v7 + lista delle 5 obs sorgenti per provincia
     monte_redd_df_rows = []
     obs_redd_per_prov: dict[str, list[str]] = {}
-    for r in g.query("""
+    for r in g.query(_q("""
     PREFIX qb: <http://purl.org/linked-data/cube#>
     PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
     PREFIX idpt: <https://example.org/idpt/>
@@ -141,7 +154,7 @@ def _compute_raw_components(g) -> pd.DataFrame:
            idpt:ammontareTotale ?amm .
       ?p skos:notation ?istat .
     }
-    """):
+    """)):
         istat, obs, amm = str(r[0]), str(r[1]), float(r[2])
         monte_redd_df_rows.append({"istat": istat, "amm": amm})
         obs_redd_per_prov.setdefault(istat, []).append(obs)
@@ -161,7 +174,7 @@ def _compute_raw_components(g) -> pd.DataFrame:
 
     # ---- D3: pensioni retributivo / totale con regime ----
     # Cubo 2 retributivo per sede (via correspondsToProvinceAGID 1:1)
-    rows_d3_2 = list(g.query("""
+    rows_d3_2 = list(g.query(_q("""
     PREFIX qb: <http://purl.org/linked-data/cube#>
     PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
     PREFIX idpt: <https://example.org/idpt/>
@@ -173,12 +186,12 @@ def _compute_raw_components(g) -> pd.DataFrame:
            idpt:numeroPensioni ?n .
       ?p skos:notation ?istat .
     }
-    """))
+    """)))
     d3_2 = {str(r[0]): (str(r[1]), int(r[2])) for r in rows_d3_2}
 
     # Cubo 2 retributivo per sede aggregata "CAGLIARI E SUD SARDEGNA" — decisione (a):
     # replica l'intero valore su entrambe le province aggregate (092 + 111)
-    rows_d3_2_agg = list(g.query("""
+    rows_d3_2_agg = list(g.query(_q("""
     PREFIX qb: <http://purl.org/linked-data/cube#>
     PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
     PREFIX idpt: <https://example.org/idpt/>
@@ -191,14 +204,14 @@ def _compute_raw_components(g) -> pd.DataFrame:
            idpt:regimeLiquidazione idpt:regime-retributivo ;
            idpt:numeroPensioni ?n .
     } LIMIT 1
-    """))
+    """)))
     if rows_d3_2_agg:
         sede_agg_obs, n_agg = str(rows_d3_2_agg[0][0]), int(rows_d3_2_agg[0][1])
         for istat in ("092", "111"):  # Cagliari + Sud Sardegna
             d3_2[istat] = (sede_agg_obs, n_agg)
 
     # Cubo 9 retributivo (Plan B Pubblici) per provincia
-    rows_d3_9 = list(g.query("""
+    rows_d3_9 = list(g.query(_q("""
     PREFIX qb: <http://purl.org/linked-data/cube#>
     PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
     PREFIX idpt: <https://example.org/idpt/>
@@ -209,12 +222,12 @@ def _compute_raw_components(g) -> pd.DataFrame:
            idpt:numeroPensioni ?n .
       ?p skos:notation ?istat .
     }
-    """))
+    """)))
     d3_9 = {str(r[0]): (str(r[1]), float(r[2])) for r in rows_d3_9}
 
     # Denominatore: PRIV+PUB+AUTO da cubo 1 per provincia (escludo Assistenziali, no regime)
     denom_rows: dict[str, list] = {}
-    for r in g.query("""
+    for r in g.query(_q("""
     PREFIX qb: <http://purl.org/linked-data/cube#>
     PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
     PREFIX idpt: <https://example.org/idpt/>
@@ -226,7 +239,7 @@ def _compute_raw_components(g) -> pd.DataFrame:
       FILTER(?g IN (idpt:gestione-privati, idpt:gestione-pubblici, idpt:gestione-autonomi-parasub))
       ?p skos:notation ?istat .
     }
-    """):
+    """)):
         denom_rows.setdefault(str(r[0]), []).append((str(r[1]), int(r[2])))
 
     d3_data = []
@@ -369,7 +382,7 @@ def main() -> int:
             "description": (
                 "Indice composito calcolato per ognuna delle 107 province italiane "
                 "al 1.1.2026, con 3 componenti elementari (D1 pressione demografica "
-                "= pensionati/occupati; D2 peso economico = monte pensioni/monte "
+                "= pensioni vigenti/occupati; D2 peso economico = monte pensioni/monte "
                 "redditi da lavoro; D3 eredità storica = % pensioni retributivo) "
                 "normalizzate min-max sui 107 valori e aggregate via media "
                 "aritmetica. Tutte le 428 obs derivate da cubi primari (1, 5, 7, 2, "

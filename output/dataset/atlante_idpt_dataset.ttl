@@ -29,8 +29,8 @@ idpt:atlante-idpt a dcatapit:Dataset , dcat:Dataset , void:Dataset ;
     dcterms:identifier "atlante-idpt-2026" ;
     dcterms:title       "Atlante della dipendenza previdenziale italiana"@it ,
                         "Atlas of Italian pension dependency"@en ;
-    dcterms:description "Grafo RDF Linked Open Data che modella la dipendenza previdenziale italiana a livello provinciale al 1.1.2026, attraverso l'Indice di Dipendenza Previdenziale Territoriale (IDPT) e le sue 3 componenti elementari (pressione demografica, peso economico, eredità storica delle riforme). Aggrega dati INPS, ISTAT, MEF per le 107 province italiane, ancorati al vocabolario controllato AGID OntoPiA via URI canoniche, e linkati a DBpedia via owl:sameAs. Contiene 9 qb:DataSet primari + 1 cubo IDPT derivato in grafo nominato separato, totale 13.312 qb:Observation. Realizzato come progetto del corso Open Data Management."@it ,
-                        "Linked Open Data RDF graph modeling Italian pension dependency at the provincial level as of 2026-01-01, through the Territorial Pension Dependency Index (IDPT) and its three elementary components (demographic pressure, economic weight, historical reform legacy). Aggregates INPS, ISTAT, MEF data for 107 Italian provinces, anchored to the AGID OntoPiA controlled vocabulary via canonical URIs, and linked to DBpedia via owl:sameAs. Contains 9 primary qb:DataSet plus 1 derived IDPT cube in a separate named graph, totaling 13,312 qb:Observation."@en ;
+    dcterms:description "Grafo RDF Linked Open Data che modella la dipendenza previdenziale italiana a livello provinciale al 1.1.2026, attraverso l'Indice di Dipendenza Previdenziale Territoriale (IDPT) e le sue 3 componenti elementari (pressione demografica, peso economico, eredità storica delle riforme). Aggrega dati INPS, ISTAT, MEF per le 107 province italiane, ancorati al vocabolario controllato AGID OntoPiA via URI canoniche, e linkati a DBpedia via owl:sameAs. Contiene 9 qb:DataSet complessivi (8 cubi primari/intermedi: cubi 1-7 e 9; più 1 cubo IDPT computed: cubo 8, in grafo nominato separato), per un totale di 13.312 qb:Observation."@it ,
+                        "Linked Open Data RDF graph modeling Italian pension dependency at the provincial level as of 2026-01-01, through the Territorial Pension Dependency Index (IDPT) and its three elementary components (demographic pressure, economic weight, historical reform legacy). Aggregates INPS, ISTAT, MEF data for 107 Italian provinces, anchored to the AGID OntoPiA controlled vocabulary via canonical URIs, and linked to DBpedia via owl:sameAs. Contains 9 qb:DataSet in total (8 primary/intermediate cubes: 1-7 and 9; plus 1 computed IDPT cube: 8, in a separate named graph), totaling 13,312 qb:Observation."@en ;
     dcat:theme <http://publications.europa.eu/resource/authority/data-theme/SOCI> ,
                <http://publications.europa.eu/resource/authority/data-theme/ECON> ,
                <http://publications.europa.eu/resource/authority/data-theme/REGI> ;
@@ -62,16 +62,16 @@ idpt:atlante-idpt a dcatapit:Dataset , dcat:Dataset , void:Dataset ;
                       idpt:cubo-idpt-computed ,
                       idpt:cubo-plan-b-gdp-projected ;
     dcterms:source <https://www.inps.it/osservatorio> ,
-                   <https://esplora.istat.it/> ,
+                   <https://esploradati.istat.it/> ,
                    <https://www1.finanze.gov.it/finanze/analisi_stat/> ,
                    <https://w3id.org/italia/controlled-vocabulary/territorial-classifications/provinces> ,
                    <https://dbpedia.org/sparql> ;
     void:triples "116633"^^xsd:nonNegativeInteger ;
-    void:sparqlEndpoint <https://robertobrunocl.github.io/idpt-italia/sparql> ;
     void:exampleResource <https://w3id.org/italia/controlled-vocabulary/territorial-classifications/provinces/001> ,
                          idpt:obs-vigenti-001-2026-PRIV ,
                          idpt:obs-idpt-001-agg-2026 ;
-    dcat:landingPage <https://robertobrunocl.github.io/idpt-italia/> .
+    dcat:landingPage <https://robertobrunocl.github.io/idpt-italia/> ;
+    dcat:accessURL <https://robertobrunocl.github.io/idpt-italia/> .
 
 
 # -----------------------------------------------------------------------------

@@ -181,6 +181,53 @@ risultati attesi è nella sez. 5.2 del `REPORT.md`.
   (`qb:measureType`) per cubi 2+3
 - **DCAT-AP_IT** per metadati conformi al profilo italiano AGID
 
+## Interrogazione in linguaggio naturale via MCP (opzionale)
+
+Il grafo IDPT può essere interrogato in **linguaggio naturale** da Claude
+Desktop o da qualunque altro client che supporta il [Model Context Protocol
+(MCP)](https://modelcontextprotocol.io/). Lo script
+`scripts/mcp_idpt_server.py` espone il grafo come server MCP: Claude traduce
+la domanda in italiano in SPARQL, la esegue contro il Fuseki locale e
+formatta la risposta.
+
+Esempi di domande possibili:
+
+- *"Quali sono le 5 province italiane con IDPT più alto?"*
+- *"Qual è il valore IDPT di Palermo e come si scompone nelle tre componenti?"*
+- *"Confronta il monte pensioni di Milano e Napoli in mld di euro."*
+
+Setup:
+
+```bash
+# 1. Avvia Fuseki (in un terminale dedicato) + carica il grafo
+bash scripts/start_fuseki.sh
+bash scripts/load_fuseki.sh
+
+# 2. Installa le dipendenze MCP (già in requirements.txt come opzionali)
+pip install mcp SPARQLWrapper
+
+# 3. Configura Claude Desktop. Su macOS apri il file
+#    ~/Library/Application Support/Claude/claude_desktop_config.json
+#    e aggiungi (sostituendo il path con quello reale del progetto):
+```
+
+```json
+{
+  "mcpServers": {
+    "idpt-graph": {
+      "command": "python3",
+      "args": ["/path/assoluto/al/progetto/scripts/mcp_idpt_server.py"]
+    }
+  }
+}
+```
+
+Riavvia Claude Desktop. Il tool `sparql_query` diventa disponibile e si
+attiva automaticamente quando la conversazione lo richiede. Lo script
+espone anche `graph_summary()` (riassunto rapido del grafo) e due risorse
+MCP: l'ontologia in Turtle e una descrizione narrativa dello schema dei
+9 cubi.
+
 ## Deploy GitHub Pages (per chi clona il repo)
 
 Il progetto è già deployato su <https://robertobrunocl.github.io/idpt-italia/>.

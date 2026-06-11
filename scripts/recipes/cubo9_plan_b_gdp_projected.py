@@ -44,6 +44,19 @@ from macrorefine.steps.lod import (  # noqa: E402
 
 import idpt_vocab as V  # noqa: E402
 
+def _q(template: str) -> str:
+    # Sostituisce il namespace idpt placeholder con quello attuale di V.IDPT_NS.
+    # Permette di tenere i template SPARQL leggibili (con namespace placeholder
+    # `https://example.org/idpt/`) ma di eseguirli correttamente anche dopo che
+    # `scripts/finalize_namespace.py` ha aggiornato V.IDPT_NS al deploy GitHub
+    # Pages. Senza questa funzione le query non troverebbero nulla nei TTL
+    # emessi dopo il rename del namespace.
+    return template.replace(
+        "PREFIX idpt: <https://example.org/idpt/>",
+        f"PREFIX idpt: <{V.IDPT_NS}>",
+    )
+
+
 
 DECORRENZA_CSV = (
     PROJECT_ROOT / "data" / "inps_pensioni_decorrenza_pubblici_tutte_categorie_2026_v1.csv"
@@ -81,7 +94,7 @@ def _load_pubblici_per_provincia(cubo1_ttl: Path) -> pd.DataFrame:
     g.parse(str(cubo1_ttl), format="turtle")
 
     rows = []
-    for binding in g.query("""
+    for binding in g.query(_q("""
         PREFIX qb: <http://purl.org/linked-data/cube#>
         PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
         PREFIX clv: <https://w3id.org/italia/onto/CLV/>
@@ -94,7 +107,7 @@ def _load_pubblici_per_provincia(cubo1_ttl: Path) -> pd.DataFrame:
                idpt:numeroPensioni ?n_pubblici .
         }
         ORDER BY ?prov
-    """):
+    """)):
         rows.append({
             "obs_uri_cubo1": str(binding.obs),
             "uri_agid":      str(binding.prov),

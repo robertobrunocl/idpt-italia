@@ -15,3 +15,8 @@ branca>=0.7           # Helper colore/legenda per Folium
 
 # Dev / utility (opzionali ma utili durante l'implementazione)
 pytest>=8.0          # Unit test sugli step custom LOD-aware
+
+# Add-on: MCP server per interrogare il grafo da Claude Desktop in linguaggio
+# naturale (opzionale, solo per chi vuole provare l'integrazione LLM).
+# Vedi scripts/mcp_idpt_server.py per il setup completo.
+mcp>=1.0             # SDK Model Context Protocol di Anthropic

@@ -260,7 +260,7 @@ idpt:componente-pressione-demografica a skos:Concept ;
     skos:topConceptOf idpt:componenti-idpt ;
     skos:prefLabel "Pressione demografica previdenziale"@it ;
     skos:notation "PRESS-DEM" ;
-    skos:scopeNote "Rapporto numero pensionati / numero occupati per provincia."@it .
+    skos:scopeNote "Rapporto numero di pensioni vigenti / numero di occupati per provincia. NB: il dato INPS conta pensioni (record amministrativi), non persone titolari; una persona può ricevere più pensioni."@it .
 
 idpt:componente-peso-economico a skos:Concept ;
     skos:inScheme idpt:componenti-idpt ;

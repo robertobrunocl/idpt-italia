@@ -7714,7 +7714,7 @@ idpt:cubo-indicatori-demografici-istat a qb:DataSet ;
     dcterms:issued "2026-05-29"^^xsd:date ;
     dcterms:license <https://creativecommons.org/licenses/by/3.0/it/> ;
     dcterms:rights "Dati derivati da ISTAT (licenza CC-BY 3.0 IT), riconfezionati in formato Linked Open Data."@it ;
-    dcterms:source <https://esplora.istat.it/> ;
+    dcterms:source <https://esploradati.istat.it/> ;
     dcterms:title "Indicatori demografici ISTAT per provincia (2026 + 2025)"@it ;
     qb:structure idpt:dsd-indicatori-demografici-istat .
 

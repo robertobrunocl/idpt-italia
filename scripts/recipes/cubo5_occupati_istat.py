@@ -78,7 +78,7 @@ class CuboOccupatiIstatRecipe(Recipe):
                         "Forze di Lavoro (RFL). Valori in migliaia di persone."
                     ),
                     "issued": "2026-05-29",
-                    "source": "https://esplora.istat.it/",
+                    "source": "https://esploradati.istat.it/",
                     "license": V.LICENSE_CC_BY_3_0_IT,
                     "rights": (
                         "Dati derivati da ISTAT (licenza CC-BY 3.0 IT), "

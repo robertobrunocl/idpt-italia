@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# scripts/run_sparql_demo.sh — Esegue le 10 query SPARQL di demo contro Fuseki.
+# scripts/run_sparql_demo.sh — Esegue le 11 query SPARQL attive di demo contro Fuseki.
 #
 # Pre-requisito:
 #   1. Fuseki avviato:   bash scripts/start_fuseki.sh
@@ -8,8 +8,12 @@
 # Output: per ogni query stampa intestazione (commento .rq) + max 15 righe
 # risultati in formato CSV.
 #
+# Nota: i file marcati DEPRECATED (q03_torino, q06_provenance_chain,
+# q09_torino) sono mantenuti in scripts/sparql/ ma vengono skippati
+# automaticamente perché non contengono SELECT/ASK/DESCRIBE/CONSTRUCT.
+#
 # Uso:
-#   bash scripts/run_sparql_demo.sh              # esegue tutte le 10 query
+#   bash scripts/run_sparql_demo.sh              # esegue tutte le 11 query attive
 #   bash scripts/run_sparql_demo.sh q03          # esegue solo le query col nome che contiene "q03"
 
 set -euo pipefail
@@ -39,6 +43,11 @@ fi
 for query_file in $QUERIES; do
   query_name=$(basename "$query_file" .rq)
   if [[ -n "$filter" && "$query_name" != *"$filter"* ]]; then
+    continue
+  fi
+
+  # Skippa file deprecati: niente SELECT/ASK/DESCRIBE/CONSTRUCT nel corpo.
+  if ! grep -qE '^[[:space:]]*(SELECT|ASK|DESCRIBE|CONSTRUCT)\b' "$query_file"; then
     continue
   fi
 

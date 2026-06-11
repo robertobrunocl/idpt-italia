@@ -27,7 +27,7 @@ idpt:nuts-aliases-graph a dcterms:Standard ;
     dcterms:description "Riconciliazioni semantiche fra codici REF_AREA usati dai CSV ISTAT e le URI AGID delle province. Caricato come sidecar accanto a data/provinces.ttl per abilitare il linking via NUTS nel grafo IDPT."@it ;
     dcterms:created "2026-05-27"^^xsd:date ;
     dcterms:source <https://w3id.org/italia/controlled-vocabulary/territorial-classifications/provinces> ,
-                   <https://esplora.istat.it/> ;
+                   <https://esploradati.istat.it/> ;
     dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
     rdfs:comment "I 2 alias owl:sameAs esprimono identità geografica delle Province Autonome (la regione NUTS-2 coincide con la provincia NUTS-3 perché ha un solo elemento). I 4 skos:exactMatch esprimono equivalenza concettuale fra identificatori istituzionali diversi (codice proprietario ISTAT vs URI canonica AGID) — pattern più cauto di owl:sameAs, perché un fake-NUTS proprietario non è 'lo stesso individuo' di una provincia, ma identifica concettualmente lo stesso territorio."@it .
 
@@ -59,16 +59,16 @@ nuts:ITD20 owl:sameAs nuts:ITD2 .   # simmetria esplicita
 
 nuts:IT108 skos:exactMatch agidp:108 ;
     rdfs:comment "Codice REF_AREA proprietario ISTAT per la provincia di Monza e della Brianza (sigla MB). Provincia istituita nel 2009, non ha NUTS-3 Eurostat ufficiale."@it ;
-    dcterms:source <https://esplora.istat.it/> .
+    dcterms:source <https://esploradati.istat.it/> .
 
 nuts:IT109 skos:exactMatch agidp:109 ;
     rdfs:comment "Codice REF_AREA proprietario ISTAT per la provincia di Fermo (sigla FM). Provincia istituita nel 2009, non ha NUTS-3 Eurostat ufficiale."@it ;
-    dcterms:source <https://esplora.istat.it/> .
+    dcterms:source <https://esploradati.istat.it/> .
 
 nuts:IT110 skos:exactMatch agidp:110 ;
     rdfs:comment "Codice REF_AREA proprietario ISTAT per la provincia di Barletta-Andria-Trani (sigla BT). Provincia istituita nel 2009, non ha NUTS-3 Eurostat ufficiale."@it ;
-    dcterms:source <https://esplora.istat.it/> .
+    dcterms:source <https://esploradati.istat.it/> .
 
 nuts:IT111 skos:exactMatch agidp:111 ;
     rdfs:comment "Codice REF_AREA proprietario ISTAT per la provincia di Sud Sardegna (sigla SU). Provincia istituita nel 2016 dalla riforma sarda; non ha NUTS-3 Eurostat ufficiale (i NUTS storici ITG27/ITG28/ITG2A/ITG2B/ITG2C sono pre-2016)."@it ;
-    dcterms:source <https://esplora.istat.it/> .
+    dcterms:source <https://esploradati.istat.it/> .
