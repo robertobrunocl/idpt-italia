@@ -201,6 +201,19 @@ idpt:valoreIDPT a rdf:Property , qb:MeasureProperty ;
     rdfs:range xsd:decimal ;
     qb:concept sdmx-concept:obsValue .
 
+idpt:valoreGrezzoIDPT a rdf:Property , qb:MeasureProperty ;
+    rdfs:domain qb:Observation ;
+    rdfs:label "valore grezzo IDPT"@it ;
+    rdfs:comment "Valore grezzo (pre-normalizzazione) della componente IDPT, popolato solo per le obs componenti (D1, D2, D3). L'unità di misura è puramente numerica adimensionale e varia per componente: D1 = numero pensioni vigenti / numero occupati; D2 = monte pensioni (€) / monte redditi da lavoro (€); D3 = quota pensioni in regime retributivo (in [0,1] o leggermente oltre per disallineamento sede/residenza). Pubblicato per permettere a un consumer SPARQL di rifare la normalizzazione o l'aggregazione con pesi alternativi. Non valorizzato sulle obs aggregato (idpt:idpt-aggregato), che è media di valori già normalizzati."@it ;
+    rdfs:range xsd:decimal ;
+    qb:concept sdmx-concept:obsValue .
+
+idpt:metodoNormalizzazione a rdf:Property , qb:AttributeProperty ;
+    rdfs:domain qb:DataSet ;
+    rdfs:label "metodo di normalizzazione"@it ;
+    rdfs:comment "Metodo di normalizzazione applicato ai valori grezzi prima del calcolo dell'aggregato. Per il cubo 8 IDPT computed vale 'min-max' (riscalatura dei 107 valori provinciali di ciascuna componente nell'intervallo [0,1] via (x - min) / (max - min))."@it ;
+    rdfs:range xsd:string .
+
 
 # =============================================================================
 # STRATO 3 — Le 9 DataStructureDefinition (1 sezione per cubo)
@@ -382,9 +395,14 @@ idpt:dsd-idpt-computed a qb:DataStructureDefinition ;
     qb:component [ qb:dimension idpt:annoRiferimento ; qb:order 2 ] ;
     qb:component [ qb:dimension idpt:componenteIDPT  ; qb:order 3 ] ;
     qb:component [ qb:measure   idpt:valoreIDPT ] ;
+    qb:component [ qb:measure   idpt:valoreGrezzoIDPT ;
+                   qb:componentRequired "false"^^xsd:boolean ] ;
     qb:component [ qb:attribute sdmx-attribute:obsStatus ;
                    qb:componentRequired "true"^^xsd:boolean ;
-                   qb:componentAttachment qb:Observation ] .
+                   qb:componentAttachment qb:Observation ] ;
+    qb:component [ qb:attribute idpt:metodoNormalizzazione ;
+                   qb:componentRequired "true"^^xsd:boolean ;
+                   qb:componentAttachment qb:DataSet ] .
 
 
 # -----------------------------------------------------------------------------

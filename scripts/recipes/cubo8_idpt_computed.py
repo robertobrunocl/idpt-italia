@@ -276,21 +276,24 @@ def _build_idpt_long_df(raw: pd.DataFrame) -> pd.DataFrame:
 
     long_rows = []
     for _, r in raw.iterrows():
-        # Componenti elementari
-        for comp_slug, comp_uri, val, prov_uris in (
-            ("press-dem", COMPONENT_URIS["press-dem"], r["d1_norm"], r["prov_uris_d1"]),
-            ("peso-eco",  COMPONENT_URIS["peso-eco"],  r["d2_norm"], r["prov_uris_d2"]),
-            ("ered-st",   COMPONENT_URIS["ered-st"],   r["d3_norm"], r["prov_uris_d3"]),
+        # Componenti elementari: valore_idpt = normalizzato, valore_grezzo = grezzo
+        for comp_slug, comp_uri, val_norm, val_raw, prov_uris in (
+            ("press-dem", COMPONENT_URIS["press-dem"], r["d1_norm"], r["d1"], r["prov_uris_d1"]),
+            ("peso-eco",  COMPONENT_URIS["peso-eco"],  r["d2_norm"], r["d2"], r["prov_uris_d2"]),
+            ("ered-st",   COMPONENT_URIS["ered-st"],   r["d3_norm"], r["d3"], r["prov_uris_d3"]),
         ):
             long_rows.append({
                 "codice_istat":      r["istat"],
                 "uri_agid":          r["uri_agid"],
                 "componente_short":  comp_slug,
                 "componente_uri":    comp_uri,
-                "valore_idpt":       round(val, 6),
+                "valore_idpt":       round(val_norm, 6),
+                "valore_grezzo":     round(val_raw, 6),
                 "prov_derived_uris": prov_uris,
             })
-        # Aggregato finale: derivato dalle 3 componenti elementari della stessa provincia
+        # Aggregato finale: derivato dalle 3 componenti elementari della stessa provincia.
+        # valore_grezzo = NaN → EmitQbObservations skippa la triple (l'aggregato è media
+        # di valori già normalizzati, non ha un grezzo significativo).
         agg_prov_uris = [
             V.IDPT_NS + f"obs-idpt-{r['istat']}-press-dem-2026",
             V.IDPT_NS + f"obs-idpt-{r['istat']}-peso-eco-2026",
@@ -302,6 +305,7 @@ def _build_idpt_long_df(raw: pd.DataFrame) -> pd.DataFrame:
             "componente_short":  "agg",
             "componente_uri":    COMPONENT_URIS["agg"],
             "valore_idpt":       round(r["idpt_agg"], 6),
+            "valore_grezzo":     float("nan"),
             "prov_derived_uris": agg_prov_uris,
         })
     return pd.DataFrame(long_rows)
@@ -374,18 +378,29 @@ def main() -> int:
         constant_dimensions={
             V.ANNO_RIFERIMENTO: '"2026"^^xsd:gYear',
         },
-        measures={"valore_idpt": V.VALORE_IDPT},
+        measures={
+            "valore_idpt":   V.VALORE_IDPT,
+            "valore_grezzo": V.VALORE_GREZZO_IDPT,
+        },
         obs_status_column="obs_status_uri",
         prov_derived_from_column="prov_derived_uris",
+        # Attributo a livello DataSet: documenta il metodo di normalizzazione
+        # applicato per produrre i valoreIDPT a partire dai valoreGrezzoIDPT.
+        dataset_attributes={
+            V.METODO_NORMALIZZAZIONE: '"min-max"@it',
+        },
         dataset_metadata={
             "title": "Indice di Dipendenza Previdenziale Territoriale (IDPT), 2026",
             "description": (
                 "Indice composito calcolato per ognuna delle 107 province italiane "
                 "al 1.1.2026, con 3 componenti elementari (D1 pressione demografica "
-                "= pensioni vigenti/occupati; D2 peso economico = monte pensioni/monte "
-                "redditi da lavoro; D3 eredità storica = % pensioni retributivo) "
-                "normalizzate min-max sui 107 valori e aggregate via media "
-                "aritmetica. Tutte le 428 obs derivate da cubi primari (1, 5, 7, 2, "
+                "= pensioni vigenti / occupati; D2 peso economico = monte pensioni / "
+                "monte redditi da lavoro; D3 eredità storica = intensità stimata di "
+                "pensioni in regime retributivo) normalizzate min-max sui 107 valori "
+                "e aggregate via media aritmetica. Per ognuna delle 321 obs componenti "
+                "(D1/D2/D3) viene pubblicato anche il valore grezzo pre-normalizzazione "
+                "via idpt:valoreGrezzoIDPT, per permettere ricomposizione con pesi "
+                "alternativi. Tutte le 428 obs derivate da cubi primari (1, 5, 7, 2, "
                 "9) e marcate obsStatus=E + prov:wasDerivedFrom esplicito verso "
                 "le obs sorgenti del calcolo. Materializzato in grafo nominato "
                 "separato graph:idpt-computed per distribuzione separabile via "

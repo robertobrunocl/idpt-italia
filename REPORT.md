@@ -589,6 +589,8 @@ Le tre componenti grezze sono poi **normalizzate min-max** sui 107 valori della 
 
 Le 428 osservazioni del cubo 8 (107 province × 3 componenti + 1 aggregato) portano tutte `obsStatus=E` e `prov:wasDerivedFrom` esplicito verso le osservazioni primarie. Sul caso Sardegna: D3 è calcolata sulla sede INPS aggregata "Cagliari e Sud Sardegna" e attribuita per **replica integrale** alle due province AGID `092` Cagliari e `111` Sud Sardegna — scelta preferita alla divisione 50/50 arbitraria, in assenza di dati sulla composizione regime per ognuna delle due. La replica resta documentata nei `prov:wasDerivedFrom`, quindi auditabile.
 
+**Doppia misura per riproducibilità** (scelta LOD-grade). Ogni obs componente porta sia `idpt:valoreIDPT` (normalizzato min-max) sia `idpt:valoreGrezzoIDPT` (valore pre-normalizzazione), permettendo a un consumer SPARQL di rifare aggregazioni con pesi alternativi senza dover ricalcolare D1/D2/D3 dai cubi primari. L'obs aggregato porta solo `idpt:valoreIDPT` (l'aggregato è media di valori già normalizzati, il "grezzo" non ha significato). Il DSD dichiara `qb:componentRequired "false"` per `valoreGrezzoIDPT`, in coerenza con la sua presenza solo sulle 321 obs componenti. Sul `qb:DataSet` cubo-idpt-computed è inoltre asserito l'attributo `idpt:metodoNormalizzazione "min-max"@it` (livello DataSet), che documenta nel grafo stesso il metodo applicato.
+
 **Risultato sostantivo**: divario Nord/Sud nettissimo, rapporto di circa 20× fra estremi.
 
 | | Top 5 (più dipendenti) | Bottom 5 (meno dipendenti) |

@@ -97,6 +97,10 @@ VALORE_INDICATORE          = IDPT_NS + "valoreIndicatore"
 FREQUENZA_DICHIARANTI      = IDPT_NS + "frequenzaDichiaranti"
 AMMONTARE_TOTALE           = IDPT_NS + "ammontareTotale"
 VALORE_IDPT                = IDPT_NS + "valoreIDPT"
+VALORE_GREZZO_IDPT         = IDPT_NS + "valoreGrezzoIDPT"
+
+# Attributo qb a livello DataSet (metodo di normalizzazione del cubo 8).
+METODO_NORMALIZZAZIONE     = IDPT_NS + "metodoNormalizzazione"
 
 
 # =============================================================================

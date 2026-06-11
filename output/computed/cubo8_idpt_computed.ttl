@@ -1195,6 +1195,7 @@ ns1:obs-idpt-001-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:001 ;
+    ns1:valoreGrezzoIDPT 0.572196 ;
     ns1:valoreIDPT 0.16162 .
 
 ns1:obs-idpt-001-peso-eco-2026 a qb:Observation ;
@@ -1209,6 +1210,7 @@ ns1:obs-idpt-001-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:001 ;
+    ns1:valoreGrezzoIDPT 0.530201 ;
     ns1:valoreIDPT 0.456866 .
 
 ns1:obs-idpt-001-press-dem-2026 a qb:Observation ;
@@ -1219,6 +1221,7 @@ ns1:obs-idpt-001-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:001 ;
+    ns1:valoreGrezzoIDPT 0.836577 ;
     ns1:valoreIDPT 0.277672 .
 
 ns1:obs-idpt-002-ered-st-2026 a qb:Observation ;
@@ -1232,6 +1235,7 @@ ns1:obs-idpt-002-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:002 ;
+    ns1:valoreGrezzoIDPT 0.540742 ;
     ns1:valoreIDPT 0.128716 .
 
 ns1:obs-idpt-002-peso-eco-2026 a qb:Observation ;
@@ -1246,6 +1250,7 @@ ns1:obs-idpt-002-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:002 ;
+    ns1:valoreGrezzoIDPT 0.608316 ;
     ns1:valoreIDPT 0.637106 .
 
 ns1:obs-idpt-002-press-dem-2026 a qb:Observation ;
@@ -1256,6 +1261,7 @@ ns1:obs-idpt-002-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:002 ;
+    ns1:valoreGrezzoIDPT 0.985722 ;
     ns1:valoreIDPT 0.445597 .
 
 ns1:obs-idpt-003-ered-st-2026 a qb:Observation ;
@@ -1269,6 +1275,7 @@ ns1:obs-idpt-003-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:003 ;
+    ns1:valoreGrezzoIDPT 0.536349 ;
     ns1:valoreIDPT 0.12412 .
 
 ns1:obs-idpt-003-peso-eco-2026 a qb:Observation ;
@@ -1283,6 +1290,7 @@ ns1:obs-idpt-003-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:003 ;
+    ns1:valoreGrezzoIDPT 0.497955 ;
     ns1:valoreIDPT 0.382462 .
 
 ns1:obs-idpt-003-press-dem-2026 a qb:Observation ;
@@ -1293,6 +1301,7 @@ ns1:obs-idpt-003-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:003 ;
+    ns1:valoreGrezzoIDPT 0.815171 ;
     ns1:valoreIDPT 0.253572 .
 
 ns1:obs-idpt-004-ered-st-2026 a qb:Observation ;
@@ -1306,6 +1315,7 @@ ns1:obs-idpt-004-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:004 ;
+    ns1:valoreGrezzoIDPT 0.522073 ;
     ns1:valoreIDPT 0.109186 .
 
 ns1:obs-idpt-004-peso-eco-2026 a qb:Observation ;
@@ -1320,6 +1330,7 @@ ns1:obs-idpt-004-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:004 ;
+    ns1:valoreGrezzoIDPT 0.504 ;
     ns1:valoreIDPT 0.396411 .
 
 ns1:obs-idpt-004-press-dem-2026 a qb:Observation ;
@@ -1330,6 +1341,7 @@ ns1:obs-idpt-004-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:004 ;
+    ns1:valoreGrezzoIDPT 0.796492 ;
     ns1:valoreIDPT 0.23254 .
 
 ns1:obs-idpt-005-ered-st-2026 a qb:Observation ;
@@ -1343,6 +1355,7 @@ ns1:obs-idpt-005-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:005 ;
+    ns1:valoreGrezzoIDPT 0.626261 ;
     ns1:valoreIDPT 0.218177 .
 
 ns1:obs-idpt-005-peso-eco-2026 a qb:Observation ;
@@ -1357,6 +1370,7 @@ ns1:obs-idpt-005-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:005 ;
+    ns1:valoreGrezzoIDPT 0.58486 ;
     ns1:valoreIDPT 0.582984 .
 
 ns1:obs-idpt-005-press-dem-2026 a qb:Observation ;
@@ -1367,6 +1381,7 @@ ns1:obs-idpt-005-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:005 ;
+    ns1:valoreGrezzoIDPT 0.886177 ;
     ns1:valoreIDPT 0.333518 .
 
 ns1:obs-idpt-006-ered-st-2026 a qb:Observation ;
@@ -1380,6 +1395,7 @@ ns1:obs-idpt-006-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:006 ;
+    ns1:valoreGrezzoIDPT 0.515855 ;
     ns1:valoreIDPT 0.102682 .
 
 ns1:obs-idpt-006-peso-eco-2026 a qb:Observation ;
@@ -1394,6 +1410,7 @@ ns1:obs-idpt-006-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:006 ;
+    ns1:valoreGrezzoIDPT 0.587609 ;
     ns1:valoreIDPT 0.589327 .
 
 ns1:obs-idpt-006-press-dem-2026 a qb:Observation ;
@@ -1404,6 +1421,7 @@ ns1:obs-idpt-006-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:006 ;
+    ns1:valoreGrezzoIDPT 0.920527 ;
     ns1:valoreIDPT 0.372193 .
 
 ns1:obs-idpt-007-ered-st-2026 a qb:Observation ;
@@ -1417,6 +1435,7 @@ ns1:obs-idpt-007-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:007 ;
+    ns1:valoreGrezzoIDPT 0.489232 ;
     ns1:valoreIDPT 0.074831 .
 
 ns1:obs-idpt-007-peso-eco-2026 a qb:Observation ;
@@ -1431,6 +1450,7 @@ ns1:obs-idpt-007-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:007 ;
+    ns1:valoreGrezzoIDPT 0.471547 ;
     ns1:valoreIDPT 0.321529 .
 
 ns1:obs-idpt-007-press-dem-2026 a qb:Observation ;
@@ -1441,6 +1461,7 @@ ns1:obs-idpt-007-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:007 ;
+    ns1:valoreGrezzoIDPT 0.704822 ;
     ns1:valoreIDPT 0.129328 .
 
 ns1:obs-idpt-008-ered-st-2026 a qb:Observation ;
@@ -1454,6 +1475,7 @@ ns1:obs-idpt-008-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:008 ;
+    ns1:valoreGrezzoIDPT 0.569047 ;
     ns1:valoreIDPT 0.158326 .
 
 ns1:obs-idpt-008-peso-eco-2026 a qb:Observation ;
@@ -1468,6 +1490,7 @@ ns1:obs-idpt-008-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:008 ;
+    ns1:valoreGrezzoIDPT 0.616395 ;
     ns1:valoreIDPT 0.655748 .
 
 ns1:obs-idpt-008-press-dem-2026 a qb:Observation ;
@@ -1478,6 +1501,7 @@ ns1:obs-idpt-008-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:008 ;
+    ns1:valoreGrezzoIDPT 0.871795 ;
     ns1:valoreIDPT 0.317325 .
 
 ns1:obs-idpt-009-ered-st-2026 a qb:Observation ;
@@ -1491,6 +1515,7 @@ ns1:obs-idpt-009-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:009 ;
+    ns1:valoreGrezzoIDPT 0.506881 ;
     ns1:valoreIDPT 0.093294 .
 
 ns1:obs-idpt-009-peso-eco-2026 a qb:Observation ;
@@ -1505,6 +1530,7 @@ ns1:obs-idpt-009-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:009 ;
+    ns1:valoreGrezzoIDPT 0.62433 ;
     ns1:valoreIDPT 0.674056 .
 
 ns1:obs-idpt-009-press-dem-2026 a qb:Observation ;
@@ -1515,6 +1541,7 @@ ns1:obs-idpt-009-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:009 ;
+    ns1:valoreGrezzoIDPT 0.985168 ;
     ns1:valoreIDPT 0.444972 .
 
 ns1:obs-idpt-010-ered-st-2026 a qb:Observation ;
@@ -1528,6 +1555,7 @@ ns1:obs-idpt-010-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:010 ;
+    ns1:valoreGrezzoIDPT 0.533385 ;
     ns1:valoreIDPT 0.12102 .
 
 ns1:obs-idpt-010-peso-eco-2026 a qb:Observation ;
@@ -1542,6 +1570,7 @@ ns1:obs-idpt-010-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:010 ;
+    ns1:valoreGrezzoIDPT 0.552837 ;
     ns1:valoreIDPT 0.509096 .
 
 ns1:obs-idpt-010-press-dem-2026 a qb:Observation ;
@@ -1552,6 +1581,7 @@ ns1:obs-idpt-010-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:010 ;
+    ns1:valoreGrezzoIDPT 0.891743 ;
     ns1:valoreIDPT 0.339785 .
 
 ns1:obs-idpt-011-ered-st-2026 a qb:Observation ;
@@ -1565,6 +1595,7 @@ ns1:obs-idpt-011-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:011 ;
+    ns1:valoreGrezzoIDPT 0.495822 ;
     ns1:valoreIDPT 0.081726 .
 
 ns1:obs-idpt-011-peso-eco-2026 a qb:Observation ;
@@ -1579,6 +1610,7 @@ ns1:obs-idpt-011-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:011 ;
+    ns1:valoreGrezzoIDPT 0.567296 ;
     ns1:valoreIDPT 0.542457 .
 
 ns1:obs-idpt-011-press-dem-2026 a qb:Observation ;
@@ -1589,6 +1621,7 @@ ns1:obs-idpt-011-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:011 ;
+    ns1:valoreGrezzoIDPT 0.884222 ;
     ns1:valoreIDPT 0.331316 .
 
 ns1:obs-idpt-012-ered-st-2026 a qb:Observation ;
@@ -1602,6 +1635,7 @@ ns1:obs-idpt-012-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:012 ;
+    ns1:valoreGrezzoIDPT 0.556787 ;
     ns1:valoreIDPT 0.1455 .
 
 ns1:obs-idpt-012-peso-eco-2026 a qb:Observation ;
@@ -1616,6 +1650,7 @@ ns1:obs-idpt-012-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:012 ;
+    ns1:valoreGrezzoIDPT 0.502153 ;
     ns1:valoreIDPT 0.392149 .
 
 ns1:obs-idpt-012-press-dem-2026 a qb:Observation ;
@@ -1626,6 +1661,7 @@ ns1:obs-idpt-012-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:012 ;
+    ns1:valoreGrezzoIDPT 0.805952 ;
     ns1:valoreIDPT 0.243191 .
 
 ns1:obs-idpt-013-ered-st-2026 a qb:Observation ;
@@ -1639,6 +1675,7 @@ ns1:obs-idpt-013-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:013 ;
+    ns1:valoreGrezzoIDPT 0.541962 ;
     ns1:valoreIDPT 0.129992 .
 
 ns1:obs-idpt-013-peso-eco-2026 a qb:Observation ;
@@ -1653,6 +1690,7 @@ ns1:obs-idpt-013-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:013 ;
+    ns1:valoreGrezzoIDPT 0.483776 ;
     ns1:valoreIDPT 0.349747 .
 
 ns1:obs-idpt-013-press-dem-2026 a qb:Observation ;
@@ -1663,6 +1701,7 @@ ns1:obs-idpt-013-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:013 ;
+    ns1:valoreGrezzoIDPT 0.811156 ;
     ns1:valoreIDPT 0.24905 .
 
 ns1:obs-idpt-014-ered-st-2026 a qb:Observation ;
@@ -1676,6 +1715,7 @@ ns1:obs-idpt-014-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:014 ;
+    ns1:valoreGrezzoIDPT 0.47542 ;
     ns1:valoreIDPT 0.060383 .
 
 ns1:obs-idpt-014-peso-eco-2026 a qb:Observation ;
@@ -1690,6 +1730,7 @@ ns1:obs-idpt-014-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:014 ;
+    ns1:valoreGrezzoIDPT 0.506514 ;
     ns1:valoreIDPT 0.40221 .
 
 ns1:obs-idpt-014-press-dem-2026 a qb:Observation ;
@@ -1700,6 +1741,7 @@ ns1:obs-idpt-014-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:014 ;
+    ns1:valoreGrezzoIDPT 0.931494 ;
     ns1:valoreIDPT 0.384541 .
 
 ns1:obs-idpt-015-ered-st-2026 a qb:Observation ;
@@ -1713,6 +1755,7 @@ ns1:obs-idpt-015-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:015 ;
+    ns1:valoreGrezzoIDPT 0.568802 ;
     ns1:valoreIDPT 0.15807 .
 
 ns1:obs-idpt-015-peso-eco-2026 a qb:Observation ;
@@ -1727,6 +1770,7 @@ ns1:obs-idpt-015-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:015 ;
+    ns1:valoreGrezzoIDPT 0.358566 ;
     ns1:valoreIDPT 0.06084 .
 
 ns1:obs-idpt-015-press-dem-2026 a qb:Observation ;
@@ -1737,6 +1781,7 @@ ns1:obs-idpt-015-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:015 ;
+    ns1:valoreGrezzoIDPT 0.663133 ;
     ns1:valoreIDPT 0.08239 .
 
 ns1:obs-idpt-016-ered-st-2026 a qb:Observation ;
@@ -1750,6 +1795,7 @@ ns1:obs-idpt-016-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:016 ;
+    ns1:valoreGrezzoIDPT 0.616776 ;
     ns1:valoreIDPT 0.208255 .
 
 ns1:obs-idpt-016-peso-eco-2026 a qb:Observation ;
@@ -1764,6 +1810,7 @@ ns1:obs-idpt-016-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:016 ;
+    ns1:valoreGrezzoIDPT 0.425656 ;
     ns1:valoreIDPT 0.215642 .
 
 ns1:obs-idpt-016-press-dem-2026 a qb:Observation ;
@@ -1774,6 +1821,7 @@ ns1:obs-idpt-016-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:016 ;
+    ns1:valoreGrezzoIDPT 0.756368 ;
     ns1:valoreIDPT 0.187364 .
 
 ns1:obs-idpt-017-ered-st-2026 a qb:Observation ;
@@ -1787,6 +1835,7 @@ ns1:obs-idpt-017-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:017 ;
+    ns1:valoreGrezzoIDPT 0.512897 ;
     ns1:valoreIDPT 0.099587 .
 
 ns1:obs-idpt-017-peso-eco-2026 a qb:Observation ;
@@ -1801,6 +1850,7 @@ ns1:obs-idpt-017-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:017 ;
+    ns1:valoreGrezzoIDPT 0.407626 ;
     ns1:valoreIDPT 0.174041 .
 
 ns1:obs-idpt-017-press-dem-2026 a qb:Observation ;
@@ -1811,6 +1861,7 @@ ns1:obs-idpt-017-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:017 ;
+    ns1:valoreGrezzoIDPT 0.722792 ;
     ns1:valoreIDPT 0.14956 .
 
 ns1:obs-idpt-018-ered-st-2026 a qb:Observation ;
@@ -1824,6 +1875,7 @@ ns1:obs-idpt-018-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:018 ;
+    ns1:valoreGrezzoIDPT 0.509221 ;
     ns1:valoreIDPT 0.095742 .
 
 ns1:obs-idpt-018-peso-eco-2026 a qb:Observation ;
@@ -1838,6 +1890,7 @@ ns1:obs-idpt-018-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:018 ;
+    ns1:valoreGrezzoIDPT 0.516257 ;
     ns1:valoreIDPT 0.424691 .
 
 ns1:obs-idpt-018-press-dem-2026 a qb:Observation ;
@@ -1848,6 +1901,7 @@ ns1:obs-idpt-018-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:018 ;
+    ns1:valoreGrezzoIDPT 0.867434 ;
     ns1:valoreIDPT 0.312415 .
 
 ns1:obs-idpt-019-ered-st-2026 a qb:Observation ;
@@ -1861,6 +1915,7 @@ ns1:obs-idpt-019-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:019 ;
+    ns1:valoreGrezzoIDPT 0.523232 ;
     ns1:valoreIDPT 0.110398 .
 
 ns1:obs-idpt-019-peso-eco-2026 a qb:Observation ;
@@ -1875,6 +1930,7 @@ ns1:obs-idpt-019-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:019 ;
+    ns1:valoreGrezzoIDPT 0.506401 ;
     ns1:valoreIDPT 0.401951 .
 
 ns1:obs-idpt-019-press-dem-2026 a qb:Observation ;
@@ -1885,6 +1941,7 @@ ns1:obs-idpt-019-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:019 ;
+    ns1:valoreGrezzoIDPT 0.87306 ;
     ns1:valoreIDPT 0.31875 .
 
 ns1:obs-idpt-020-ered-st-2026 a qb:Observation ;
@@ -1898,6 +1955,7 @@ ns1:obs-idpt-020-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:020 ;
+    ns1:valoreGrezzoIDPT 0.518294 ;
     ns1:valoreIDPT 0.105233 .
 
 ns1:obs-idpt-020-peso-eco-2026 a qb:Observation ;
@@ -1912,6 +1970,7 @@ ns1:obs-idpt-020-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:020 ;
+    ns1:valoreGrezzoIDPT 0.467803 ;
     ns1:valoreIDPT 0.31289 .
 
 ns1:obs-idpt-020-press-dem-2026 a qb:Observation ;
@@ -1922,6 +1981,7 @@ ns1:obs-idpt-020-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:020 ;
+    ns1:valoreGrezzoIDPT 0.816963 ;
     ns1:valoreIDPT 0.255589 .
 
 ns1:obs-idpt-021-ered-st-2026 a qb:Observation ;
@@ -1935,6 +1995,7 @@ ns1:obs-idpt-021-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:021 ;
+    ns1:valoreGrezzoIDPT 0.516346 ;
     ns1:valoreIDPT 0.103196 .
 
 ns1:obs-idpt-021-peso-eco-2026 a qb:Observation ;
@@ -1949,6 +2010,7 @@ ns1:obs-idpt-021-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:021 ;
+    ns1:valoreGrezzoIDPT 0.332198 ;
     ns1:valoreIDPT "0"^^xsd:nonNegativeInteger .
 
 ns1:obs-idpt-021-press-dem-2026 a qb:Observation ;
@@ -1959,6 +2021,7 @@ ns1:obs-idpt-021-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:021 ;
+    ns1:valoreGrezzoIDPT 0.589957 ;
     ns1:valoreIDPT "0"^^xsd:nonNegativeInteger .
 
 ns1:obs-idpt-022-ered-st-2026 a qb:Observation ;
@@ -1972,6 +2035,7 @@ ns1:obs-idpt-022-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:022 ;
+    ns1:valoreGrezzoIDPT 0.459565 ;
     ns1:valoreIDPT 0.043797 .
 
 ns1:obs-idpt-022-peso-eco-2026 a qb:Observation ;
@@ -1986,6 +2050,7 @@ ns1:obs-idpt-022-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:022 ;
+    ns1:valoreGrezzoIDPT 0.415012 ;
     ns1:valoreIDPT 0.191082 .
 
 ns1:obs-idpt-022-press-dem-2026 a qb:Observation ;
@@ -1996,6 +2061,7 @@ ns1:obs-idpt-022-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:022 ;
+    ns1:valoreGrezzoIDPT 0.659365 ;
     ns1:valoreIDPT 0.078148 .
 
 ns1:obs-idpt-023-ered-st-2026 a qb:Observation ;
@@ -2009,6 +2075,7 @@ ns1:obs-idpt-023-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:023 ;
+    ns1:valoreGrezzoIDPT 0.483895 ;
     ns1:valoreIDPT 0.069248 .
 
 ns1:obs-idpt-023-peso-eco-2026 a qb:Observation ;
@@ -2023,6 +2090,7 @@ ns1:obs-idpt-023-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:023 ;
+    ns1:valoreGrezzoIDPT 0.420113 ;
     ns1:valoreIDPT 0.202852 .
 
 ns1:obs-idpt-023-press-dem-2026 a qb:Observation ;
@@ -2033,6 +2101,7 @@ ns1:obs-idpt-023-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:023 ;
+    ns1:valoreGrezzoIDPT 0.727943 ;
     ns1:valoreIDPT 0.15536 .
 
 ns1:obs-idpt-024-ered-st-2026 a qb:Observation ;
@@ -2046,6 +2115,7 @@ ns1:obs-idpt-024-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:024 ;
+    ns1:valoreGrezzoIDPT 0.508717 ;
     ns1:valoreIDPT 0.095214 .
 
 ns1:obs-idpt-024-peso-eco-2026 a qb:Observation ;
@@ -2060,6 +2130,7 @@ ns1:obs-idpt-024-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:024 ;
+    ns1:valoreGrezzoIDPT 0.430285 ;
     ns1:valoreIDPT 0.226321 .
 
 ns1:obs-idpt-024-press-dem-2026 a qb:Observation ;
@@ -2070,6 +2141,7 @@ ns1:obs-idpt-024-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:024 ;
+    ns1:valoreGrezzoIDPT 0.766929 ;
     ns1:valoreIDPT 0.199255 .
 
 ns1:obs-idpt-025-ered-st-2026 a qb:Observation ;
@@ -2083,6 +2155,7 @@ ns1:obs-idpt-025-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:025 ;
+    ns1:valoreGrezzoIDPT 0.505234 ;
     ns1:valoreIDPT 0.091571 .
 
 ns1:obs-idpt-025-peso-eco-2026 a qb:Observation ;
@@ -2097,6 +2170,7 @@ ns1:obs-idpt-025-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:025 ;
+    ns1:valoreGrezzoIDPT 0.497085 ;
     ns1:valoreIDPT 0.380455 .
 
 ns1:obs-idpt-025-press-dem-2026 a qb:Observation ;
@@ -2107,6 +2181,7 @@ ns1:obs-idpt-025-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:025 ;
+    ns1:valoreGrezzoIDPT 0.910602 ;
     ns1:valoreIDPT 0.361019 .
 
 ns1:obs-idpt-026-ered-st-2026 a qb:Observation ;
@@ -2120,6 +2195,7 @@ ns1:obs-idpt-026-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:026 ;
+    ns1:valoreGrezzoIDPT 0.503034 ;
     ns1:valoreIDPT 0.089269 .
 
 ns1:obs-idpt-026-peso-eco-2026 a qb:Observation ;
@@ -2134,6 +2210,7 @@ ns1:obs-idpt-026-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:026 ;
+    ns1:valoreGrezzoIDPT 0.417896 ;
     ns1:valoreIDPT 0.197736 .
 
 ns1:obs-idpt-026-press-dem-2026 a qb:Observation ;
@@ -2144,6 +2221,7 @@ ns1:obs-idpt-026-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:026 ;
+    ns1:valoreGrezzoIDPT 0.749538 ;
     ns1:valoreIDPT 0.179674 .
 
 ns1:obs-idpt-027-ered-st-2026 a qb:Observation ;
@@ -2157,6 +2235,7 @@ ns1:obs-idpt-027-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:027 ;
+    ns1:valoreGrezzoIDPT 0.513302 ;
     ns1:valoreIDPT 0.10001 .
 
 ns1:obs-idpt-027-peso-eco-2026 a qb:Observation ;
@@ -2171,6 +2250,7 @@ ns1:obs-idpt-027-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:027 ;
+    ns1:valoreGrezzoIDPT 0.473471 ;
     ns1:valoreIDPT 0.325969 .
 
 ns1:obs-idpt-027-press-dem-2026 a qb:Observation ;
@@ -2181,6 +2261,7 @@ ns1:obs-idpt-027-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:027 ;
+    ns1:valoreGrezzoIDPT 0.774356 ;
     ns1:valoreIDPT 0.207618 .
 
 ns1:obs-idpt-028-ered-st-2026 a qb:Observation ;
@@ -2194,6 +2275,7 @@ ns1:obs-idpt-028-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:028 ;
+    ns1:valoreGrezzoIDPT 0.489355 ;
     ns1:valoreIDPT 0.074961 .
 
 ns1:obs-idpt-028-peso-eco-2026 a qb:Observation ;
@@ -2208,6 +2290,7 @@ ns1:obs-idpt-028-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:028 ;
+    ns1:valoreGrezzoIDPT 0.421654 ;
     ns1:valoreIDPT 0.206407 .
 
 ns1:obs-idpt-028-press-dem-2026 a qb:Observation ;
@@ -2218,6 +2301,7 @@ ns1:obs-idpt-028-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:028 ;
+    ns1:valoreGrezzoIDPT 0.71553 ;
     ns1:valoreIDPT 0.141384 .
 
 ns1:obs-idpt-029-ered-st-2026 a qb:Observation ;
@@ -2231,6 +2315,7 @@ ns1:obs-idpt-029-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:029 ;
+    ns1:valoreGrezzoIDPT 0.513629 ;
     ns1:valoreIDPT 0.100353 .
 
 ns1:obs-idpt-029-peso-eco-2026 a qb:Observation ;
@@ -2245,6 +2330,7 @@ ns1:obs-idpt-029-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:029 ;
+    ns1:valoreGrezzoIDPT 0.558662 ;
     ns1:valoreIDPT 0.522536 .
 
 ns1:obs-idpt-029-press-dem-2026 a qb:Observation ;
@@ -2255,6 +2341,7 @@ ns1:obs-idpt-029-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:029 ;
+    ns1:valoreGrezzoIDPT 0.976747 ;
     ns1:valoreIDPT 0.435491 .
 
 ns1:obs-idpt-030-ered-st-2026 a qb:Observation ;
@@ -2268,6 +2355,7 @@ ns1:obs-idpt-030-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:030 ;
+    ns1:valoreGrezzoIDPT 0.505775 ;
     ns1:valoreIDPT 0.092137 .
 
 ns1:obs-idpt-030-peso-eco-2026 a qb:Observation ;
@@ -2282,6 +2370,7 @@ ns1:obs-idpt-030-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:030 ;
+    ns1:valoreGrezzoIDPT 0.529507 ;
     ns1:valoreIDPT 0.455263 .
 
 ns1:obs-idpt-030-press-dem-2026 a qb:Observation ;
@@ -2292,6 +2381,7 @@ ns1:obs-idpt-030-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:030 ;
+    ns1:valoreGrezzoIDPT 0.897578 ;
     ns1:valoreIDPT 0.346354 .
 
 ns1:obs-idpt-031-ered-st-2026 a qb:Observation ;
@@ -2305,6 +2395,7 @@ ns1:obs-idpt-031-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:031 ;
+    ns1:valoreGrezzoIDPT 0.501515 ;
     ns1:valoreIDPT 0.087681 .
 
 ns1:obs-idpt-031-peso-eco-2026 a qb:Observation ;
@@ -2319,6 +2410,7 @@ ns1:obs-idpt-031-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:031 ;
+    ns1:valoreGrezzoIDPT 0.574283 ;
     ns1:valoreIDPT 0.55858 .
 
 ns1:obs-idpt-031-press-dem-2026 a qb:Observation ;
@@ -2329,6 +2421,7 @@ ns1:obs-idpt-031-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:031 ;
+    ns1:valoreGrezzoIDPT 0.859099 ;
     ns1:valoreIDPT 0.30303 .
 
 ns1:obs-idpt-032-ered-st-2026 a qb:Observation ;
@@ -2342,6 +2435,7 @@ ns1:obs-idpt-032-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:032 ;
+    ns1:valoreGrezzoIDPT 0.535104 ;
     ns1:valoreIDPT 0.122818 .
 
 ns1:obs-idpt-032-peso-eco-2026 a qb:Observation ;
@@ -2356,6 +2450,7 @@ ns1:obs-idpt-032-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:032 ;
+    ns1:valoreGrezzoIDPT 0.56346 ;
     ns1:valoreIDPT 0.533607 .
 
 ns1:obs-idpt-032-press-dem-2026 a qb:Observation ;
@@ -2366,6 +2461,7 @@ ns1:obs-idpt-032-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:032 ;
+    ns1:valoreGrezzoIDPT 0.859348 ;
     ns1:valoreIDPT 0.30331 .
 
 ns1:obs-idpt-033-ered-st-2026 a qb:Observation ;
@@ -2379,6 +2475,7 @@ ns1:obs-idpt-033-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:033 ;
+    ns1:valoreGrezzoIDPT 0.509354 ;
     ns1:valoreIDPT 0.095881 .
 
 ns1:obs-idpt-033-peso-eco-2026 a qb:Observation ;
@@ -2393,6 +2490,7 @@ ns1:obs-idpt-033-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:033 ;
+    ns1:valoreGrezzoIDPT 0.47133 ;
     ns1:valoreIDPT 0.321029 .
 
 ns1:obs-idpt-033-press-dem-2026 a qb:Observation ;
@@ -2403,6 +2501,7 @@ ns1:obs-idpt-033-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:033 ;
+    ns1:valoreGrezzoIDPT 0.810216 ;
     ns1:valoreIDPT 0.247992 .
 
 ns1:obs-idpt-034-ered-st-2026 a qb:Observation ;
@@ -2416,6 +2515,7 @@ ns1:obs-idpt-034-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:034 ;
+    ns1:valoreGrezzoIDPT 0.493787 ;
     ns1:valoreIDPT 0.079597 .
 
 ns1:obs-idpt-034-peso-eco-2026 a qb:Observation ;
@@ -2430,6 +2530,7 @@ ns1:obs-idpt-034-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:034 ;
+    ns1:valoreGrezzoIDPT 0.41954 ;
     ns1:valoreIDPT 0.20153 .
 
 ns1:obs-idpt-034-press-dem-2026 a qb:Observation ;
@@ -2440,6 +2541,7 @@ ns1:obs-idpt-034-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:034 ;
+    ns1:valoreGrezzoIDPT 0.728286 ;
     ns1:valoreIDPT 0.155746 .
 
 ns1:obs-idpt-035-ered-st-2026 a qb:Observation ;
@@ -2453,6 +2555,7 @@ ns1:obs-idpt-035-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:035 ;
+    ns1:valoreGrezzoIDPT 0.48955 ;
     ns1:valoreIDPT 0.075164 .
 
 ns1:obs-idpt-035-peso-eco-2026 a qb:Observation ;
@@ -2467,6 +2570,7 @@ ns1:obs-idpt-035-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:035 ;
+    ns1:valoreGrezzoIDPT 0.428031 ;
     ns1:valoreIDPT 0.221123 .
 
 ns1:obs-idpt-035-press-dem-2026 a qb:Observation ;
@@ -2477,6 +2581,7 @@ ns1:obs-idpt-035-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:035 ;
+    ns1:valoreGrezzoIDPT 0.750714 ;
     ns1:valoreIDPT 0.180998 .
 
 ns1:obs-idpt-036-ered-st-2026 a qb:Observation ;
@@ -2490,6 +2595,7 @@ ns1:obs-idpt-036-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:036 ;
+    ns1:valoreGrezzoIDPT 0.51195 ;
     ns1:valoreIDPT 0.098596 .
 
 ns1:obs-idpt-036-peso-eco-2026 a qb:Observation ;
@@ -2504,6 +2610,7 @@ ns1:obs-idpt-036-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:036 ;
+    ns1:valoreGrezzoIDPT 0.436788 ;
     ns1:valoreIDPT 0.241326 .
 
 ns1:obs-idpt-036-press-dem-2026 a qb:Observation ;
@@ -2514,6 +2621,7 @@ ns1:obs-idpt-036-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:036 ;
+    ns1:valoreGrezzoIDPT 0.782913 ;
     ns1:valoreIDPT 0.217252 .
 
 ns1:obs-idpt-037-ered-st-2026 a qb:Observation ;
@@ -2527,6 +2635,7 @@ ns1:obs-idpt-037-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:037 ;
+    ns1:valoreGrezzoIDPT 0.485397 ;
     ns1:valoreIDPT 0.070819 .
 
 ns1:obs-idpt-037-peso-eco-2026 a qb:Observation ;
@@ -2541,6 +2650,7 @@ ns1:obs-idpt-037-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:037 ;
+    ns1:valoreGrezzoIDPT 0.461614 ;
     ns1:valoreIDPT 0.298609 .
 
 ns1:obs-idpt-037-press-dem-2026 a qb:Observation ;
@@ -2551,6 +2661,7 @@ ns1:obs-idpt-037-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:037 ;
+    ns1:valoreGrezzoIDPT 0.743402 ;
     ns1:valoreIDPT 0.172766 .
 
 ns1:obs-idpt-038-ered-st-2026 a qb:Observation ;
@@ -2564,6 +2675,7 @@ ns1:obs-idpt-038-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:038 ;
+    ns1:valoreGrezzoIDPT 0.536978 ;
     ns1:valoreIDPT 0.124779 .
 
 ns1:obs-idpt-038-peso-eco-2026 a qb:Observation ;
@@ -2578,6 +2690,7 @@ ns1:obs-idpt-038-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:038 ;
+    ns1:valoreGrezzoIDPT 0.595019 ;
     ns1:valoreIDPT 0.606424 .
 
 ns1:obs-idpt-038-press-dem-2026 a qb:Observation ;
@@ -2588,6 +2701,7 @@ ns1:obs-idpt-038-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:038 ;
+    ns1:valoreGrezzoIDPT 0.927169 ;
     ns1:valoreIDPT 0.379671 .
 
 ns1:obs-idpt-039-ered-st-2026 a qb:Observation ;
@@ -2601,6 +2715,7 @@ ns1:obs-idpt-039-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:039 ;
+    ns1:valoreGrezzoIDPT 0.512403 ;
     ns1:valoreIDPT 0.099071 .
 
 ns1:obs-idpt-039-peso-eco-2026 a qb:Observation ;
@@ -2615,6 +2730,7 @@ ns1:obs-idpt-039-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:039 ;
+    ns1:valoreGrezzoIDPT 0.511231 ;
     ns1:valoreIDPT 0.413094 .
 
 ns1:obs-idpt-039-press-dem-2026 a qb:Observation ;
@@ -2625,6 +2741,7 @@ ns1:obs-idpt-039-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:039 ;
+    ns1:valoreGrezzoIDPT 0.882313 ;
     ns1:valoreIDPT 0.329168 .
 
 ns1:obs-idpt-040-ered-st-2026 a qb:Observation ;
@@ -2638,6 +2755,7 @@ ns1:obs-idpt-040-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:040 ;
+    ns1:valoreGrezzoIDPT 0.520672 ;
     ns1:valoreIDPT 0.10772 .
 
 ns1:obs-idpt-040-peso-eco-2026 a qb:Observation ;
@@ -2652,6 +2770,7 @@ ns1:obs-idpt-040-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:040 ;
+    ns1:valoreGrezzoIDPT 0.47687 ;
     ns1:valoreIDPT 0.33381 .
 
 ns1:obs-idpt-040-press-dem-2026 a qb:Observation ;
@@ -2662,6 +2781,7 @@ ns1:obs-idpt-040-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:040 ;
+    ns1:valoreGrezzoIDPT 0.824698 ;
     ns1:valoreIDPT 0.264297 .
 
 ns1:obs-idpt-041-ered-st-2026 a qb:Observation ;
@@ -2675,6 +2795,7 @@ ns1:obs-idpt-041-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:041 ;
+    ns1:valoreGrezzoIDPT 0.488102 ;
     ns1:valoreIDPT 0.073649 .
 
 ns1:obs-idpt-041-peso-eco-2026 a qb:Observation ;
@@ -2689,6 +2810,7 @@ ns1:obs-idpt-041-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:041 ;
+    ns1:valoreGrezzoIDPT 0.483671 ;
     ns1:valoreIDPT 0.349503 .
 
 ns1:obs-idpt-041-press-dem-2026 a qb:Observation ;
@@ -2699,6 +2821,7 @@ ns1:obs-idpt-041-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:041 ;
+    ns1:valoreGrezzoIDPT 0.876294 ;
     ns1:valoreIDPT 0.322391 .
 
 ns1:obs-idpt-042-ered-st-2026 a qb:Observation ;
@@ -2712,6 +2835,7 @@ ns1:obs-idpt-042-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:042 ;
+    ns1:valoreGrezzoIDPT 0.642432 ;
     ns1:valoreIDPT 0.235093 .
 
 ns1:obs-idpt-042-peso-eco-2026 a qb:Observation ;
@@ -2726,6 +2850,7 @@ ns1:obs-idpt-042-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:042 ;
+    ns1:valoreGrezzoIDPT 0.543921 ;
     ns1:valoreIDPT 0.488523 .
 
 ns1:obs-idpt-042-press-dem-2026 a qb:Observation ;
@@ -2736,6 +2861,7 @@ ns1:obs-idpt-042-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:042 ;
+    ns1:valoreGrezzoIDPT 0.902648 ;
     ns1:valoreIDPT 0.352062 .
 
 ns1:obs-idpt-043-ered-st-2026 a qb:Observation ;
@@ -2749,6 +2875,7 @@ ns1:obs-idpt-043-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:043 ;
+    ns1:valoreGrezzoIDPT 0.510913 ;
     ns1:valoreIDPT 0.097512 .
 
 ns1:obs-idpt-043-peso-eco-2026 a qb:Observation ;
@@ -2763,6 +2890,7 @@ ns1:obs-idpt-043-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:043 ;
+    ns1:valoreGrezzoIDPT 0.539155 ;
     ns1:valoreIDPT 0.477526 .
 
 ns1:obs-idpt-043-press-dem-2026 a qb:Observation ;
@@ -2773,6 +2901,7 @@ ns1:obs-idpt-043-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:043 ;
+    ns1:valoreGrezzoIDPT 0.903325 ;
     ns1:valoreIDPT 0.352825 .
 
 ns1:obs-idpt-044-ered-st-2026 a qb:Observation ;
@@ -2786,6 +2915,7 @@ ns1:obs-idpt-044-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:044 ;
+    ns1:valoreGrezzoIDPT 0.549352 ;
     ns1:valoreIDPT 0.137723 .
 
 ns1:obs-idpt-044-peso-eco-2026 a qb:Observation ;
@@ -2800,6 +2930,7 @@ ns1:obs-idpt-044-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:044 ;
+    ns1:valoreGrezzoIDPT 0.56447 ;
     ns1:valoreIDPT 0.535936 .
 
 ns1:obs-idpt-044-press-dem-2026 a qb:Observation ;
@@ -2810,6 +2941,7 @@ ns1:obs-idpt-044-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:044 ;
+    ns1:valoreGrezzoIDPT 0.917091 ;
     ns1:valoreIDPT 0.368324 .
 
 ns1:obs-idpt-045-ered-st-2026 a qb:Observation ;
@@ -2823,6 +2955,7 @@ ns1:obs-idpt-045-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:045 ;
+    ns1:valoreGrezzoIDPT 0.46621 ;
     ns1:valoreIDPT 0.050748 .
 
 ns1:obs-idpt-045-peso-eco-2026 a qb:Observation ;
@@ -2837,6 +2970,7 @@ ns1:obs-idpt-045-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:045 ;
+    ns1:valoreGrezzoIDPT 0.59452 ;
     ns1:valoreIDPT 0.605274 .
 
 ns1:obs-idpt-045-press-dem-2026 a qb:Observation ;
@@ -2847,6 +2981,7 @@ ns1:obs-idpt-045-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:045 ;
+    ns1:valoreGrezzoIDPT 0.909207 ;
     ns1:valoreIDPT 0.359447 .
 
 ns1:obs-idpt-046-ered-st-2026 a qb:Observation ;
@@ -2860,6 +2995,7 @@ ns1:obs-idpt-046-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:046 ;
+    ns1:valoreGrezzoIDPT 0.481064 ;
     ns1:valoreIDPT 0.066287 .
 
 ns1:obs-idpt-046-peso-eco-2026 a qb:Observation ;
@@ -2874,6 +3010,7 @@ ns1:obs-idpt-046-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:046 ;
+    ns1:valoreGrezzoIDPT 0.496295 ;
     ns1:valoreIDPT 0.378633 .
 
 ns1:obs-idpt-046-press-dem-2026 a qb:Observation ;
@@ -2884,6 +3021,7 @@ ns1:obs-idpt-046-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:046 ;
+    ns1:valoreGrezzoIDPT 0.832925 ;
     ns1:valoreIDPT 0.273561 .
 
 ns1:obs-idpt-047-ered-st-2026 a qb:Observation ;
@@ -2897,6 +3035,7 @@ ns1:obs-idpt-047-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:047 ;
+    ns1:valoreGrezzoIDPT 0.509983 ;
     ns1:valoreIDPT 0.096539 .
 
 ns1:obs-idpt-047-peso-eco-2026 a qb:Observation ;
@@ -2911,6 +3050,7 @@ ns1:obs-idpt-047-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:047 ;
+    ns1:valoreGrezzoIDPT 0.527383 ;
     ns1:valoreIDPT 0.450364 .
 
 ns1:obs-idpt-047-press-dem-2026 a qb:Observation ;
@@ -2921,6 +3061,7 @@ ns1:obs-idpt-047-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:047 ;
+    ns1:valoreGrezzoIDPT 0.857311 ;
     ns1:valoreIDPT 0.301017 .
 
 ns1:obs-idpt-048-ered-st-2026 a qb:Observation ;
@@ -2934,6 +3075,7 @@ ns1:obs-idpt-048-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:048 ;
+    ns1:valoreGrezzoIDPT 0.49853 ;
     ns1:valoreIDPT 0.084558 .
 
 ns1:obs-idpt-048-peso-eco-2026 a qb:Observation ;
@@ -2948,6 +3090,7 @@ ns1:obs-idpt-048-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:048 ;
+    ns1:valoreGrezzoIDPT 0.47651 ;
     ns1:valoreIDPT 0.332981 .
 
 ns1:obs-idpt-048-press-dem-2026 a qb:Observation ;
@@ -2958,6 +3101,7 @@ ns1:obs-idpt-048-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:048 ;
+    ns1:valoreGrezzoIDPT 0.729312 ;
     ns1:valoreIDPT 0.156902 .
 
 ns1:obs-idpt-049-ered-st-2026 a qb:Observation ;
@@ -2971,6 +3115,7 @@ ns1:obs-idpt-049-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:049 ;
+    ns1:valoreGrezzoIDPT 0.4878 ;
     ns1:valoreIDPT 0.073333 .
 
 ns1:obs-idpt-049-peso-eco-2026 a qb:Observation ;
@@ -2985,6 +3130,7 @@ ns1:obs-idpt-049-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:049 ;
+    ns1:valoreGrezzoIDPT 0.570807 ;
     ns1:valoreIDPT 0.55056 .
 
 ns1:obs-idpt-049-press-dem-2026 a qb:Observation ;
@@ -2995,6 +3141,7 @@ ns1:obs-idpt-049-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:049 ;
+    ns1:valoreGrezzoIDPT 0.823279 ;
     ns1:valoreIDPT 0.2627 .
 
 ns1:obs-idpt-050-ered-st-2026 a qb:Observation ;
@@ -3008,6 +3155,7 @@ ns1:obs-idpt-050-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:050 ;
+    ns1:valoreGrezzoIDPT 0.475284 ;
     ns1:valoreIDPT 0.06024 .
 
 ns1:obs-idpt-050-peso-eco-2026 a qb:Observation ;
@@ -3022,6 +3170,7 @@ ns1:obs-idpt-050-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:050 ;
+    ns1:valoreGrezzoIDPT 0.488573 ;
     ns1:valoreIDPT 0.360814 .
 
 ns1:obs-idpt-050-press-dem-2026 a qb:Observation ;
@@ -3032,6 +3181,7 @@ ns1:obs-idpt-050-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:050 ;
+    ns1:valoreGrezzoIDPT 0.777976 ;
     ns1:valoreIDPT 0.211693 .
 
 ns1:obs-idpt-051-ered-st-2026 a qb:Observation ;
@@ -3045,6 +3195,7 @@ ns1:obs-idpt-051-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:051 ;
+    ns1:valoreGrezzoIDPT 0.507538 ;
     ns1:valoreIDPT 0.093981 .
 
 ns1:obs-idpt-051-peso-eco-2026 a qb:Observation ;
@@ -3059,6 +3210,7 @@ ns1:obs-idpt-051-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:051 ;
+    ns1:valoreGrezzoIDPT 0.528802 ;
     ns1:valoreIDPT 0.453638 .
 
 ns1:obs-idpt-051-press-dem-2026 a qb:Observation ;
@@ -3069,6 +3221,7 @@ ns1:obs-idpt-051-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:051 ;
+    ns1:valoreGrezzoIDPT 0.870684 ;
     ns1:valoreIDPT 0.316074 .
 
 ns1:obs-idpt-052-ered-st-2026 a qb:Observation ;
@@ -3082,6 +3235,7 @@ ns1:obs-idpt-052-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:052 ;
+    ns1:valoreGrezzoIDPT 0.527293 ;
     ns1:valoreIDPT 0.114647 .
 
 ns1:obs-idpt-052-peso-eco-2026 a qb:Observation ;
@@ -3096,6 +3250,7 @@ ns1:obs-idpt-052-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:052 ;
+    ns1:valoreGrezzoIDPT 0.5303 ;
     ns1:valoreIDPT 0.457093 .
 
 ns1:obs-idpt-052-press-dem-2026 a qb:Observation ;
@@ -3106,6 +3261,7 @@ ns1:obs-idpt-052-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:052 ;
+    ns1:valoreGrezzoIDPT 0.824348 ;
     ns1:valoreIDPT 0.263904 .
 
 ns1:obs-idpt-053-ered-st-2026 a qb:Observation ;
@@ -3119,6 +3275,7 @@ ns1:obs-idpt-053-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:053 ;
+    ns1:valoreGrezzoIDPT 0.477133 ;
     ns1:valoreIDPT 0.062174 .
 
 ns1:obs-idpt-053-peso-eco-2026 a qb:Observation ;
@@ -3133,6 +3290,7 @@ ns1:obs-idpt-053-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:053 ;
+    ns1:valoreGrezzoIDPT 0.622658 ;
     ns1:valoreIDPT 0.670199 .
 
 ns1:obs-idpt-053-press-dem-2026 a qb:Observation ;
@@ -3143,6 +3301,7 @@ ns1:obs-idpt-053-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:053 ;
+    ns1:valoreGrezzoIDPT 0.851454 ;
     ns1:valoreIDPT 0.294422 .
 
 ns1:obs-idpt-054-ered-st-2026 a qb:Observation ;
@@ -3156,6 +3315,7 @@ ns1:obs-idpt-054-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:054 ;
+    ns1:valoreGrezzoIDPT 0.500964 ;
     ns1:valoreIDPT 0.087104 .
 
 ns1:obs-idpt-054-peso-eco-2026 a qb:Observation ;
@@ -3170,6 +3330,7 @@ ns1:obs-idpt-054-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:054 ;
+    ns1:valoreGrezzoIDPT 0.563004 ;
     ns1:valoreIDPT 0.532554 .
 
 ns1:obs-idpt-054-press-dem-2026 a qb:Observation ;
@@ -3180,6 +3341,7 @@ ns1:obs-idpt-054-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:054 ;
+    ns1:valoreGrezzoIDPT 0.932574 ;
     ns1:valoreIDPT 0.385757 .
 
 ns1:obs-idpt-055-ered-st-2026 a qb:Observation ;
@@ -3193,6 +3355,7 @@ ns1:obs-idpt-055-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:055 ;
+    ns1:valoreGrezzoIDPT 0.586607 ;
     ns1:valoreIDPT 0.176695 .
 
 ns1:obs-idpt-055-peso-eco-2026 a qb:Observation ;
@@ -3207,6 +3370,7 @@ ns1:obs-idpt-055-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:055 ;
+    ns1:valoreGrezzoIDPT 0.673334 ;
     ns1:valoreIDPT 0.787126 .
 
 ns1:obs-idpt-055-press-dem-2026 a qb:Observation ;
@@ -3217,6 +3381,7 @@ ns1:obs-idpt-055-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:055 ;
+    ns1:valoreGrezzoIDPT 1.004004 ;
     ns1:valoreIDPT 0.466181 .
 
 ns1:obs-idpt-056-ered-st-2026 a qb:Observation ;
@@ -3230,6 +3395,7 @@ ns1:obs-idpt-056-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:056 ;
+    ns1:valoreGrezzoIDPT 0.460803 ;
     ns1:valoreIDPT 0.045092 .
 
 ns1:obs-idpt-056-peso-eco-2026 a qb:Observation ;
@@ -3244,6 +3410,7 @@ ns1:obs-idpt-056-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:056 ;
+    ns1:valoreGrezzoIDPT 0.626069 ;
     ns1:valoreIDPT 0.678069 .
 
 ns1:obs-idpt-056-press-dem-2026 a qb:Observation ;
@@ -3254,6 +3421,7 @@ ns1:obs-idpt-056-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:056 ;
+    ns1:valoreGrezzoIDPT 0.912953 ;
     ns1:valoreIDPT 0.363665 .
 
 ns1:obs-idpt-057-ered-st-2026 a qb:Observation ;
@@ -3267,6 +3435,7 @@ ns1:obs-idpt-057-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:057 ;
+    ns1:valoreGrezzoIDPT 0.469172 ;
     ns1:valoreIDPT 0.053847 .
 
 ns1:obs-idpt-057-peso-eco-2026 a qb:Observation ;
@@ -3281,6 +3450,7 @@ ns1:obs-idpt-057-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:057 ;
+    ns1:valoreGrezzoIDPT 0.66461 ;
     ns1:valoreIDPT 0.766997 .
 
 ns1:obs-idpt-057-press-dem-2026 a qb:Observation ;
@@ -3291,6 +3461,7 @@ ns1:obs-idpt-057-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:057 ;
+    ns1:valoreGrezzoIDPT 1.007099 ;
     ns1:valoreIDPT 0.469665 .
 
 ns1:obs-idpt-058-ered-st-2026 a qb:Observation ;
@@ -3304,6 +3475,7 @@ ns1:obs-idpt-058-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:058 ;
+    ns1:valoreGrezzoIDPT 0.446188 ;
     ns1:valoreIDPT 0.029803 .
 
 ns1:obs-idpt-058-peso-eco-2026 a qb:Observation ;
@@ -3318,6 +3490,7 @@ ns1:obs-idpt-058-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:058 ;
+    ns1:valoreGrezzoIDPT 0.463448 ;
     ns1:valoreIDPT 0.302842 .
 
 ns1:obs-idpt-058-press-dem-2026 a qb:Observation ;
@@ -3328,6 +3501,7 @@ ns1:obs-idpt-058-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:058 ;
+    ns1:valoreGrezzoIDPT 0.718264 ;
     ns1:valoreIDPT 0.144462 .
 
 ns1:obs-idpt-059-ered-st-2026 a qb:Observation ;
@@ -3341,6 +3515,7 @@ ns1:obs-idpt-059-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:059 ;
+    ns1:valoreGrezzoIDPT 0.488331 ;
     ns1:valoreIDPT 0.073889 .
 
 ns1:obs-idpt-059-peso-eco-2026 a qb:Observation ;
@@ -3355,6 +3530,7 @@ ns1:obs-idpt-059-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:059 ;
+    ns1:valoreGrezzoIDPT 0.524718 ;
     ns1:valoreIDPT 0.444213 .
 
 ns1:obs-idpt-059-press-dem-2026 a qb:Observation ;
@@ -3365,6 +3541,7 @@ ns1:obs-idpt-059-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:059 ;
+    ns1:valoreGrezzoIDPT 0.87006 ;
     ns1:valoreIDPT 0.315371 .
 
 ns1:obs-idpt-060-ered-st-2026 a qb:Observation ;
@@ -3378,6 +3555,7 @@ ns1:obs-idpt-060-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:060 ;
+    ns1:valoreGrezzoIDPT 0.502977 ;
     ns1:valoreIDPT 0.08921 .
 
 ns1:obs-idpt-060-peso-eco-2026 a qb:Observation ;
@@ -3392,6 +3570,7 @@ ns1:obs-idpt-060-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:060 ;
+    ns1:valoreGrezzoIDPT 0.574909 ;
     ns1:valoreIDPT 0.560024 .
 
 ns1:obs-idpt-060-press-dem-2026 a qb:Observation ;
@@ -3402,6 +3581,7 @@ ns1:obs-idpt-060-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:060 ;
+    ns1:valoreGrezzoIDPT 0.882489 ;
     ns1:valoreIDPT 0.329365 .
 
 ns1:obs-idpt-061-ered-st-2026 a qb:Observation ;
@@ -3415,6 +3595,7 @@ ns1:obs-idpt-061-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:061 ;
+    ns1:valoreGrezzoIDPT 0.46497 ;
     ns1:valoreIDPT 0.049451 .
 
 ns1:obs-idpt-061-peso-eco-2026 a qb:Observation ;
@@ -3429,6 +3610,7 @@ ns1:obs-idpt-061-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:061 ;
+    ns1:valoreGrezzoIDPT 0.522931 ;
     ns1:valoreIDPT 0.440091 .
 
 ns1:obs-idpt-061-press-dem-2026 a qb:Observation ;
@@ -3439,6 +3621,7 @@ ns1:obs-idpt-061-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:061 ;
+    ns1:valoreGrezzoIDPT 0.927426 ;
     ns1:valoreIDPT 0.37996 .
 
 ns1:obs-idpt-062-ered-st-2026 a qb:Observation ;
@@ -3452,6 +3635,7 @@ ns1:obs-idpt-062-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:062 ;
+    ns1:valoreGrezzoIDPT 0.502418 ;
     ns1:valoreIDPT 0.088625 .
 
 ns1:obs-idpt-062-peso-eco-2026 a qb:Observation ;
@@ -3466,6 +3650,7 @@ ns1:obs-idpt-062-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:062 ;
+    ns1:valoreGrezzoIDPT 0.669125 ;
     ns1:valoreIDPT 0.777416 .
 
 ns1:obs-idpt-062-press-dem-2026 a qb:Observation ;
@@ -3476,6 +3661,7 @@ ns1:obs-idpt-062-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:062 ;
+    ns1:valoreGrezzoIDPT 1.209972 ;
     ns1:valoreIDPT 0.698082 .
 
 ns1:obs-idpt-063-ered-st-2026 a qb:Observation ;
@@ -3489,6 +3675,7 @@ ns1:obs-idpt-063-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:063 ;
+    ns1:valoreGrezzoIDPT 0.469919 ;
     ns1:valoreIDPT 0.054628 .
 
 ns1:obs-idpt-063-peso-eco-2026 a qb:Observation ;
@@ -3503,6 +3690,7 @@ ns1:obs-idpt-063-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:063 ;
+    ns1:valoreGrezzoIDPT 0.536239 ;
     ns1:valoreIDPT 0.470797 .
 
 ns1:obs-idpt-063-press-dem-2026 a qb:Observation ;
@@ -3513,6 +3701,7 @@ ns1:obs-idpt-063-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:063 ;
+    ns1:valoreGrezzoIDPT 0.962157 ;
     ns1:valoreIDPT 0.419065 .
 
 ns1:obs-idpt-064-ered-st-2026 a qb:Observation ;
@@ -3526,6 +3715,7 @@ ns1:obs-idpt-064-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:064 ;
+    ns1:valoreGrezzoIDPT 0.46279 ;
     ns1:valoreIDPT 0.04717 .
 
 ns1:obs-idpt-064-peso-eco-2026 a qb:Observation ;
@@ -3540,6 +3730,7 @@ ns1:obs-idpt-064-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:064 ;
+    ns1:valoreGrezzoIDPT 0.594911 ;
     ns1:valoreIDPT 0.606175 .
 
 ns1:obs-idpt-064-press-dem-2026 a qb:Observation ;
@@ -3550,6 +3741,7 @@ ns1:obs-idpt-064-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:064 ;
+    ns1:valoreGrezzoIDPT 0.964728 ;
     ns1:valoreIDPT 0.421959 .
 
 ns1:obs-idpt-065-ered-st-2026 a qb:Observation ;
@@ -3563,6 +3755,7 @@ ns1:obs-idpt-065-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:065 ;
+    ns1:valoreGrezzoIDPT 0.463001 ;
     ns1:valoreIDPT 0.047391 .
 
 ns1:obs-idpt-065-peso-eco-2026 a qb:Observation ;
@@ -3577,6 +3770,7 @@ ns1:obs-idpt-065-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:065 ;
+    ns1:valoreGrezzoIDPT 0.558735 ;
     ns1:valoreIDPT 0.522704 .
 
 ns1:obs-idpt-065-press-dem-2026 a qb:Observation ;
@@ -3587,6 +3781,7 @@ ns1:obs-idpt-065-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:065 ;
+    ns1:valoreGrezzoIDPT 0.937768 ;
     ns1:valoreIDPT 0.391604 .
 
 ns1:obs-idpt-066-ered-st-2026 a qb:Observation ;
@@ -3600,6 +3795,7 @@ ns1:obs-idpt-066-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:066 ;
+    ns1:valoreGrezzoIDPT 0.70951 ;
     ns1:valoreIDPT 0.305264 .
 
 ns1:obs-idpt-066-peso-eco-2026 a qb:Observation ;
@@ -3614,6 +3810,7 @@ ns1:obs-idpt-066-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:066 ;
+    ns1:valoreGrezzoIDPT 0.596083 ;
     ns1:valoreIDPT 0.608879 .
 
 ns1:obs-idpt-066-press-dem-2026 a qb:Observation ;
@@ -3624,6 +3821,7 @@ ns1:obs-idpt-066-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:066 ;
+    ns1:valoreGrezzoIDPT 0.901851 ;
     ns1:valoreIDPT 0.351166 .
 
 ns1:obs-idpt-067-ered-st-2026 a qb:Observation ;
@@ -3637,6 +3835,7 @@ ns1:obs-idpt-067-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:067 ;
+    ns1:valoreGrezzoIDPT 0.483705 ;
     ns1:valoreIDPT 0.069049 .
 
 ns1:obs-idpt-067-peso-eco-2026 a qb:Observation ;
@@ -3651,6 +3850,7 @@ ns1:obs-idpt-067-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:067 ;
+    ns1:valoreGrezzoIDPT 0.50693 ;
     ns1:valoreIDPT 0.403172 .
 
 ns1:obs-idpt-067-press-dem-2026 a qb:Observation ;
@@ -3661,6 +3861,7 @@ ns1:obs-idpt-067-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:067 ;
+    ns1:valoreGrezzoIDPT 0.94112 ;
     ns1:valoreIDPT 0.395379 .
 
 ns1:obs-idpt-068-ered-st-2026 a qb:Observation ;
@@ -3674,6 +3875,7 @@ ns1:obs-idpt-068-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:068 ;
+    ns1:valoreGrezzoIDPT 0.472356 ;
     ns1:valoreIDPT 0.057177 .
 
 ns1:obs-idpt-068-peso-eco-2026 a qb:Observation ;
@@ -3688,6 +3890,7 @@ ns1:obs-idpt-068-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:068 ;
+    ns1:valoreGrezzoIDPT 0.510806 ;
     ns1:valoreIDPT 0.412114 .
 
 ns1:obs-idpt-068-press-dem-2026 a qb:Observation ;
@@ -3698,6 +3901,7 @@ ns1:obs-idpt-068-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:068 ;
+    ns1:valoreGrezzoIDPT 0.858225 ;
     ns1:valoreIDPT 0.302047 .
 
 ns1:obs-idpt-069-ered-st-2026 a qb:Observation ;
@@ -3711,6 +3915,7 @@ ns1:obs-idpt-069-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:069 ;
+    ns1:valoreGrezzoIDPT 0.506368 ;
     ns1:valoreIDPT 0.092757 .
 
 ns1:obs-idpt-069-peso-eco-2026 a qb:Observation ;
@@ -3725,6 +3930,7 @@ ns1:obs-idpt-069-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:069 ;
+    ns1:valoreGrezzoIDPT 0.548458 ;
     ns1:valoreIDPT 0.498992 .
 
 ns1:obs-idpt-069-press-dem-2026 a qb:Observation ;
@@ -3735,6 +3941,7 @@ ns1:obs-idpt-069-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:069 ;
+    ns1:valoreGrezzoIDPT 0.919891 ;
     ns1:valoreIDPT 0.371477 .
 
 ns1:obs-idpt-070-ered-st-2026 a qb:Observation ;
@@ -3748,6 +3955,7 @@ ns1:obs-idpt-070-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:070 ;
+    ns1:valoreGrezzoIDPT 0.601949 ;
     ns1:valoreIDPT 0.192745 .
 
 ns1:obs-idpt-070-peso-eco-2026 a qb:Observation ;
@@ -3762,6 +3970,7 @@ ns1:obs-idpt-070-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:070 ;
+    ns1:valoreGrezzoIDPT 0.625936 ;
     ns1:valoreIDPT 0.677762 .
 
 ns1:obs-idpt-070-press-dem-2026 a qb:Observation ;
@@ -3772,6 +3981,7 @@ ns1:obs-idpt-070-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:070 ;
+    ns1:valoreGrezzoIDPT 1.007539 ;
     ns1:valoreIDPT 0.47016 .
 
 ns1:obs-idpt-071-ered-st-2026 a qb:Observation ;
@@ -3785,6 +3995,7 @@ ns1:obs-idpt-071-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:071 ;
+    ns1:valoreGrezzoIDPT 0.460404 ;
     ns1:valoreIDPT 0.044674 .
 
 ns1:obs-idpt-071-peso-eco-2026 a qb:Observation ;
@@ -3799,6 +4010,7 @@ ns1:obs-idpt-071-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:071 ;
+    ns1:valoreGrezzoIDPT 0.627168 ;
     ns1:valoreIDPT 0.680604 .
 
 ns1:obs-idpt-071-press-dem-2026 a qb:Observation ;
@@ -3809,6 +4021,7 @@ ns1:obs-idpt-071-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:071 ;
+    ns1:valoreGrezzoIDPT 1.045266 ;
     ns1:valoreIDPT 0.512638 .
 
 ns1:obs-idpt-072-ered-st-2026 a qb:Observation ;
@@ -3822,6 +4035,7 @@ ns1:obs-idpt-072-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:072 ;
+    ns1:valoreGrezzoIDPT 0.473846 ;
     ns1:valoreIDPT 0.058736 .
 
 ns1:obs-idpt-072-peso-eco-2026 a qb:Observation ;
@@ -3836,6 +4050,7 @@ ns1:obs-idpt-072-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:072 ;
+    ns1:valoreGrezzoIDPT 0.550525 ;
     ns1:valoreIDPT 0.50376 .
 
 ns1:obs-idpt-072-press-dem-2026 a qb:Observation ;
@@ -3846,6 +4061,7 @@ ns1:obs-idpt-072-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:072 ;
+    ns1:valoreGrezzoIDPT 0.922615 ;
     ns1:valoreIDPT 0.374544 .
 
 ns1:obs-idpt-073-ered-st-2026 a qb:Observation ;
@@ -3859,6 +4075,7 @@ ns1:obs-idpt-073-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:073 ;
+    ns1:valoreGrezzoIDPT 0.517553 ;
     ns1:valoreIDPT 0.104457 .
 
 ns1:obs-idpt-073-peso-eco-2026 a qb:Observation ;
@@ -3873,6 +4090,7 @@ ns1:obs-idpt-073-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:073 ;
+    ns1:valoreGrezzoIDPT 0.707458 ;
     ns1:valoreIDPT 0.865863 .
 
 ns1:obs-idpt-073-press-dem-2026 a qb:Observation ;
@@ -3883,6 +4101,7 @@ ns1:obs-idpt-073-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:073 ;
+    ns1:valoreGrezzoIDPT 1.462976 ;
     ns1:valoreIDPT 0.982943 .
 
 ns1:obs-idpt-074-ered-st-2026 a qb:Observation ;
@@ -3896,6 +4115,7 @@ ns1:obs-idpt-074-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:074 ;
+    ns1:valoreGrezzoIDPT 0.523215 ;
     ns1:valoreIDPT 0.110381 .
 
 ns1:obs-idpt-074-peso-eco-2026 a qb:Observation ;
@@ -3910,6 +4130,7 @@ ns1:obs-idpt-074-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:074 ;
+    ns1:valoreGrezzoIDPT 0.640755 ;
     ns1:valoreIDPT 0.711956 .
 
 ns1:obs-idpt-074-press-dem-2026 a qb:Observation ;
@@ -3920,6 +4141,7 @@ ns1:obs-idpt-074-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:074 ;
+    ns1:valoreGrezzoIDPT 1.088796 ;
     ns1:valoreIDPT 0.561649 .
 
 ns1:obs-idpt-075-ered-st-2026 a qb:Observation ;
@@ -3933,6 +4155,7 @@ ns1:obs-idpt-075-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:075 ;
+    ns1:valoreGrezzoIDPT 0.493333 ;
     ns1:valoreIDPT 0.079122 .
 
 ns1:obs-idpt-075-peso-eco-2026 a qb:Observation ;
@@ -3947,6 +4170,7 @@ ns1:obs-idpt-075-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:075 ;
+    ns1:valoreGrezzoIDPT 0.671981 ;
     ns1:valoreIDPT 0.784005 .
 
 ns1:obs-idpt-075-press-dem-2026 a qb:Observation ;
@@ -3957,6 +4181,7 @@ ns1:obs-idpt-075-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:075 ;
+    ns1:valoreGrezzoIDPT 1.210564 ;
     ns1:valoreIDPT 0.69875 .
 
 ns1:obs-idpt-076-ered-st-2026 a qb:Observation ;
@@ -3970,6 +4195,7 @@ ns1:obs-idpt-076-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:076 ;
+    ns1:valoreGrezzoIDPT 0.496994 ;
     ns1:valoreIDPT 0.082952 .
 
 ns1:obs-idpt-076-peso-eco-2026 a qb:Observation ;
@@ -3984,6 +4210,7 @@ ns1:obs-idpt-076-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:076 ;
+    ns1:valoreGrezzoIDPT 0.607222 ;
     ns1:valoreIDPT 0.634582 .
 
 ns1:obs-idpt-076-press-dem-2026 a qb:Observation ;
@@ -3994,6 +4221,7 @@ ns1:obs-idpt-076-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:076 ;
+    ns1:valoreGrezzoIDPT 1.042468 ;
     ns1:valoreIDPT 0.509488 .
 
 ns1:obs-idpt-077-ered-st-2026 a qb:Observation ;
@@ -4007,6 +4235,7 @@ ns1:obs-idpt-077-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:077 ;
+    ns1:valoreGrezzoIDPT 0.478125 ;
     ns1:valoreIDPT 0.063212 .
 
 ns1:obs-idpt-077-peso-eco-2026 a qb:Observation ;
@@ -4021,6 +4250,7 @@ ns1:obs-idpt-077-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:077 ;
+    ns1:valoreGrezzoIDPT 0.573325 ;
     ns1:valoreIDPT 0.556368 .
 
 ns1:obs-idpt-077-press-dem-2026 a qb:Observation ;
@@ -4031,6 +4261,7 @@ ns1:obs-idpt-077-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:077 ;
+    ns1:valoreGrezzoIDPT 0.893578 ;
     ns1:valoreIDPT 0.341851 .
 
 ns1:obs-idpt-078-ered-st-2026 a qb:Observation ;
@@ -4044,6 +4275,7 @@ ns1:obs-idpt-078-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:078 ;
+    ns1:valoreGrezzoIDPT 0.446243 ;
     ns1:valoreIDPT 0.029861 .
 
 ns1:obs-idpt-078-peso-eco-2026 a qb:Observation ;
@@ -4058,6 +4290,7 @@ ns1:obs-idpt-078-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:078 ;
+    ns1:valoreGrezzoIDPT 0.702586 ;
     ns1:valoreIDPT 0.854623 .
 
 ns1:obs-idpt-078-press-dem-2026 a qb:Observation ;
@@ -4068,6 +4301,7 @@ ns1:obs-idpt-078-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:078 ;
+    ns1:valoreGrezzoIDPT 1.201885 ;
     ns1:valoreIDPT 0.688978 .
 
 ns1:obs-idpt-079-ered-st-2026 a qb:Observation ;
@@ -4081,6 +4315,7 @@ ns1:obs-idpt-079-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:079 ;
+    ns1:valoreGrezzoIDPT 0.809092 ;
     ns1:valoreIDPT 0.409436 .
 
 ns1:obs-idpt-079-peso-eco-2026 a qb:Observation ;
@@ -4095,6 +4330,7 @@ ns1:obs-idpt-079-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:079 ;
+    ns1:valoreGrezzoIDPT 0.693985 ;
     ns1:valoreIDPT 0.834776 .
 
 ns1:obs-idpt-079-press-dem-2026 a qb:Observation ;
@@ -4105,6 +4341,7 @@ ns1:obs-idpt-079-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:079 ;
+    ns1:valoreGrezzoIDPT 1.156803 ;
     ns1:valoreIDPT 0.638218 .
 
 ns1:obs-idpt-080-ered-st-2026 a qb:Observation ;
@@ -4118,6 +4355,7 @@ ns1:obs-idpt-080-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:080 ;
+    ns1:valoreGrezzoIDPT 0.442157 ;
     ns1:valoreIDPT 0.025586 .
 
 ns1:obs-idpt-080-peso-eco-2026 a qb:Observation ;
@@ -4132,6 +4370,7 @@ ns1:obs-idpt-080-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:080 ;
+    ns1:valoreGrezzoIDPT 0.765592 ;
     ns1:valoreIDPT "1"^^xsd:nonNegativeInteger .
 
 ns1:obs-idpt-080-press-dem-2026 a qb:Observation ;
@@ -4142,6 +4381,7 @@ ns1:obs-idpt-080-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:080 ;
+    ns1:valoreGrezzoIDPT 1.478126 ;
     ns1:valoreIDPT "1"^^xsd:nonNegativeInteger .
 
 ns1:obs-idpt-081-ered-st-2026 a qb:Observation ;
@@ -4155,6 +4395,7 @@ ns1:obs-idpt-081-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:081 ;
+    ns1:valoreGrezzoIDPT 0.471846 ;
     ns1:valoreIDPT 0.056644 .
 
 ns1:obs-idpt-081-peso-eco-2026 a qb:Observation ;
@@ -4169,6 +4410,7 @@ ns1:obs-idpt-081-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:081 ;
+    ns1:valoreGrezzoIDPT 0.604808 ;
     ns1:valoreIDPT 0.629011 .
 
 ns1:obs-idpt-081-press-dem-2026 a qb:Observation ;
@@ -4179,6 +4421,7 @@ ns1:obs-idpt-081-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:081 ;
+    ns1:valoreGrezzoIDPT 1.01298 ;
     ns1:valoreIDPT 0.476287 .
 
 ns1:obs-idpt-082-ered-st-2026 a qb:Observation ;
@@ -4192,6 +4435,7 @@ ns1:obs-idpt-082-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:082 ;
+    ns1:valoreGrezzoIDPT 0.567306 ;
     ns1:valoreIDPT 0.156504 .
 
 ns1:obs-idpt-082-peso-eco-2026 a qb:Observation ;
@@ -4206,6 +4450,7 @@ ns1:obs-idpt-082-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:082 ;
+    ns1:valoreGrezzoIDPT 0.589792 ;
     ns1:valoreIDPT 0.594364 .
 
 ns1:obs-idpt-082-press-dem-2026 a qb:Observation ;
@@ -4216,6 +4461,7 @@ ns1:obs-idpt-082-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:082 ;
+    ns1:valoreGrezzoIDPT 1.040971 ;
     ns1:valoreIDPT 0.507803 .
 
 ns1:obs-idpt-083-ered-st-2026 a qb:Observation ;
@@ -4229,6 +4475,7 @@ ns1:obs-idpt-083-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:083 ;
+    ns1:valoreGrezzoIDPT 0.44594 ;
     ns1:valoreIDPT 0.029544 .
 
 ns1:obs-idpt-083-peso-eco-2026 a qb:Observation ;
@@ -4243,6 +4490,7 @@ ns1:obs-idpt-083-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:083 ;
+    ns1:valoreGrezzoIDPT 0.702697 ;
     ns1:valoreIDPT 0.854878 .
 
 ns1:obs-idpt-083-press-dem-2026 a qb:Observation ;
@@ -4253,6 +4501,7 @@ ns1:obs-idpt-083-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:083 ;
+    ns1:valoreGrezzoIDPT 1.269496 ;
     ns1:valoreIDPT 0.765102 .
 
 ns1:obs-idpt-084-ered-st-2026 a qb:Observation ;
@@ -4266,6 +4515,7 @@ ns1:obs-idpt-084-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:084 ;
+    ns1:valoreGrezzoIDPT 0.492119 ;
     ns1:valoreIDPT 0.077851 .
 
 ns1:obs-idpt-084-peso-eco-2026 a qb:Observation ;
@@ -4280,6 +4530,7 @@ ns1:obs-idpt-084-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:084 ;
+    ns1:valoreGrezzoIDPT 0.604369 ;
     ns1:valoreIDPT 0.627998 .
 
 ns1:obs-idpt-084-press-dem-2026 a qb:Observation ;
@@ -4290,6 +4541,7 @@ ns1:obs-idpt-084-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:084 ;
+    ns1:valoreGrezzoIDPT 1.066496 ;
     ns1:valoreIDPT 0.536541 .
 
 ns1:obs-idpt-085-ered-st-2026 a qb:Observation ;
@@ -4303,6 +4555,7 @@ ns1:obs-idpt-085-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:085 ;
+    ns1:valoreGrezzoIDPT 0.481992 ;
     ns1:valoreIDPT 0.067258 .
 
 ns1:obs-idpt-085-peso-eco-2026 a qb:Observation ;
@@ -4317,6 +4570,7 @@ ns1:obs-idpt-085-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:085 ;
+    ns1:valoreGrezzoIDPT 0.586602 ;
     ns1:valoreIDPT 0.587004 .
 
 ns1:obs-idpt-085-press-dem-2026 a qb:Observation ;
@@ -4327,6 +4581,7 @@ ns1:obs-idpt-085-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:085 ;
+    ns1:valoreGrezzoIDPT 1.032343 ;
     ns1:valoreIDPT 0.498088 .
 
 ns1:obs-idpt-086-ered-st-2026 a qb:Observation ;
@@ -4340,6 +4595,7 @@ ns1:obs-idpt-086-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:086 ;
+    ns1:valoreGrezzoIDPT 0.471212 ;
     ns1:valoreIDPT 0.055981 .
 
 ns1:obs-idpt-086-peso-eco-2026 a qb:Observation ;
@@ -4354,6 +4610,7 @@ ns1:obs-idpt-086-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:086 ;
+    ns1:valoreGrezzoIDPT 0.612177 ;
     ns1:valoreIDPT 0.646014 .
 
 ns1:obs-idpt-086-press-dem-2026 a qb:Observation ;
@@ -4364,6 +4621,7 @@ ns1:obs-idpt-086-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:086 ;
+    ns1:valoreGrezzoIDPT 1.061272 ;
     ns1:valoreIDPT 0.53066 .
 
 ns1:obs-idpt-087-ered-st-2026 a qb:Observation ;
@@ -4377,6 +4635,7 @@ ns1:obs-idpt-087-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:087 ;
+    ns1:valoreGrezzoIDPT 0.446871 ;
     ns1:valoreIDPT 0.030518 .
 
 ns1:obs-idpt-087-peso-eco-2026 a qb:Observation ;
@@ -4391,6 +4650,7 @@ ns1:obs-idpt-087-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:087 ;
+    ns1:valoreGrezzoIDPT 0.538231 ;
     ns1:valoreIDPT 0.475395 .
 
 ns1:obs-idpt-087-press-dem-2026 a qb:Observation ;
@@ -4401,6 +4661,7 @@ ns1:obs-idpt-087-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:087 ;
+    ns1:valoreGrezzoIDPT 0.900995 ;
     ns1:valoreIDPT 0.350202 .
 
 ns1:obs-idpt-088-ered-st-2026 a qb:Observation ;
@@ -4414,6 +4675,7 @@ ns1:obs-idpt-088-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:088 ;
+    ns1:valoreGrezzoIDPT 0.462529 ;
     ns1:valoreIDPT 0.046898 .
 
 ns1:obs-idpt-088-peso-eco-2026 a qb:Observation ;
@@ -4428,6 +4690,7 @@ ns1:obs-idpt-088-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:088 ;
+    ns1:valoreGrezzoIDPT 0.524695 ;
     ns1:valoreIDPT 0.444162 .
 
 ns1:obs-idpt-088-press-dem-2026 a qb:Observation ;
@@ -4438,6 +4701,7 @@ ns1:obs-idpt-088-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:088 ;
+    ns1:valoreGrezzoIDPT 0.782321 ;
     ns1:valoreIDPT 0.216585 .
 
 ns1:obs-idpt-089-ered-st-2026 a qb:Observation ;
@@ -4451,6 +4715,7 @@ ns1:obs-idpt-089-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:089 ;
+    ns1:valoreGrezzoIDPT 0.472859 ;
     ns1:valoreIDPT 0.057703 .
 
 ns1:obs-idpt-089-peso-eco-2026 a qb:Observation ;
@@ -4465,6 +4730,7 @@ ns1:obs-idpt-089-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:089 ;
+    ns1:valoreGrezzoIDPT 0.585467 ;
     ns1:valoreIDPT 0.584386 .
 
 ns1:obs-idpt-089-press-dem-2026 a qb:Observation ;
@@ -4475,6 +4741,7 @@ ns1:obs-idpt-089-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:089 ;
+    ns1:valoreGrezzoIDPT 0.907417 ;
     ns1:valoreIDPT 0.357432 .
 
 ns1:obs-idpt-090-ered-st-2026 a qb:Observation ;
@@ -4488,6 +4755,7 @@ ns1:obs-idpt-090-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:090 ;
+    ns1:valoreGrezzoIDPT 0.452834 ;
     ns1:valoreIDPT 0.036755 .
 
 ns1:obs-idpt-090-peso-eco-2026 a qb:Observation ;
@@ -4502,6 +4770,7 @@ ns1:obs-idpt-090-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:090 ;
+    ns1:valoreGrezzoIDPT 0.582212 ;
     ns1:valoreIDPT 0.576874 .
 
 ns1:obs-idpt-090-press-dem-2026 a qb:Observation ;
@@ -4512,6 +4781,7 @@ ns1:obs-idpt-090-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:090 ;
+    ns1:valoreGrezzoIDPT 0.986232 ;
     ns1:valoreIDPT 0.44617 .
 
 ns1:obs-idpt-091-ered-st-2026 a qb:Observation ;
@@ -4525,6 +4795,7 @@ ns1:obs-idpt-091-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:091 ;
+    ns1:valoreGrezzoIDPT 0.517156 ;
     ns1:valoreIDPT 0.104042 .
 
 ns1:obs-idpt-091-peso-eco-2026 a qb:Observation ;
@@ -4539,6 +4810,7 @@ ns1:obs-idpt-091-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:091 ;
+    ns1:valoreGrezzoIDPT 0.740707 ;
     ns1:valoreIDPT 0.94258 .
 
 ns1:obs-idpt-091-press-dem-2026 a qb:Observation ;
@@ -4549,6 +4821,7 @@ ns1:obs-idpt-091-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:091 ;
+    ns1:valoreGrezzoIDPT 1.132009 ;
     ns1:valoreIDPT 0.610304 .
 
 ns1:obs-idpt-092-ered-st-2026 a qb:Observation ;
@@ -4562,6 +4835,7 @@ ns1:obs-idpt-092-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:092 ;
+    ns1:valoreGrezzoIDPT 0.653097 ;
     ns1:valoreIDPT 0.24625 .
 
 ns1:obs-idpt-092-peso-eco-2026 a qb:Observation ;
@@ -4576,6 +4850,7 @@ ns1:obs-idpt-092-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:092 ;
+    ns1:valoreGrezzoIDPT 0.686539 ;
     ns1:valoreIDPT 0.817596 .
 
 ns1:obs-idpt-092-press-dem-2026 a qb:Observation ;
@@ -4586,6 +4861,7 @@ ns1:obs-idpt-092-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:092 ;
+    ns1:valoreGrezzoIDPT 1.027148 ;
     ns1:valoreIDPT 0.492239 .
 
 ns1:obs-idpt-093-ered-st-2026 a qb:Observation ;
@@ -4599,6 +4875,7 @@ ns1:obs-idpt-093-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:093 ;
+    ns1:valoreGrezzoIDPT 0.515124 ;
     ns1:valoreIDPT 0.101917 .
 
 ns1:obs-idpt-093-peso-eco-2026 a qb:Observation ;
@@ -4613,6 +4890,7 @@ ns1:obs-idpt-093-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:093 ;
+    ns1:valoreGrezzoIDPT 0.467999 ;
     ns1:valoreIDPT 0.313343 .
 
 ns1:obs-idpt-093-press-dem-2026 a qb:Observation ;
@@ -4623,6 +4901,7 @@ ns1:obs-idpt-093-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:093 ;
+    ns1:valoreGrezzoIDPT 0.838568 ;
     ns1:valoreIDPT 0.279914 .
 
 ns1:obs-idpt-094-ered-st-2026 a qb:Observation ;
@@ -4636,6 +4915,7 @@ ns1:obs-idpt-094-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:094 ;
+    ns1:valoreGrezzoIDPT 0.545171 ;
     ns1:valoreIDPT 0.133349 .
 
 ns1:obs-idpt-094-peso-eco-2026 a qb:Observation ;
@@ -4650,6 +4930,7 @@ ns1:obs-idpt-094-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:094 ;
+    ns1:valoreGrezzoIDPT 0.685679 ;
     ns1:valoreIDPT 0.815612 .
 
 ns1:obs-idpt-094-press-dem-2026 a qb:Observation ;
@@ -4660,6 +4941,7 @@ ns1:obs-idpt-094-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:094 ;
+    ns1:valoreGrezzoIDPT 1.108972 ;
     ns1:valoreIDPT 0.584366 .
 
 ns1:obs-idpt-095-ered-st-2026 a qb:Observation ;
@@ -4673,6 +4955,7 @@ ns1:obs-idpt-095-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:095 ;
+    ns1:valoreGrezzoIDPT 0.485484 ;
     ns1:valoreIDPT 0.070911 .
 
 ns1:obs-idpt-095-peso-eco-2026 a qb:Observation ;
@@ -4687,6 +4970,7 @@ ns1:obs-idpt-095-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:095 ;
+    ns1:valoreGrezzoIDPT 0.746786 ;
     ns1:valoreIDPT 0.956609 .
 
 ns1:obs-idpt-095-press-dem-2026 a qb:Observation ;
@@ -4697,6 +4981,7 @@ ns1:obs-idpt-095-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:095 ;
+    ns1:valoreGrezzoIDPT 1.223932 ;
     ns1:valoreIDPT 0.713801 .
 
 ns1:obs-idpt-096-ered-st-2026 a qb:Observation ;
@@ -4710,6 +4995,7 @@ ns1:obs-idpt-096-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:096 ;
+    ns1:valoreGrezzoIDPT 0.570289 ;
     ns1:valoreIDPT 0.159625 .
 
 ns1:obs-idpt-096-peso-eco-2026 a qb:Observation ;
@@ -4724,6 +5010,7 @@ ns1:obs-idpt-096-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:096 ;
+    ns1:valoreGrezzoIDPT 0.651636 ;
     ns1:valoreIDPT 0.737062 .
 
 ns1:obs-idpt-096-press-dem-2026 a qb:Observation ;
@@ -4734,6 +5021,7 @@ ns1:obs-idpt-096-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:096 ;
+    ns1:valoreGrezzoIDPT 1.035249 ;
     ns1:valoreIDPT 0.50136 .
 
 ns1:obs-idpt-097-ered-st-2026 a qb:Observation ;
@@ -4747,6 +5035,7 @@ ns1:obs-idpt-097-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:097 ;
+    ns1:valoreGrezzoIDPT 0.535823 ;
     ns1:valoreIDPT 0.12357 .
 
 ns1:obs-idpt-097-peso-eco-2026 a qb:Observation ;
@@ -4761,6 +5050,7 @@ ns1:obs-idpt-097-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:097 ;
+    ns1:valoreGrezzoIDPT 0.477213 ;
     ns1:valoreIDPT 0.334603 .
 
 ns1:obs-idpt-097-press-dem-2026 a qb:Observation ;
@@ -4771,6 +5061,7 @@ ns1:obs-idpt-097-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:097 ;
+    ns1:valoreGrezzoIDPT 0.917885 ;
     ns1:valoreIDPT 0.369218 .
 
 ns1:obs-idpt-098-ered-st-2026 a qb:Observation ;
@@ -4784,6 +5075,7 @@ ns1:obs-idpt-098-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:098 ;
+    ns1:valoreGrezzoIDPT 0.5272 ;
     ns1:valoreIDPT 0.114549 .
 
 ns1:obs-idpt-098-peso-eco-2026 a qb:Observation ;
@@ -4798,6 +5090,7 @@ ns1:obs-idpt-098-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:098 ;
+    ns1:valoreGrezzoIDPT 0.441826 ;
     ns1:valoreIDPT 0.252951 .
 
 ns1:obs-idpt-098-press-dem-2026 a qb:Observation ;
@@ -4808,6 +5101,7 @@ ns1:obs-idpt-098-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:098 ;
+    ns1:valoreGrezzoIDPT 0.761672 ;
     ns1:valoreIDPT 0.193337 .
 
 ns1:obs-idpt-099-ered-st-2026 a qb:Observation ;
@@ -4821,6 +5115,7 @@ ns1:obs-idpt-099-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:099 ;
+    ns1:valoreGrezzoIDPT 0.464523 ;
     ns1:valoreIDPT 0.048983 .
 
 ns1:obs-idpt-099-peso-eco-2026 a qb:Observation ;
@@ -4835,6 +5130,7 @@ ns1:obs-idpt-099-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:099 ;
+    ns1:valoreGrezzoIDPT 0.436469 ;
     ns1:valoreIDPT 0.240591 .
 
 ns1:obs-idpt-099-press-dem-2026 a qb:Observation ;
@@ -4845,6 +5141,7 @@ ns1:obs-idpt-099-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:099 ;
+    ns1:valoreGrezzoIDPT 0.7471 ;
     ns1:valoreIDPT 0.176929 .
 
 ns1:obs-idpt-100-ered-st-2026 a qb:Observation ;
@@ -4858,6 +5155,7 @@ ns1:obs-idpt-100-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:100 ;
+    ns1:valoreGrezzoIDPT 0.535313 ;
     ns1:valoreIDPT 0.123037 .
 
 ns1:obs-idpt-100-peso-eco-2026 a qb:Observation ;
@@ -4872,6 +5170,7 @@ ns1:obs-idpt-100-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:100 ;
+    ns1:valoreGrezzoIDPT 0.40688 ;
     ns1:valoreIDPT 0.172319 .
 
 ns1:obs-idpt-100-press-dem-2026 a qb:Observation ;
@@ -4882,6 +5181,7 @@ ns1:obs-idpt-100-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:100 ;
+    ns1:valoreGrezzoIDPT 0.649065 ;
     ns1:valoreIDPT 0.066551 .
 
 ns1:obs-idpt-101-ered-st-2026 a qb:Observation ;
@@ -4895,6 +5195,7 @@ ns1:obs-idpt-101-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:101 ;
+    ns1:valoreGrezzoIDPT 0.417698 ;
     ns1:valoreIDPT "0"^^xsd:nonNegativeInteger .
 
 ns1:obs-idpt-101-peso-eco-2026 a qb:Observation ;
@@ -4909,6 +5210,7 @@ ns1:obs-idpt-101-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:101 ;
+    ns1:valoreGrezzoIDPT 0.69796 ;
     ns1:valoreIDPT 0.843947 .
 
 ns1:obs-idpt-101-press-dem-2026 a qb:Observation ;
@@ -4919,6 +5221,7 @@ ns1:obs-idpt-101-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:101 ;
+    ns1:valoreGrezzoIDPT 1.276149 ;
     ns1:valoreIDPT 0.772592 .
 
 ns1:obs-idpt-102-ered-st-2026 a qb:Observation ;
@@ -4932,6 +5235,7 @@ ns1:obs-idpt-102-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:102 ;
+    ns1:valoreGrezzoIDPT 0.452246 ;
     ns1:valoreIDPT 0.036141 .
 
 ns1:obs-idpt-102-peso-eco-2026 a qb:Observation ;
@@ -4946,6 +5250,7 @@ ns1:obs-idpt-102-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:102 ;
+    ns1:valoreGrezzoIDPT 0.738379 ;
     ns1:valoreIDPT 0.937209 .
 
 ns1:obs-idpt-102-press-dem-2026 a qb:Observation ;
@@ -4956,6 +5261,7 @@ ns1:obs-idpt-102-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:102 ;
+    ns1:valoreGrezzoIDPT 1.167886 ;
     ns1:valoreIDPT 0.650697 .
 
 ns1:obs-idpt-103-ered-st-2026 a qb:Observation ;
@@ -4969,6 +5275,7 @@ ns1:obs-idpt-103-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:103 ;
+    ns1:valoreGrezzoIDPT 0.536652 ;
     ns1:valoreIDPT 0.124437 .
 
 ns1:obs-idpt-103-peso-eco-2026 a qb:Observation ;
@@ -4983,6 +5290,7 @@ ns1:obs-idpt-103-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:103 ;
+    ns1:valoreGrezzoIDPT 0.587226 ;
     ns1:valoreIDPT 0.588443 .
 
 ns1:obs-idpt-103-press-dem-2026 a qb:Observation ;
@@ -4993,6 +5301,7 @@ ns1:obs-idpt-103-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:103 ;
+    ns1:valoreGrezzoIDPT 0.848149 ;
     ns1:valoreIDPT 0.290702 .
 
 ns1:obs-idpt-108-ered-st-2026 a qb:Observation ;
@@ -5006,6 +5315,7 @@ ns1:obs-idpt-108-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:108 ;
+    ns1:valoreGrezzoIDPT 0.547942 ;
     ns1:valoreIDPT 0.136248 .
 
 ns1:obs-idpt-108-peso-eco-2026 a qb:Observation ;
@@ -5020,6 +5330,7 @@ ns1:obs-idpt-108-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:108 ;
+    ns1:valoreGrezzoIDPT 0.417946 ;
     ns1:valoreIDPT 0.197851 .
 
 ns1:obs-idpt-108-press-dem-2026 a qb:Observation ;
@@ -5030,6 +5341,7 @@ ns1:obs-idpt-108-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:108 ;
+    ns1:valoreGrezzoIDPT 0.772546 ;
     ns1:valoreIDPT 0.205579 .
 
 ns1:obs-idpt-109-ered-st-2026 a qb:Observation ;
@@ -5043,6 +5355,7 @@ ns1:obs-idpt-109-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:109 ;
+    ns1:valoreGrezzoIDPT 0.484758 ;
     ns1:valoreIDPT 0.070151 .
 
 ns1:obs-idpt-109-peso-eco-2026 a qb:Observation ;
@@ -5057,6 +5370,7 @@ ns1:obs-idpt-109-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:109 ;
+    ns1:valoreGrezzoIDPT 0.545982 ;
     ns1:valoreIDPT 0.493279 .
 
 ns1:obs-idpt-109-press-dem-2026 a qb:Observation ;
@@ -5067,6 +5381,7 @@ ns1:obs-idpt-109-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:109 ;
+    ns1:valoreGrezzoIDPT 0.98491 ;
     ns1:valoreIDPT 0.444682 .
 
 ns1:obs-idpt-110-ered-st-2026 a qb:Observation ;
@@ -5080,6 +5395,7 @@ ns1:obs-idpt-110-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:110 ;
+    ns1:valoreGrezzoIDPT 0.454062 ;
     ns1:valoreIDPT 0.03804 .
 
 ns1:obs-idpt-110-peso-eco-2026 a qb:Observation ;
@@ -5094,6 +5410,7 @@ ns1:obs-idpt-110-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:110 ;
+    ns1:valoreGrezzoIDPT 0.564519 ;
     ns1:valoreIDPT 0.53605 .
 
 ns1:obs-idpt-110-press-dem-2026 a qb:Observation ;
@@ -5104,6 +5421,7 @@ ns1:obs-idpt-110-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:110 ;
+    ns1:valoreGrezzoIDPT 1.129764 ;
     ns1:valoreIDPT 0.607775 .
 
 ns1:obs-idpt-111-ered-st-2026 a qb:Observation ;
@@ -5117,6 +5435,7 @@ ns1:obs-idpt-111-ered-st-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-eredita-storica ;
     ns1:provincia agidp:111 ;
+    ns1:valoreGrezzoIDPT 1.373632 ;
     ns1:valoreIDPT "1"^^xsd:nonNegativeInteger .
 
 ns1:obs-idpt-111-peso-eco-2026 a qb:Observation ;
@@ -5131,6 +5450,7 @@ ns1:obs-idpt-111-peso-eco-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-peso-economico ;
     ns1:provincia agidp:111 ;
+    ns1:valoreGrezzoIDPT 0.475893 ;
     ns1:valoreIDPT 0.331556 .
 
 ns1:obs-idpt-111-press-dem-2026 a qb:Observation ;
@@ -5141,14 +5461,16 @@ ns1:obs-idpt-111-press-dem-2026 a qb:Observation ;
     ns1:annoRiferimento "2026"^^xsd:gYear ;
     ns1:componenteIDPT ns1:componente-pressione-demografica ;
     ns1:provincia agidp:111 ;
+    ns1:valoreGrezzoIDPT 0.722901 ;
     ns1:valoreIDPT 0.149683 .
 
 ns1:cubo-idpt-computed a qb:DataSet ;
-    dcterms:description "Indice composito calcolato per ognuna delle 107 province italiane al 1.1.2026, con 3 componenti elementari (D1 pressione demografica = pensioni vigenti/occupati; D2 peso economico = monte pensioni/monte redditi da lavoro; D3 eredità storica = % pensioni retributivo) normalizzate min-max sui 107 valori e aggregate via media aritmetica. Tutte le 428 obs derivate da cubi primari (1, 5, 7, 2, 9) e marcate obsStatus=E + prov:wasDerivedFrom esplicito verso le obs sorgenti del calcolo. Materializzato in grafo nominato separato graph:idpt-computed per distribuzione separabile via DCAT-AP_IT. Per Cagliari (092) e Sud Sardegna (111), D3 condivide il valore della sede INPS aggregata 'CAGLIARI E SUD SARDEGNA' (replica intero valore su entrambe le province, decisione metodologica Fase 6)."@it ;
+    dcterms:description "Indice composito calcolato per ognuna delle 107 province italiane al 1.1.2026, con 3 componenti elementari (D1 pressione demografica = pensioni vigenti / occupati; D2 peso economico = monte pensioni / monte redditi da lavoro; D3 eredità storica = intensità stimata di pensioni in regime retributivo) normalizzate min-max sui 107 valori e aggregate via media aritmetica. Per ognuna delle 321 obs componenti (D1/D2/D3) viene pubblicato anche il valore grezzo pre-normalizzazione via idpt:valoreGrezzoIDPT, per permettere ricomposizione con pesi alternativi. Tutte le 428 obs derivate da cubi primari (1, 5, 7, 2, 9) e marcate obsStatus=E + prov:wasDerivedFrom esplicito verso le obs sorgenti del calcolo. Materializzato in grafo nominato separato graph:idpt-computed per distribuzione separabile via DCAT-AP_IT. Per Cagliari (092) e Sud Sardegna (111), D3 condivide il valore della sede INPS aggregata 'CAGLIARI E SUD SARDEGNA' (replica intero valore su entrambe le province, decisione metodologica Fase 6)."@it ;
     dcterms:issued "2026-05-29"^^xsd:date ;
     dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
     dcterms:rights "Indice derivato. Formula documentata in PROGETTO_CONTESTO.md sez. 3 e nel report finale del progetto."@it ;
     dcterms:source idpt: ;
     dcterms:title "Indice di Dipendenza Previdenziale Territoriale (IDPT), 2026"@it ;
-    qb:structure ns1:dsd-idpt-computed .
+    qb:structure ns1:dsd-idpt-computed ;
+    ns1:metodoNormalizzazione "min-max"@it .
 
