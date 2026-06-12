@@ -49,28 +49,19 @@ TEMPLATE = r"""<!DOCTYPE html>
       <button class="opt" data-s="eta">Solo eta</button>
       <button class="opt" data-s="imp">Solo importo</button>
     </div>
-    <div class="grp">
-      <button class="opt" id="bias" data-on="1">Evidenzia zona a bias di sopravvivenza</button>
-    </div>
   </div>
   <div class="chartbox"><canvas id="cv"></canvas></div>
   <p class="cap">L'<b>eta media alla decorrenza</b> sale da ~40 a 67 anni: dall'epoca delle <b>"pensioni baby"</b> del pubblico impiego (ritiri anche prima dei 50 anni, abolite dalla riforma <b>Amato 1992</b>) al regime post-<b>Fornero 2011</b>, passando per la <b>Dini 1995</b>. Due cautele: (1) <b>bias di sopravvivenza</b> sulle coorti vecchie - il valore e l'eta dei soli pensionati ancora vigenti nel 2026, quindi atipicamente bassa prima del ~1995; per le coorti recenti il segnale e pulito. (2) il cubo copre i <b>soli dipendenti pubblici</b>, a livello nazionale - non l'intero sistema. L'importo medio e quello corrente (rivalutato), non quello alla decorrenza. Fonte: Osservatorio INPS, pensioni per anno di decorrenza.</p>
 </div>
 <script>
 const D = __DATA__;
-let mode='both', showBias=true;
+let mode='both';
 const C_ETA='#4a5d8a', C_IMP='#b5524a';
 const fmt=new Intl.NumberFormat('it-IT');
 const REFORMS=[[1992,'Amato 1992'],[1995,'Dini 1995'],[2011,'Fornero 2011']];
 
 const vlines={id:'vlines',afterDraw(c){
   const xs=c.scales.x, ya=c.chartArea, ctx=c.ctx;
-  if(showBias){ // banda pre-1995
-    const x0=ya.left, x1=xs.getPixelForValue(1995);
-    ctx.save();ctx.fillStyle='rgba(120,120,120,.07)';ctx.fillRect(x0,ya.top,x1-x0,ya.bottom-ya.top);
-    ctx.fillStyle='#999';ctx.font='10px -apple-system,sans-serif';ctx.textAlign='left';
-    ctx.fillText('bias di sopravvivenza',x0+4,ya.bottom-6);ctx.restore();
-  }
   REFORMS.forEach(([yr,txt])=>{
     const xp=xs.getPixelForValue(yr); if(isNaN(xp))return;
     ctx.save();ctx.strokeStyle='#c9a13b';ctx.setLineDash([4,4]);ctx.lineWidth=1.2;
@@ -106,9 +97,6 @@ function render(){
 }
 document.querySelectorAll('button.opt[data-s]').forEach(b=>b.onclick=()=>{
   mode=b.dataset.s;document.querySelectorAll('button.opt[data-s]').forEach(x=>x.classList.toggle('active',x===b));render();});
-const biasBtn=document.getElementById('bias');
-biasBtn.classList.add('active');
-biasBtn.onclick=()=>{showBias=!showBias;biasBtn.classList.toggle('active',showBias);chart.update();};
 render();
 </script></body></html>"""
 
