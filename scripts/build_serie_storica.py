@@ -52,7 +52,13 @@ def extract():
             "num":[int(num[slug][y]) if y in num[slug] else None for y in years],
             "med":[round(med.get(slug,{}).get(y),1) if y in med.get(slug,{}) else None for y in years]})
     tot=[sum(s["num"][i] for s in series if s["num"][i] is not None) for i in range(len(years))]
-    return {"years":years,"series":series,"totale":tot}
+    # importo medio nazionale ponderato sul numero di pensioni
+    tot_med=[]
+    for i in range(len(years)):
+        w=sum(s["num"][i] for s in series if s["num"][i] and s["med"][i] is not None)
+        acc=sum(s["num"][i]*s["med"][i] for s in series if s["num"][i] and s["med"][i] is not None)
+        tot_med.append(round(acc/w,1) if w else None)
+    return {"years":years,"series":series,"totale":tot,"totale_med":tot_med}
 
 TEMPLATE = r"""<!DOCTYPE html>
 <html lang="it"><head>
@@ -102,16 +108,17 @@ TEMPLATE = r"""<!DOCTYPE html>
     <div class="grp"><span class="lbl">Storie</span>
       <button class="preset" data-p="tot">Totale nazionale</button>
       <button class="preset" data-p="top">Top 5 IDPT</button>
-      <button class="preset" data-p="2009">Nate nel 2009</button>
+      <button class="preset" data-p="bottom">Bottom 5 IDPT</button>
+      <button class="preset" data-p="2009">Province istituite nel 2009</button>
       <button class="preset" data-p="sardegna">Sardegna (salto 2012)</button>
       <button class="preset" data-p="clear">Pulisci</button>
     </div>
   </div>
   <div class="chips" id="chips"></div>
   <div class="chartbox"><canvas id="cv"></canvas></div>
-  <p class="cap"><b>2009</b>: nascita di Barletta-Andria-Trani, Fermo e Monza-Brianza, prima assenti come sedi autonome.
-  <b>2012</b>: l'INPS accorpa le ex-province sarde, da cui il salto di Cagliari-e-Sud-Sardegna, Sassari e Nuoro.
-  Il <b>totale nazionale</b> resta continuo perche le discontinuita sono ridistribuzioni interne. Fonte: Osservatorio INPS, serie storica; importo medio mensile come misura primaria, importo annuo ricostruito non mostrato.</p>
+  <p class="cap"><b>2009</b>: nascita di Barletta-Andria-Trani, Fermo e Monza-Brianza come sedi autonome (prima incluse nelle province madri): pura ridistribuzione territoriale, il totale nazionale resta continuo.
+  <b>2012</b>: l'INPS incorpora INPDAP ed ENPALS (DL 201/2011) e le pensioni dei dipendenti pubblici entrano nelle sue statistiche. Il salto e reale e universale - circa 2,8 milioni di pensioni in piu (+15%), visibile in 102 sedi su 106 - e fa crescere anche l'importo medio, perche le pensioni pubbliche sono mediamente piu alte. Le sedi sarde, oltre a questo, assorbono in quegli anni le ex-province (accorpamento INPS).
+  Fonte: Osservatorio INPS, serie storica. Importo medio mensile come misura primaria; importo annuo ricostruito non mostrato.</p>
 </div>
 <script>
 const D = __DATA__;
@@ -124,6 +131,7 @@ let selected=['__TOT__']; // keys: '__TOT__' or a label
 const PRESETS={
   tot:['__TOT__'],
   top:['Reggio Calabria','Taranto','Catanzaro','Oristano','Nuoro'],
+  bottom:['Bolzano','Milano','Trento','Prato','Padova'],
   '2009':['Barletta-Andria-Trani','Fermo','Monza e della Brianza'],
   sardegna:['Cagliari e Sud Sardegna','Sassari','Nuoro','Oristano']
 };
@@ -134,7 +142,7 @@ D.series.map(s=>s.label).sort((a,b)=>a.localeCompare(b,'it')).forEach(l=>{
 
 function colorFor(key,i){ if(key==='__TOT__') return '#111'; return PALETTE[i%PALETTE.length]; }
 function valuesFor(key){
-  if(key==='__TOT__') return measure==='num'?D.totale:D.totale.map(()=>null);
+  if(key==='__TOT__') return measure==='num'?D.totale:D.totale_med;
   const s=D.series[byLabel[key]]; return s? s[measure] : null;
 }
 function macroFor(key){ return key==='__TOT__'?'Italia':(D.series[byLabel[key]]||{}).macro; }
@@ -142,7 +150,7 @@ function macroFor(key){ return key==='__TOT__'?'Italia':(D.series[byLabel[key]]|
 let chart;
 const vlines={id:'vlines',afterDraw(c){
   const xs=c.scales.x, ya=c.scales.y, ctx=c.ctx;
-  [[2009,'2009 - nuove province'],[2012,'2012 - Sardegna']].forEach(([yr,txt])=>{
+  [[2009,'2009 · nuove province'],[2012,'2012 · INPDAP+ENPALS in INPS']].forEach(([yr,txt])=>{
     const xp=xs.getPixelForValue(yr); if(isNaN(xp))return;
     ctx.save();ctx.strokeStyle='#bbb';ctx.setLineDash([4,4]);ctx.lineWidth=1;
     ctx.beginPath();ctx.moveTo(xp,ya.top);ctx.lineTo(xp,ya.bottom);ctx.stroke();
@@ -152,10 +160,10 @@ const vlines={id:'vlines',afterDraw(c){
 
 function render(){
   const ds=selected.map((key,i)=>{
-    const c=colorFor(key,i),isTot=key==='__TOT__';
-    return {label:isTot?'Totale nazionale (asse dx)':key,data:valuesFor(key),
+    const c=colorFor(key,i),isTot=key==='__TOT__',totRight=isTot&&measure==='num';
+    return {label:isTot?(measure==='num'?'Totale nazionale (asse dx)':'Media nazionale'):key,data:valuesFor(key),
       borderColor:c,backgroundColor:c,borderWidth:isTot?3:2,borderDash:isTot?[6,3]:[],
-      yAxisID:isTot?'yTot':'y',pointRadius:0,pointHoverRadius:4,tension:.15,spanGaps:false};
+      yAxisID:totRight?'yTot':'y',pointRadius:0,pointHoverRadius:4,tension:.15,spanGaps:false};
   });
   const hasTot=selected.includes('__TOT__')&&measure==='num';
   if(chart){chart.data.datasets=ds;
@@ -184,11 +192,10 @@ function renderChips(){
 }
 document.querySelectorAll('button.opt').forEach(b=>b.onclick=()=>{
   measure=b.dataset.m;document.querySelectorAll('button.opt').forEach(x=>x.classList.toggle('active',x===b));
-  if(measure==='med'&&selected.includes('__TOT__')){selected=selected.filter(k=>k!=='__TOT__');if(!selected.length)selected=['Reggio Calabria','Milano'];}
   render();});
 document.querySelectorAll('button.preset').forEach(b=>b.onclick=()=>{
   const p=b.dataset.p;if(p==='clear'){selected=[];}else{selected=PRESETS[p].filter(l=>l==='__TOT__'||l in byLabel);}
-  if(measure==='med')selected=selected.filter(k=>k!=='__TOT__');render();});
+  render();});
 document.getElementById('picker').addEventListener('change',e=>{
   const v=e.target.value;if(v in byLabel&&!selected.includes(v)){selected.push(v);render();}e.target.value='';});
 // default extra
