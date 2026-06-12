@@ -247,27 +247,89 @@ Sul CSV reale le quote nazionali risultano **13,85% retributivo, 34,23% misto-Di
 
 ### 3.4 Le quattro Recipe a pipeline lineare — cubi 1, 5, 6, 7
 
-Una `Recipe` macrorefine è la fabbrica che orchestra gli step custom per produrre una specifica tabella pulita pronta per l'emissione `qb:Observation`. Le quattro Recipe descritte in questa sottosezione hanno pipeline lineari: stile A qb multi-measure, nessuna proiezione, nessuna aggregazione retroattiva, nessuna stima di misura.
+Una `Recipe` macrorefine è la fabbrica che orchestra gli step custom per produrre la tabella pulita di un cubo, pronta per l'emissione `qb:Observation`. Le quattro Recipe di questa sottosezione condividono la forma più semplice — pipeline lineare, stile A qb (più misure per osservazione), nessuna stima né proiezione — e sono presentate dalla più elementare alla più articolata.
 
-**Cubo 5 (occupati ISTAT)** — `scripts/recipes/cubo5_occupati_istat.py`. Pipeline minimale: `RenameColumns({"REF_AREA": "ref_area", "Osservazione": "n_occupati"})` → `CastTypes({"n_occupati": "float"})` → `LinkProvinceToAGID_byNUTS(nuts_column="ref_area", provinces_ttl="data/provinces.ttl", nuts_aliases_ttl="output/mappings/nuts_aliases.ttl")`. Output: 107/107 province matchate, 107 osservazioni di output, una misura primaria (`numeroOccupati`). Recipe "Hello World" che è servita a validare il pattern `EmitQbObservations` per i tre cubi successivi.
+**Cubo 5 — Occupati ISTAT** (`cubo5_occupati_istat.py`). È il cubo più semplice del progetto, e per questo il primo a essere costruito: prende l'unica estrazione ISTAT degli occupati per provincia e la trasforma in 107 osservazioni, una per territorio. Non c'è nulla da pulire o da stimare — il valore arriva già pronto — così questa Recipe si è prestata da banco di prova per collaudare lo step di emissione prima di applicarlo ai cubi più complessi.
 
-**Cubo 7 (redditi MEF)** — `scripts/recipes/cubo7_redditi_mef.py`. Pipeline: `read_csv(keep_default_na=False)` → `DropRows` della sentinella `Codice Istat=0` → `AggregateMEFRedditiByProvincia` (group-by sigla + unpivot 5 voci) → `LinkProvinceToAGID_bySigla`. Output: 535 osservazioni (107 province × 5 voci di reddito), 107/107 sigle matchate.
+- `RenameColumns` — uniforma i nomi grezzi delle colonne ISTAT
+- `CastTypes` — converte il numero di occupati in valore numerico
+- `LinkProvinceToAGID_byNUTS` — aggancia ogni riga alla provincia AGID tramite il codice NUTS
+- `EmitQbObservations` — genera le osservazioni RDF
 
-**Cubo 6 (indicatori demografici ISTAT)** — `scripts/recipes/cubo6_indicatori_demografici_istat.py`. Pipeline: `read_istat_csv` con `quotechar="'"` → unione dei due CSV (indicatori 2026 + natalità/speranza vita 2025, gestiti come due input separati con `annoRiferimento` distinto) → `LinkProvinceToAGID_byNUTS` (gestisce le PA in NUTS-3 corretto dal cubo demografico) → `EnrichWithStaticMapping` per arricchire ogni riga con URI dell'indicatore SKOS (`POP014` → `idpt:ind-pop014`, ecc.) e unità di misura SDMX (`%`, `anni`, `per mille`). Output: 856 osservazioni (642 per il 2026 + 214 per il 2025), validation 7/7 verde.
+**Esito:** 107/107 province risolte, 107 osservazioni con la sola misura `numeroOccupati`.
 
-**Cubo 1 (vigenti residenza INPS)** — `scripts/recipes/cubo1_vigenti_residenza.py`. La più complessa delle "facili" per via dei due step custom INPS-specifici e dell'aggregazione Sardegna. Pipeline: `csv.reader` stdlib per lettura template OLAP sporco → `ParseItalianNumbers` su tutte le colonne numeriche INPS → `AggregateSardiniaProvinces` (modalità snapshot, 8 → 5 nomi sardi) → `UnpivotINPSPensioniVigenti` (5 gestioni × 3 misure wide→long) → `LinkProvinceToAGID_byName`. Output: 535 osservazioni (107 province × 5 gestioni — incluso `gestione-totale` aggregato), 505 direct + 30 alias matched dalla pipeline a 4 stadi.
+**Cubo 7 — Redditi MEF** (`cubo7_redditi_mef.py`). Costruisce il denominatore della componente economica D2, cioè il monte dei redditi da lavoro di ogni provincia. La difficoltà non è concettuale ma di scala e di insidie tecniche: il CSV IRPEF è a livello comunale (7.897 righe) e nasconde una trappola, la sigla `NA` di Napoli che pandas scambierebbe per un valore mancante. La pipeline legge, ripulisce e aggrega fino alle 107 province.
+
+- `read_csv(keep_default_na=False)` — legge il CSV preservando la sigla `NA` di Napoli
+- `DropRows` — scarta la riga sentinella malformata (`Codice Istat=0`)
+- `AggregateMEFRedditiByProvincia` — somma i comuni nelle province tenendo le 5 voci di reddito da lavoro
+- `LinkProvinceToAGID_bySigla` — collega ogni provincia all'URI AGID tramite la sigla
+- `EmitQbObservations` — genera le osservazioni RDF
+
+**Esito:** 535 osservazioni (107 province × 5 voci di reddito), 107/107 sigle risolte.
+
+**Cubo 6 — Indicatori demografici ISTAT** (`cubo6_indicatori_demografici_istat.py`). Raccoglie le variabili di contesto territoriale — indice di vecchiaia, natalità, speranza di vita a 65 anni e altre — che descrivono i territori senza entrare nell'indice. La particolarità sta nelle fonti: i dati arrivano da due estrazioni ISTAT con anni di riferimento diversi (gli indicatori al 1.1.2026 e i due indicatori a base annua del 2025), unificate in un solo cubo tenendo l'anno come dimensione esplicita.
+
+- `read_istat_csv` — legge i CSV ISTAT gestendone il quoting non standard
+- unione dei due CSV — fonde le estrazioni 2026 e 2025 con `annoRiferimento` distinto
+- `LinkProvinceToAGID_byNUTS` — risolve le province, PA comprese, via codice NUTS
+- `EnrichWithStaticMapping` — aggiunge a ogni riga l'URI SKOS dell'indicatore e l'unità di misura
+- `EmitQbObservations` — genera le osservazioni RDF
+
+**Esito:** 856 osservazioni (642 per il 2026, 214 per il 2025), validazione 7/7.
+
+**Cubo 1 — Pensioni vigenti per residenza INPS** (`cubo1_vigenti_residenza.py`). È il cubo cardine: dal CSV principale INPS ricava il numeratore di D1 (numero di pensioni) e di D2 (monte pensioni), per provincia di residenza e tipo di gestione. Pur restando lineare, è la Recipe più impegnativa del gruppo, perché prima di ribaltare la tabella e agganciarla all'anagrafe AGID deve domare le idiosincrasie del dato INPS: i numeri in formato italiano e le otto ex-province sarde da ricondurre alle cinque attuali.
+
+- `csv.reader` — legge il template OLAP INPS, che non è una tabella pulita
+- `ParseItalianNumbers` — converte i numeri in formato italiano e marca le celle soppresse
+- `AggregateSardiniaProvinces` — aggrega le 8 ex-province sarde nelle 5 attuali
+- `UnpivotINPSPensioniVigenti` — ribalta gestioni e misure da colonne a righe
+- `LinkProvinceToAGID_byName` — riconcilia i nomi INPS con le province AGID
+- `EmitQbObservations` — genera le osservazioni RDF
+
+**Esito:** 535 osservazioni (107 province × 5 gestioni, inclusa la `gestione-totale`); 505 match diretti, 30 via dizionario di alias.
 
 ### 3.5 Le quattro Recipe con stile B qb e pattern di derivazione — cubi 2, 3, 4, 9
 
-Le quattro Recipe rimanenti hanno pipeline più articolate: adottano lo stile B qb (`qb:measureType` come dimensione, una osservazione per misura), oppure includono la stima dell'importo annuo soppresso, l'aggregazione retroattiva sarda, la proiezione Plan B sulla composizione regime GDP.
+Le quattro Recipe rimanenti sono più articolate. Tre adottano lo stile B qb — la dimensione `qb:measureType` indica, osservazione per osservazione, quale misura si sta esprimendo — e tutte introducono il pattern dell'osservazione derivata visto nella sez. 3.3: stima dell'importo annuo soppresso, aggregazione retroattiva sarda, proiezione Plan B. Anche qui procediamo dalla più semplice alla più complessa.
 
-**Cubo 4 (decorrenza GDP nazionale)** — `scripts/recipes/cubo4_decorrenza_gdp.py`. Pipeline lineare ma con una decisione metodologica esplicita: la riga "Decorrenza anteriore al 31/12/1980" viene aggregata sull'anno 1980 con marcatura `obsStatus=E` (Estimated) — invece di scartarla o di trattarla come "anno 0", il pattern uniforme del progetto è preservato. Output: 46 osservazioni (45 status=A primarie + 1 status=E aggregata).
+**Cubo 4 — Decorrenza GDP nazionale** (`cubo4_decorrenza_gdp.py`). Unico cubo del grafo a granularità nazionale, fotografa le pensioni dei dipendenti pubblici per anno di decorrenza e fa da materia prima alla stima del Plan B (cubo 9). La pipeline è breve; l'unica scelta di metodo riguarda la coorte più vecchia, "anteriore al 31/12/1980", che invece di essere scartata viene aggregata sull'anno 1980 e marcata come stima, per non rompere il pattern uniforme delle osservazioni derivate.
 
-**Cubo 9 (Plan B GDP projected)** — `scripts/recipes/cubo9_plan_b_gdp_projected.py`. La prima materializzazione su scala del pattern "osservazione derivata": 428 osservazioni (107 province × 4 regimi) tutte con `obsStatus=E` e **doppia** `prov:wasDerivedFrom` — una verso l'osservazione del cubo 1 con `gestione=Pubblici` per quella provincia, l'altra verso il `qb:DataSet` del cubo 4 da cui si ricava la composizione regime nazionale. Helper SPARQL `_load_pubblici_per_provincia(cubo1_ttl)` per leggere le 107 quote provinciali GDP dal cubo 1 appena emesso. Output: 428 osservazioni, 856 link `prov:wasDerivedFrom` totali (2 per ogni obs). Validazione esatta della discrepanza 11.991 con il cubo 4 nazionale.
+- `read CSV` — legge il CSV di decorrenza GDP nazionale
+- `ParseItalianNumbers` — converte i numeri in formato italiano
+- aggregazione coorte pre-1980 — accorpa la decorrenza più vecchia sull'anno 1980 (`obsStatus=E`)
+- `EmitQbObservations` — genera le osservazioni RDF
 
-**Cubo 2 (regime sede INPS)** — `scripts/recipes/cubo2_regime_sede.py`. Prima implementazione dello **stile B qb**: la dimensione `qb:measureType` distingue per ogni osservazione quale misura sta esprimendo (`numeroPensioni`, `importoMedioMensile`, `importoAnnuoComplessivo`); una stessa coppia (sede, regime) genera 3 osservazioni distinte. Lo step `UnpivotINPSRegimeSede` ribalta wide→long le 106 sedi × 4 regimi × 2 misure primarie esplicite del CSV (`numeroPensioni`, `importoMedioMensile`) verso 106 × 4 × 2 = 848 osservazioni primarie con `obsStatus=A`. Quindi `EstimateAnnualAmount` ricostruisce per ogni coppia (sede, regime) l'`importoAnnuoComplessivo` come `n × media × 13`, emettendo 106 × 4 = 424 osservazioni con `obsStatus=E` e `prov:wasDerivedFrom` verso le due osservazioni primarie da cui la stima è derivata. La gestione "Pubblici" è esclusa per costruzione dal cubo OLAP INPS, quindi rimossa anche dal DSD del cubo 2 (decisione coerente con la realtà del dato). Linking sede INPS via `LinkSedeINPS`, che emette contestualmente il sidecar `output/mappings/inps_to_agid.ttl` con le 106 istanze `idpt:SedeINPS`. Output: 1.272 osservazioni totali (848 primarie + 424 stimate), 848 link `prov:wasDerivedFrom`.
+**Esito:** 46 osservazioni (45 primarie più 1 aggregata stimata).
 
-**Cubo 3 (serie storica sedi INPS)** — `scripts/recipes/cubo3_serie_storica_sede.py`. Stile B qb anch'esso, ma su 29 anni invece che 4 regimi. Pipeline: csv.reader stdlib per template OLAP sporco → `ParseItalianNumbers` → `UnpivotINPSSerieStorica` (29 anni × 3 measureType, scarto delle righe `-` per BAT, Fermo, Monza pre-2009 — `obsStatus=M` Missing implicito tramite omissione di osservazione) → `AggregateSardiniaProvinces` in modalità `mark_serie_storica` (84 osservazioni 2005-2011 sulle 3 sedi sarde compositive marcate `obsStatus=E`) → `EstimateAnnualAmount` per l'importo annuo ricostruito → `LinkSedeINPS`. Output: 9.105 osservazioni totali — 5.986 status=A primarie + 3.035 status=E importo annuo stimato + 84 status=E aggregazione Sardegna retroattiva — coperte da una sola DSD coerente.
+**Cubo 9 — Plan B GDP proiettato** (`cubo9_plan_b_gdp_projected.py`). Qui il pattern dell'osservazione derivata, introdotto nella sez. 3.3, viene applicato su scala. Il cubo ricostruisce la componente D3 per il settore pubblico — di cui l'INPS non pubblica la composizione provinciale per regime — proiettando la composizione nazionale stimata dal cubo 4 sulle quote di pensioni pubbliche di ogni provincia, lette dal cubo 1. Ogni osservazione è dichiaratamente una stima e conserva il doppio riferimento alle fonti da cui deriva.
+
+- `_load_pubblici_per_provincia` — legge via SPARQL le quote provinciali di pensioni pubbliche dal cubo 1
+- `ProjectGDPRegimeComposition` — proietta la composizione regime nazionale (cubo 4) su ciascuna provincia
+- `EmitQbObservations` — emette le osservazioni con `obsStatus=E` e doppia `prov:wasDerivedFrom`
+
+**Esito:** 428 osservazioni (107 province × 4 regimi), 856 link di provenance.
+
+**Cubo 2 — Pensioni per regime e sede INPS** (`cubo2_regime_sede.py`). Prima Recipe a usare lo stile B, in cui ogni misura diventa un'osservazione a sé: per ciascuna coppia (sede, regime) il grafo registra separatamente numero di pensioni, importo medio e importo annuo complessivo. Quest'ultimo è soppresso per privacy nel dato sorgente, quindi viene ricostruito come stima (numero × importo medio × 13 mensilità). È anche la Recipe in cui nasce la classe propria `idpt:SedeINPS`, materializzata nel sidecar di linking.
+
+- `UnpivotINPSRegimeSede` — genera le 848 osservazioni primarie (sede × regime × misura)
+- `EstimateAnnualAmount` — ricostruisce l'importo annuo soppresso, 424 osservazioni stimate
+- `LinkSedeINPS` — crea le istanze `idpt:SedeINPS` ed emette `inps_to_agid.ttl`
+- `EmitQbObservations` — genera le osservazioni RDF
+
+**Esito:** 1.272 osservazioni (848 primarie + 424 stimate); la gestione Pubblici, assente dal cubo OLAP INPS, è esclusa anche dalla DSD.
+
+**Cubo 3 — Serie storica per sede INPS** (`cubo3_serie_storica_sede.py`). Il cubo più grande del grafo: estende lo stile B ai 29 anni della serie storica 1998–2026. Oltre alla consueta stima dell'importo annuo, deve gestire due discontinuità della storia amministrativa italiana — le tre province nate nel 2009, per le quali le osservazioni precedenti semplicemente non esistono, e le ex-province sarde, i cui dati 2005–2011 vengono ricondotti retroattivamente alle sedi attuali e marcati come stima.
+
+- `csv.reader` — legge il template OLAP INPS
+- `ParseItalianNumbers` — converte i numeri in formato italiano
+- `UnpivotINPSSerieStorica` — ribalta i 29 anni da colonne a righe
+- `AggregateSardiniaProvinces` (modalità serie storica) — ricostruisce il 2005–2011 sardo sulle sedi attuali
+- `EstimateAnnualAmount` — ricostruisce l'importo annuo soppresso
+- `LinkSedeINPS` — risolve le sedi INPS
+- `EmitQbObservations` — genera le osservazioni RDF
+
+**Esito:** 9.105 osservazioni (5.986 primarie, 3.035 importo annuo stimato, 84 aggregazione Sardegna retroattiva), coperte da un'unica DSD.
 
 ### 3.6 Audit trail e validazione tabellare
 
@@ -295,51 +357,45 @@ Uno **schema dell'architettura** dei 6 grafi nominati, con le relazioni principa
 
 ### 4.1 I nove vocabolari riusati — perché ognuno è lì
 
-Il primo lavoro della modellazione è stato selezionare i vocabolari da riusare. Il riuso massiccio di standard esterni è la metrica sostantiva del lavoro LOD: si misura sulla *parsimonia delle classi proprie* e sulla *densità di linking semantico*. I 9 vocabolari sono organizzati in quattro tier in base al ruolo nel grafo. Le alternative valutate e scartate sono raccolte in chiusura di sottosezione per non appesantire la trattazione di ognuno.
+Il primo lavoro della modellazione è stato selezionare i vocabolari da riusare. Il riuso massiccio di standard esterni è la metrica sostantiva del lavoro LOD: si misura sulla *parsimonia delle classi proprie* e sulla *densità di linking semantico*. La tabella seguente mappa i nove vocabolari al loro ruolo nel grafo; le note che la seguono, organizzate in quattro tier, ne giustificano l'adozione una alla volta. Le alternative valutate e scartate sono raccolte in chiusura di sottosezione.
+
+| Vocabolario | Prefisso | Ruolo nel grafo |
+|---|---|---|
+| RDF Data Cube | `qb:` | struttura dei 9 cubi statistici: DSD, DataSet, Observation |
+| SKOS | `skos:` | le 6 code-list controllate (gestioni, regimi, voci, indicatori, componenti, aree) |
+| OntoPiA CLV + Vocabolari AGID | `clv:` | ancora territoriale: le 107 province come URI canoniche |
+| SDMX content vocabulary | `sdmx-*` | attributi e code-list statistici standard (`obsStatus`, `unitMeasure`) |
+| OWL-Time | `time:` | dimensione temporale (uso minimale; gli anni restano `xsd:gYear`) |
+| DCAT-AP_IT | `dcatapit:` | metadati del dataset secondo il profilo italiano |
+| Dublin Core + FOAF + vCard | `dcterms:` `foaf:` `vcard:` | titoli, licenze, autore e contatti su dataset e cubi |
+| PROV-O | `prov:` | lineage delle osservazioni stimate (`prov:wasDerivedFrom`) |
+| OWL sameAs | `owl:` | linking esterno: 107 verso DBpedia, più alias NUTS |
 
 #### Tier 1 — Il cuore dell'ontologia
 
-**RDF Data Cube** (`qb:` = `http://purl.org/linked-data/cube#`). Raccomandazione W3C del 2014, ispirata a SDMX (lo standard ONU/Eurostat/FMI per lo scambio di dati statistici). È l'ontologia canonica per pubblicare in RDF dati statistici multidimensionali. Concetti chiave: `qb:DataSet` (il cubo nel suo insieme), `qb:DataStructureDefinition` o DSD (lo schema con dimensioni / misure / attributi), `qb:Observation` (una singola cella del cubo).
+**RDF Data Cube** (`qb:`) — raccomandazione W3C ispirata a SDMX (lo standard ONU/Eurostat/FMI per i dati statistici), è l'ontologia canonica per pubblicare in RDF dati multidimensionali: `qb:DataSet` è il cubo, `qb:DataStructureDefinition` (DSD) il suo schema di dimensioni, misure e attributi, `qb:Observation` la singola cella. Nel progetto regge 9 DSD, 9 `qb:DataSet` e 13.312 `qb:Observation`, ancorate ai concetti `sdmx-concept:` via `qb:concept` per l'interoperabilità con i cubi Eurostat.
 
-Nel nostro progetto: 9 DSD, 9 `qb:DataSet`, 13.312 `qb:Observation`. Interoperabile con i cubi Eurostat tramite ancoraggio dei concetti via `qb:concept` agli `sdmx-concept:` standard.
+**SKOS** (Simple Knowledge Organization System, `skos:`) — raccomandazione W3C per modellare tassonomie e vocabolari controllati; fornisce `skos:Concept`, `skos:ConceptScheme`, le label e le `notation`. Lo usiamo per le sei code-list proprie (vedi 4.3) — tipi di gestione INPS, regimi di liquidazione, voci di reddito MEF, indicatori demografici ISTAT, componenti IDPT, aree geografiche — in coerenza stilistica con l'ancora AGID, anch'essa modellata in SKOS.
 
-**SKOS** (Simple Knowledge Organization System, `skos:` = `http://www.w3.org/2004/02/skos/core#`). Raccomandazione W3C del 2009 per modellare tassonomie e vocabolari controllati (es. ATECO, ISCO, classificazioni Eurostat). Concetti chiave: `skos:Concept`, `skos:ConceptScheme`, `skos:prefLabel`/`altLabel`, `skos:notation`, `skos:broader`/`narrower`, `skos:exactMatch`/`closeMatch`.
-
-Nel nostro progetto: 6 code-list SKOS proprie (vedi 4.3) per tipi di gestione INPS, regimi di liquidazione, voci di reddito MEF, indicatori demografici ISTAT, componenti IDPT, aree geografiche. Coerente stilisticamente con l'ancora AGID, che è già modellata in SKOS.
-
-**OntoPiA CLV + Vocabolari Controllati Territoriali AGID** (`clv:` = `https://w3id.org/italia/onto/CLV/`). OntoPiA è la rete di ontologie ufficiale della PA italiana, sviluppata da AgID dal 2018 nel quadro del Piano Triennale per l'Informatica nella PA, allineata al Core Vocabulary del programma europeo ISA². CLV (Core Location Vocabulary) è la sua ontologia per le entità territoriali italiane: classi come `clv:Province`, `clv:Region`, `clv:City`, e property come `clv:acronym`, `clv:situatedWithin`, `clv:hasRankOrder`. I Vocabolari Controllati territoriali istanziano già tutte le 107 province e le 20 regioni con URI canoniche, codice ISTAT, sigla, NUTS, label IT/EN.
-
-Nel nostro progetto: **ancora primaria del grafo**. Riusiamo integralmente le 107 URI canoniche AGID per identificare le province, senza emetterne di nostre. Il pattern multi-typing OntoPiA fa sì che ogni provincia AGID erediti automaticamente quattro tipi (`clv:Province` + `clv:AdminUnitComponent` + `skos:Concept` + `clv:Feature`) al prezzo di una sola URI.
+**OntoPiA CLV + Vocabolari Controllati AGID** (`clv:`) — OntoPiA è la rete di ontologie ufficiale della PA italiana (AgID, dal 2018, allineata ai Core Vocabulary europei ISA²); il suo Core Location Vocabulary descrive le entità territoriali con classi come `clv:Province` e property come `clv:acronym` o `clv:situatedWithin`, e i Vocabolari Controllati istanziano già tutte le 107 province e le 20 regioni con URI canoniche, codice ISTAT, sigla, NUTS e label IT/EN. È l'**ancora primaria** del grafo: riusiamo integralmente le 107 URI AGID senza emetterne di nostre, e grazie al multi-typing OntoPiA ogni provincia eredita quattro tipi (`clv:Province`, `clv:AdminUnitComponent`, `skos:Concept`, `clv:Feature`) al prezzo di una sola URI.
 
 #### Tier 2 — Accessori per i cubi statistici
 
-**SDMX content vocabulary** (`sdmx-attribute:`, `sdmx-code:`, `sdmx-concept:`). Pubblicato dal W3C insieme a `qb`, è la traduzione RDF dello standard SDMX. Fornisce attributi standard (`obsStatus`, `unitMeasure`, ecc.) e code-list standard riusabili in qualunque cubo qb. La code-list più rilevante per noi è `obsStatus`: `A` (Normal), `E` (Estimated), `P` (Provisional), `F` (Forecast), `M` (Missing), `B` (Time series break).
+**SDMX content vocabulary** (`sdmx-attribute:`, `sdmx-code:`, `sdmx-concept:`) — pubblicato dal W3C insieme a `qb`, è la traduzione RDF dello standard SDMX e fornisce attributi e code-list statistici riusabili. La code-list che ci serve di più è `obsStatus` (`A` Normal, `E` Estimated, `P` Provisional, `F` Forecast, `M` Missing, `B` Break): 4.399 osservazioni del grafo portano `obsStatus=E` (Plan B del cubo 9, importo annuo stimato dei cubi 2 e 3, aggregazione retroattiva Sardegna del cubo 3, IDPT computed del cubo 8). I concetti `sdmx-concept:` sono inoltre ancorati alle nostre DimensionProperty e MeasureProperty via `qb:concept`.
 
-Nel nostro progetto: 4.399 osservazioni portano `obsStatus=E` (Plan B GDP cubo 9, importo annuo stimato cubi 2 e 3, aggregazione retroattiva Sardegna cubo 3, IDPT computed cubo 8). I `sdmx-concept:` standard sono ancorati alle nostre DimensionProperty e MeasureProperty via `qb:concept` per interoperabilità SDMX/Eurostat.
-
-**OWL-Time** (`time:` = `http://www.w3.org/2006/time#`). Raccomandazione W3C del 2017 per concetti temporali strutturati (istanti, intervalli, durate, validità storica).
-
-Nel nostro progetto: uso **minimale**. La dimensione temporale puntuale (anno snapshot, anno decorrenza) è modellata con `xsd:gYear`, più leggero senza perdita di semantica. È dichiarata nei vocabolari riusati per onestà di inventario; il peso semantico nel grafo finale è marginale.
+**OWL-Time** (`time:`) — raccomandazione W3C per i concetti temporali strutturati (istanti, intervalli, durate). Nel progetto l'uso è **minimale**: la dimensione temporale puntuale (anno di snapshot, anno di decorrenza) è modellata con il più leggero `xsd:gYear`, senza perdita di semantica. È dichiarata nell'inventario per completezza, ma il suo peso nel grafo finale è marginale.
 
 #### Tier 3 — Packaging del dataset
 
-**DCAT-AP_IT** (`dcatapit:` = `http://dati.gov.it/onto/dcatapit#`). Profilo italiano AGID di DCAT-AP, che a sua volta è il profilo europeo di DCAT (Data Catalog Vocabulary del W3C). DCAT è la lingua franca per descrivere dataset pubblici: chi li ha pubblicati, quando, sotto quale licenza, in quale formato. DCAT-AP_IT è quello che usa `dati.gov.it`, obbligatorio per la pubblicazione nei cataloghi della PA italiana.
+**DCAT-AP_IT** (`dcatapit:`) — profilo italiano AGID di DCAT-AP, a sua volta profilo europeo del Data Catalog Vocabulary del W3C. È la lingua franca per descrivere un dataset pubblico (chi lo pubblica, quando, con quale licenza e formato) ed è il vocabolario obbligatorio per i cataloghi della PA italiana. Il deliverable finale `idpt:atlante-idpt` è un `dcatapit:Dataset` (con triple-typing `dcat:Dataset` + `void:Dataset`, vedi 4.8) con metadati conformi al profilo.
 
-Nel nostro progetto: il deliverable finale `idpt:atlante-idpt` è un `dcatapit:Dataset` (oltre che `dcat:Dataset` + `void:Dataset` per triple-typing, vedi 4.8) con metadati conformi al profilo italiano.
-
-**dcterms + foaf + vcard** — il trio "infrastruttura Dublin Core" che DCAT-AP_IT trascina con sé. `dcterms:` (Dublin Core Terms) per metadati documentali (`title`, `description`, `license`, `issued`, `source`, `creator`, `publisher`, `hasPart`); `foaf:` (Friend Of A Friend) per descrivere agenti (`foaf:Agent`, `foaf:Organization`); `vcard:` per i contact point (`vcard:fn`, `vcard:hasEmail`).
-
-Nel nostro progetto: tutti e tre sul `dcatapit:Dataset` finale e sui 9 `qb:DataSet` interni, in modo che ogni cubo sia autoesplicativo e citabile anche fuori dal deliverable. L'autore del progetto è dichiarato come `foaf:Agent + dcatapit:Agent` con vCard.
+**Dublin Core + FOAF + vCard** (`dcterms:`, `foaf:`, `vcard:`) — il corredo che DCAT-AP_IT porta con sé: `dcterms:` per i metadati documentali (titolo, descrizione, licenza, fonte, autore, publisher), `foaf:` per gli agenti, `vcard:` per i contact point. Sono applicati sia al `dcatapit:Dataset` finale sia ai 9 `qb:DataSet` interni, così che ogni cubo sia autoesplicativo e citabile anche fuori dal deliverable; l'autore è dichiarato come `foaf:Agent + dcatapit:Agent` con vCard.
 
 #### Tier 4 — Tattico minimale
 
-**PROV-O** (`prov:` = `http://www.w3.org/ns/prov#`). Raccomandazione W3C del 2013 per provenance e lineage in RDF. Concetti chiave: `prov:Entity`, `prov:Activity`, `prov:Agent`, `prov:wasDerivedFrom`, `prov:wasGeneratedBy`, `prov:wasAssociatedWith`.
+**PROV-O** (`prov:`) — raccomandazione W3C per provenance e lineage in RDF. L'uso è **minimale e tattico**: solo `prov:wasDerivedFrom` sulle 4.399 osservazioni stimate. Costa una sola property ma permette, con una query e l'operatore transitivo `prov:wasDerivedFrom+`, di risalire l'intera catena di derivazione fino alle osservazioni primarie (vedi 4.5); la provenance completa (`prov:Activity`, `prov:Agent` strutturati) resta un upgrade post-progetto, con i metadati di pipeline già tracciati a livello tabellare (sez. 3.6).
 
-Nel nostro progetto: uso **minimale e tattico** — solo `prov:wasDerivedFrom` sulle 4.399 osservazioni stimate. La provenance completa (Activity, Agent strutturato) resta fuori scope: l'infrastruttura `History`/`StepRecord` di macrorefine (sez. 3.6) traccia già i metadati di pipeline a livello tabellare, convertibili in PROV-O completo come upgrade post-progetto. Costo: una sola property. Beneficio: una singola query SPARQL con `prov:wasDerivedFrom+` (operatore transitivo) recupera la catena di derivazione completa fino alle osservazioni primarie — vedi 4.5.
-
-**`owl:sameAs`** — una singola property dell'ontologia OWL. Afferma che due entità sono identiche anche se vivono in dataset diversi: è lo standard di fatto per il linking esterno nel LOD Cloud.
-
-Nel nostro progetto: 107 `owl:sameAs` AGID → DBpedia come contributo originale (sidecar `agid_to_dbpedia.ttl`, vedi 4.6), più 2 alias `owl:sameAs` nel sidecar `nuts_aliases.ttl` per riconciliare le PA del Trentino-Alto Adige (NUTS-2 `ITD1`↔NUTS-3 `ITD10`, idem `ITD2`↔`ITD20`). Il resto degli `owl:sameAs` NUTS — verso `nuts.geovocab.org` — arriva pre-cotto dal TTL AGID nativo (116 link totali, incluse 9 revisioni NUTS storiche).
+**`owl:sameAs`** — la property OWL che afferma l'identità fra entità di dataset diversi, standard di fatto del linking esterno nel LOD Cloud. Nel grafo conta 107 link AGID → DBpedia come contributo originale (sidecar `agid_to_dbpedia.ttl`, vedi 4.6) e 2 alias per riconciliare le PA del Trentino-Alto Adige (`ITD1`↔`ITD10`, `ITD2`↔`ITD20`, sidecar `nuts_aliases.ttl`); gli `owl:sameAs` NUTS verso `nuts.geovocab.org` arrivano invece pre-cotti dal TTL AGID nativo (116 link totali, incluse 9 revisioni NUTS storiche).
 
 #### Vocabolari valutati e scartati
 
