@@ -8,7 +8,7 @@
 ## In una riga
 
 Costruzione, materializzazione e pubblicazione di un grafo RDF di
-**~117.000 triple** che modella la dipendenza previdenziale di tutte le 107
+**~120.000 triple** (di cui ~117.000 prodotte dal progetto, più il vocabolario AGID riusato) che modella la dipendenza previdenziale di tutte le 107
 province italiane al 1.1.2026 attraverso l'**Indice di Dipendenza
 Previdenziale Territoriale (IDPT)**, un indice composito di 3 componenti
 (pressione demografica, peso economico, eredità storica delle riforme).
