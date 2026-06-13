@@ -1422,7 +1422,7 @@ idpt:sede-inps-torino a idpt:SedeINPS ;
 <h4 id="51-decorrenza">Oltre lo snapshot: l'età e l'importo delle pensioni nel tempo</h4>
 <p>La cartografia è un fermo-immagine, ma il grafo conserva anche la <strong>profondità temporale</strong> — e l'angolo più istruttivo non è quanti pensionati ci siano, ma <em>a che età</em> si è andati in pensione e con <em>quale assegno</em>, decennio dopo decennio. Il cubo 4 (pensioni dei dipendenti pubblici per anno di decorrenza, 1980–2025) lo permette a livello nazionale. Il grafico qui sotto è generato da <code>scripts/build_decorrenza.py</code>, che estrae i dati dal cubo 4 via SPARQL e li inietta in una pagina HTML autocontenuta (Chart.js, nessun backend), nella stessa filosofia "singolo file standalone" delle mappe Folium.</p>
 <div class="map-embed">
-  <iframe src="decorrenza_gdp.html"
+  <iframe src="decorrenza_gdp.html?v=2"
           title="Età e importo delle pensioni per anno di decorrenza"
           loading="lazy" style="height:660px"></iframe>
   <p class="map-caption">
